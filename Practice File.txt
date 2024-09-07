@@ -1,0 +1,3 @@
+This is a git practice document. Do changes to it, commit and create a pull request if you are strugling with git.
+
+Please avoid deleting any lines just add new below the existing ones. Thank you!
