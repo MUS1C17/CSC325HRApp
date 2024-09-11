@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class SQLExecuter {
     
-    private final String pathToDataBase = "jdbc:sqlite:C:/Users/Mark/Desktop/Рабочий стол/USA/Murray State University/Fall 2024/CSC 325/HRApp/CSC325HRApp/database/testDB.db";
+    private final String pathToDataBase = "jdbc:sqlite:" + System.getProperty("user.dir").replace("\\", "/") + "/database/testDB.db";
 
     // Connection object
     private Connection connection = null;

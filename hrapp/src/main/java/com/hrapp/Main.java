@@ -1,12 +1,11 @@
 package com.hrapp;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
+        
         try
         {
             Class.forName("org.sqlite.JDBC");
@@ -14,18 +13,6 @@ public class Main {
         catch(ClassNotFoundException error)
         {
             error.printStackTrace();
-        }
-        System.out.println("Working Directory = " + System.getProperty("user.dir").replace("\\", "/"));
-        String pathToDataBase =  System.getProperty("user.dir").replace("\\", "/") + "/database/testDB.db";
-        try
-        {
-            
-            Connection connection = DriverManager.getConnection(pathToDataBase);
-            System.out.println("I finally connected");
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
         }
         
         // Create an instance of SQLExecuter
@@ -40,7 +27,7 @@ public class Main {
             if (resultFromQuery.next())
             {
                 firstName = resultFromQuery.getString("firstName");
-                System.out.println("Result is: " + firstName);
+                System.out.println("The first name is: " + firstName);
             }
             
         }
@@ -49,10 +36,10 @@ public class Main {
             // Handle any SQL exceptions
             e.getMessage();
         }
-        /*finally
+        finally
         {
             testExecute.closeConnection();
-        }*/
+        }
     
     }
 }
