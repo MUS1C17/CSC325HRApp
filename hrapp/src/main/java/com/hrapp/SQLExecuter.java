@@ -1,12 +1,13 @@
+package com.hrapp;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLExecuter{
-
-    // Path to SQLite database file
+public class SQLExecuter {
+    
     private final String pathToDataBase = "jdbc:sqlite:C:/Users/Mark/Desktop/Рабочий стол/USA/Murray State University/Fall 2024/CSC 325/HRApp/CSC325HRApp/database/testDB.db";
 
     // Connection object
@@ -53,3 +54,4 @@ public class SQLExecuter{
     }
 
 }
+
