@@ -23,10 +23,10 @@ public class Main {
         try
         {
             testExecute = new SQLExecuter();
-            resultFromQuery = testExecute.executeSQLQuery("select * from TestTable");
+            resultFromQuery = testExecute.executeSQLQuery("select * from Employee");
             if (resultFromQuery.next())
             {
-                firstName = resultFromQuery.getString("firstName");
+                firstName = resultFromQuery.getString("FirstName");
                 System.out.println("The first name is: " + firstName);
             }
             
