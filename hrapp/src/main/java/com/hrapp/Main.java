@@ -3,33 +3,25 @@ package com.hrapp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class Main {
-    public static void main(String[] args) {
-        
-        try
-        {
-            Class.forName("org.sqlite.JDBC");
-        }
-        catch(ClassNotFoundException error)
-        {
-            error.printStackTrace();
-        }
+    public static void main(String[] args) throws SQLException {
         
         // Create an instance of SQLExecuter
-        SQLExecuter testExecute = null;
+        SQLExecuter testExecute = new SQLExecuter();
         ResultSet resultFromQuery = null;
-
         String firstName;
+
         try
         {
-            testExecute = new SQLExecuter();
-            resultFromQuery = testExecute.executeSQLQuery("select * from Employee");
+            resultFromQuery = testExecute.getDataFromDatabase("select * from Employee");
             if (resultFromQuery.next())
             {
                 firstName = resultFromQuery.getString("FirstName");
                 System.out.println("The first name is: " + firstName);
             }
             
+            testExecute.setDataInDatabase("UPDATE Employee SET FirstName = 'TEST' WHERE EmployeeID = 5");
         }
         catch(SQLException e)
         {
