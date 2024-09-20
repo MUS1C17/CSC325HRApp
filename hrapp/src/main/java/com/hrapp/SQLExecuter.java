@@ -34,10 +34,11 @@ public class SQLExecuter {
         return statement.executeQuery(query);
     }
 
+    //Method to execute an UPDATE/DELETE/INSERT method
     public void setDataInDatabase(String query) throws SQLException
     {
         Statement statement = connection.createStatement();
-        statement.executeQuery(query);
+        statement.executeUpdate(query);
     }
 
      // Method to close the database connection
