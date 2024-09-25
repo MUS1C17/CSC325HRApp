@@ -1,18 +1,19 @@
 package com.hrapp;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
         
-        /*// Create an instance of SQLExecuter
+        // Create an instance of SQLExecuter
         SQLExecuter testExecute = new SQLExecuter();
         ResultSet resultFromQuery = null;
         String firstName;
 
         try
         {
-            testExecute.setDataInDatabase("DELETE FROM Employee WHERE EmployeeID = 14");
+            //testExecute.setDataInDatabase("DELETE FROM Employee WHERE EmployeeID = 14");
             resultFromQuery = testExecute.getDataFromDatabase("select * from Employee where EmployeeID = 3");
             if (resultFromQuery.next())
             {
@@ -30,8 +31,9 @@ public class Main {
         finally
         {
             testExecute.closeConnection();
-        }*/
+        }
 
+        //Actual GUI 
         new SimpleGUI();
     
     }

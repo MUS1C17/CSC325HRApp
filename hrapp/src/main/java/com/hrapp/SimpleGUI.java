@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -13,42 +14,67 @@ public class SimpleGUI {
     
     public SimpleGUI()
     {
+        String[] employmentStatusArray = { "Intern", "Full-time", "Part-time", "Contract" };
+
         //Create a JFRame object
-        
-        JFrame jobHistoryWindow = new JFrame("Job History Window");
-        jobHistoryWindow.setLayout(null);
-        jobHistoryWindow.setSize(800,600);
+        JFrame addUserFrame = new JFrame("Job History Window");
+        addUserFrame.setLayout(null);
+        addUserFrame.setSize(800,600);
 
         //Set the default close to close application when windows is closed
-        jobHistoryWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addUserFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create a JLabel object with some text
-        JLabel label = new JLabel("First Name: ");
-        label.setBounds(200, 100, 150, 30);
+        JLabel exampleTitle = new JLabel("This is DEMO version of Add User Screen");
+        JLabel firstNameLabel = new JLabel("First Name: ");
+        JLabel lastNameLabel = new JLabel("Last Name:");
+        JLabel employementStatusLabel = new JLabel("Employement Status:");
+
+        exampleTitle.setBounds(250, 30, 300, 30);
+        firstNameLabel.setBounds(100, 100, 150, 30);
+        lastNameLabel.setBounds(100, 150, 150, 30);
+        employementStatusLabel.setBounds(100, 200, 150, 30);
 
         //Set the size of the window
         JButton saveButton = new JButton("Save");
+        JButton jobHistoryButton = new JButton("Job History");
+
         saveButton.setBounds(300, 500, 150, 30);
+        jobHistoryButton.setBounds(300, 400, 150, 30);
+
+        // Create a JComboBox and pass the options
+        JComboBox<String> employmentStatusComboBox = new JComboBox<>(employmentStatusArray);
+        employmentStatusComboBox.setBounds(300, 200, 150, 30);
+
 
         //Create a Box Field for input
-        JTextField textField = new JTextField();
-        textField.setBounds(300, 100, 150, 30);
+        JTextField firstNameTextField = new JTextField();
+        JTextField lastNameTextField = new JTextField();
+
+
+        firstNameTextField.setBounds(300, 100, 150, 30);
+        lastNameTextField.setBounds(300, 150, 150, 30);
 
         
-
+        //Save button functionality
         saveButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String enteredText = textField.getText();
-                System.out.println("Entered text: " + enteredText);
+                //Get text from all fields
+                String firstName = firstNameTextField.getText();
+                String lastName = lastNameTextField.getText();
+                String employmentStatus = (String) employmentStatusComboBox.getSelectedItem();
+
+                System.out.println("Entered text: " + firstName);
                 
+                //Connect to SQL database and execute query
                 SQLExecuter myExecuter = null;
                 try
                 {
                     myExecuter = new SQLExecuter();
-                    myExecuter.setDataInDatabase("INSERT INTO Employee (FirstName) VALUES ('" +  enteredText+ "')");
+                    myExecuter.setDataInDatabase("INSERT INTO Employee (FirstName, LastName, EmploymentStatus) VALUES ('" +  firstName + "', '" + lastName + "', '" + employmentStatus + "')");
                 }
                 catch(SQLException ex)
                 {
@@ -62,12 +88,42 @@ public class SimpleGUI {
             }
         });
 
-        jobHistoryWindow.add(label);
-        jobHistoryWindow.add(saveButton);
-        jobHistoryWindow.add(textField);
+        jobHistoryButton.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                openJobHistoryPage();
+            }
+        });
+
+
+        addUserFrame.add(exampleTitle);
+        addUserFrame.add(firstNameLabel);
+        addUserFrame.add(lastNameLabel);
+        addUserFrame.add(employementStatusLabel);
+        addUserFrame.add(saveButton);
+        addUserFrame.add(firstNameTextField);
+        addUserFrame.add(lastNameTextField);
+        addUserFrame.add(employmentStatusComboBox);
+        addUserFrame.add(jobHistoryButton);
 
         //Make the windows visible
-        jobHistoryWindow.setVisible(true);
+        addUserFrame.setVisible(true);
 
+    }
+
+    public static void openJobHistoryPage()
+    {
+        JFrame jobHistoryFrame = new JFrame("New Page");
+        jobHistoryFrame.setSize(300, 150);
+        jobHistoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Create a label to show on the new page
+        JLabel exampleTitleLabel = new JLabel("This is demo Job History page");
+        exampleTitleLabel.setBounds(250, 30, 300, 30);
+
+        jobHistoryFrame.add(exampleTitleLabel);
+        jobHistoryFrame.setVisible(true);
     }
 }
