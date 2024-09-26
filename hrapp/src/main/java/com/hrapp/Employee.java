@@ -1,3 +1,5 @@
+package com.hrapp;
+
 //Employee class. I thought these four properites were good, but I'm open to adding more.
 public class Employee {
     private String name;
