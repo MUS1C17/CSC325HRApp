@@ -37,7 +37,19 @@ I use regular git instead of Desktop GitHub so all the instructions will be done
 ## Overview
 The SQLExecuter class is designed to simplify interactions with an SQLite database in your Java application. It provides methods to establish a connection, retrieve data, modify data, and close the connection when done. This class abstracts the underlying SQL operations, allowing you to work with the database without needing in-depth knowledge of SQL. This approach simplifies data management while keeping everything organized in one place. The database is made up of several tables, each storing data about specific categories. These tables are linked together to maintain relationships between different sets of information. Each table contains columns that hold specific details for each row of data. This is what the Employee table looks like: ![image](https://github.com/user-attachments/assets/ae1168a5-a351-4402-9a3b-87164d6eebab)
 
+## How it works
+### Database Connection
+**Database Path:** The class constructs the path to the SQLite database file `testDB.db` located in the project database directory.
+**Connection Object:** Uses a `Connection` object `java.sql.Connection` to establish and manage the connection to the database.
+
+## Class Structure and Methods
+### 1. Constructor: `public SQLExecuter() throws SQLException`
+   This constructor initializes a connection to the database when an instance of the SQLExecuter class is created. If your class needs to interact with the database, you must instantiate the SQLExecuter by calling its constructor. For example:
+   <br/>`SQL Executer nameOfThisInstance = new SQLExecuter();` <br/>
+   `//Your code is here`
 # THIS IS STILL IN PROGRESS - MARK
+
+
 
 
 
