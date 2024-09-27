@@ -29,8 +29,18 @@ I use regular git instead of Desktop GitHub so all the instructions will be done
 9. Now commit your changes, run `git commit -m "<short description of what have you done>"`. Sometimes, it's a good idea to do commits often if you are working on a difficult code and you will want to revert back to what you had earlier.
   ![image](https://github.com/user-attachments/assets/bdc21069-7113-421d-9a62-f43f756084a9)
 10. Run `git push` to push all your changes to a remote repository.
-11. Create a pull request in GitHub and add a description to explain what have you done. Only create a pull request if your code is working successfully, we want to always make sure the main branch works and is stable!
+11. Create a pull request in GitHub and add a description to explain what you have done. Only create a pull request if your code is working successfully, we want to always make sure the main branch works and is stable!
 12. After the pull request is created, we will have several people review it and after that, it will be merged into the main branch. 
+
+
+# SQLExecuter Class Documentation
+## Overview
+The SQLExecuter class is designed to simplify interactions with an SQLite database in your Java application. It provides methods to establish a connection, retrieve data, modify data, and close the connection when done. This class abstracts the underlying SQL operations, allowing you to work with the database without needing in-depth knowledge of SQL. This approach simplifies data management while keeping everything organized in one place. The database is made up of several tables, each storing data about specific categories. These tables are linked together to maintain relationships between different sets of information. Each table contains columns that hold specific details for each row of data. This is what the Employee table looks like: ![image](https://github.com/user-attachments/assets/ae1168a5-a351-4402-9a3b-87164d6eebab)
+
+# THIS IS STILL IN PROGRESS - MARK
+
+
+
 
  
 
