@@ -44,9 +44,23 @@ The SQLExecuter class is designed to simplify interactions with an SQLite databa
 
 ## Class Structure and Methods
 ### 1. Constructor: `public SQLExecuter() throws SQLException`
-   This constructor initializes a connection to the database when an instance of the SQLExecuter class is created. If your class needs to interact with the database, you must instantiate the SQLExecuter by calling its constructor. For example:
-   <br/>`SQL Executer nameOfThisInstance = new SQLExecuter();` <br/>
-   `//Your code is here`
+This constructor initializes a connection to the database when an instance of the SQLExecuter class is created. If your class needs to interact with the database, you must instantiate the SQLExecuter by calling its constructor. For example:
+```java
+public method()
+{
+      SQLExecuter nameOfThisInstance = new SQLExecuter();
+
+      //Your code is here...
+}
+```
+
+### 2. Method: `public ResultSet getDataFromDatabase(String query) throws SQLException`
+* **Purpose**
+   <br>The purpose of the ` getDataFromDatabase(String query)` method is only to execute the `SELECT` query to retrieve data from the database. When we execute the `SELECT` query, data gets returned as a `ResultSet`. `ResultSet` is a table of data representing a database result set. It maintains a cursor pointing to its current row of data. Initially, the cursor is positioned before the first row. The `next()` method moves the cursor to the next row.
+* **Parameters**<br>
+ `String query`: The method takes an SQL String query as a parameter. For example, if you wanted to select all elements in the Employee table your method would look like this `getDataFromDatabase("SELECT * FROM Employee");`
+  
+
 # THIS IS STILL IN PROGRESS - MARK
 
 
