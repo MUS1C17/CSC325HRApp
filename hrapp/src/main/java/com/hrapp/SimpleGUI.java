@@ -17,7 +17,7 @@ public class SimpleGUI {
         String[] employmentStatusArray = { "Intern", "Full-time", "Part-time", "Contract" };
 
         //Create a JFRame object
-        JFrame addUserFrame = new JFrame("Job History Window");
+        JFrame addUserFrame = new JFrame("Add User Window");
         addUserFrame.setLayout(null);
         addUserFrame.setSize(800,600);
 
@@ -37,10 +37,8 @@ public class SimpleGUI {
 
         //Set the size of the window
         JButton saveButton = new JButton("Save");
-        JButton jobHistoryButton = new JButton("Job History");
 
         saveButton.setBounds(300, 500, 150, 30);
-        jobHistoryButton.setBounds(300, 400, 150, 30);
 
         // Create a JComboBox and pass the options
         JComboBox<String> employmentStatusComboBox = new JComboBox<>(employmentStatusArray);
@@ -88,16 +86,7 @@ public class SimpleGUI {
             }
         });
 
-        jobHistoryButton.addActionListener(new ActionListener() 
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                openJobHistoryPage();
-            }
-        });
-
-
+        //Add all objects to the gui
         addUserFrame.add(exampleTitle);
         addUserFrame.add(firstNameLabel);
         addUserFrame.add(lastNameLabel);
@@ -106,24 +95,8 @@ public class SimpleGUI {
         addUserFrame.add(firstNameTextField);
         addUserFrame.add(lastNameTextField);
         addUserFrame.add(employmentStatusComboBox);
-        addUserFrame.add(jobHistoryButton);
 
         //Make the windows visible
         addUserFrame.setVisible(true);
-
-    }
-
-    public static void openJobHistoryPage()
-    {
-        JFrame jobHistoryFrame = new JFrame("New Page");
-        jobHistoryFrame.setSize(300, 150);
-        jobHistoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        //Create a label to show on the new page
-        JLabel exampleTitleLabel = new JLabel("This is demo Job History page");
-        exampleTitleLabel.setBounds(250, 30, 300, 30);
-
-        jobHistoryFrame.add(exampleTitleLabel);
-        jobHistoryFrame.setVisible(true);
     }
 }
