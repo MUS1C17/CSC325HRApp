@@ -180,7 +180,7 @@ public class Employee
         return workLocation;
     }
 
-    public String getEmployementStatus()
+    public String getEmploymentStatus()
     {
         return employmentStatus;
     }
