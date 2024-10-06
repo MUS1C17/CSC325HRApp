@@ -13,7 +13,7 @@ public class Employee
     private String jobTitle;
     private String department;
     private String workLocation;
-    private String employementStatus;
+    private String employmentStatus;
     private String email;
     private String phoneNumber;
     private BigDecimal hourlyRate;
@@ -26,7 +26,7 @@ public class Employee
     private int isManager;
     private int isCEO; 
 
-    public Employee(String firstName, String lastName, LocalDate dateofBirth, String jobTitle, String department, String workLocation, BigDecimal hourlyRate, String notes, String hardSkill1, String hardSkill2, String softSkill1, String softSkill2, int isManager, int isCEO)
+    public Employee(String firstName, String lastName, LocalDate dateofBirth, String jobTitle, String department, String workLocation, String employmentStatus, String email, String phoneNumber, BigDecimal hourlyRate, String notes, String hardSkill1, String hardSkill2, String softSkill1, String softSkill2, int isManager, int isCEO)
     {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +34,9 @@ public class Employee
         this.jobTitle = jobTitle;
         this.department = department;
         this.workLocation = workLocation;
+        this.employmentStatus = employmentStatus;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.hourlyRate = hourlyRate;
         this.notes = notes;
         this.hardSkill1 = hardSkill1;
@@ -82,7 +85,7 @@ public class Employee
 
     public void setEmploymentStatus(String employmentStatus)
     {
-        this.employementStatus = employementStatus;
+        this.employmentStatus = employmentStatus;
     }
     
     public void setEmail(String email)
@@ -142,6 +145,11 @@ public class Employee
 
 
     //Getter for each property
+    public int getEmployeeID()
+    {
+        return employeeID;
+    }
+
     public String getFirstName()
     {
         return firstName;
@@ -164,7 +172,7 @@ public class Employee
 
     public String getDepartment()
     {
-        return firstName;
+        return department;
     }
 
     public String getWorkLocation()
@@ -174,7 +182,7 @@ public class Employee
 
     public String getEmployementStatus()
     {
-        return employementStatus;
+        return employmentStatus;
     }
 
     public String getEmail()
