@@ -42,6 +42,18 @@ CREATE TABLE IF NOT EXISTS "SoftSkills" (
 	"SoftSkill"	TEXT,
 	"IsDeleted"	INTEGER NOT NULL DEFAULT 0
 );
+CREATE TABLE IF NOT EXISTS "SprintEvaluation" (
+	"EmployeeID"	INTEGER,
+	"SprintEvaluationID"	INTEGER,
+	"PerformanceReview"	TEXT,
+	"Feedback"	TEXT,
+	"Suggestions"	TEXT,
+	"Goals"	TEXT,
+	"SubmissionDate"	TEXT,
+	"IsSubmitted"	TEXT NOT NULL DEFAULT 0,
+	PRIMARY KEY("SprintEvaluationID"),
+	FOREIGN KEY("EmployeeID") REFERENCES "Employee"("EmployeeID")
+);
 INSERT INTO "Employee" ("EmployeeID","FirstName","LastName","DateOfBirth","JobTitle","Department","WorkLocation","EmploymentStatus","Email","PhoneNumber","HourlyRate","Notes","IsDeleted","HardSkill1","HardSkill2","SoftSkill1","SoftSkill2","IsManager","IsCEO") VALUES (0,'Kyle','Owen','05/25/1975','QA','DEV','MSU','Intern','kyle.owen@example.com','9876543210',18.0,'TestNotes',0,NULL,NULL,NULL,NULL,0,0),
  (1,'Bob','Smith','02/25/1986','Junior Developer','DEV','Office','Full-time','bob.smith@example.com','1234567890',36.5,'Test Notes',0,NULL,NULL,NULL,NULL,0,0),
  (2,'James','Duncan','01/01/2000','Sales Representative','SLS','Office','Full-time','james.duncan@example.com','6958741230',25.0,NULL,0,NULL,NULL,NULL,NULL,0,0),
@@ -88,4 +100,6 @@ INSERT INTO "SoftSkills" ("SoftSkill","IsDeleted") VALUES ('Teamwork',0),
  ('Open-mindedness',0),
  ('Professionalism',0),
  ('Positive attitude',0);
+INSERT INTO "SprintEvaluation" ("EmployeeID","SprintEvaluationID","PerformanceReview","Feedback","Suggestions","Goals","SubmissionDate","IsSubmitted") VALUES (12,1,'Very Good Performance','You did great!','Next time do not ask me any questions!','Do not get fired','10/5/2024','0'),
+ (5,2,'Awful','You did terrible','Do better','Learn how to do good','10/5/2024','0');
 COMMIT;
