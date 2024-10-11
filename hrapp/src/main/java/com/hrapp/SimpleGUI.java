@@ -1,4 +1,4 @@
-package com.hrapp;
+/*package com.hrapp;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -100,3 +100,4 @@ public class SimpleGUI {
         addUserFrame.setVisible(true);
     }
 }
+*/

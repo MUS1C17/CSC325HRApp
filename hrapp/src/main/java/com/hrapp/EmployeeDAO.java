@@ -2,6 +2,9 @@ package com.hrapp;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +26,32 @@ public class EmployeeDAO //DAO - Data Access Object
     public List<Employee> getAllEmployees() throws SQLException 
     {
         List<Employee> employees = new ArrayList<>();
-        String query = "SELECT * FROM Employees WHERE isDeleted = 0";
+        String query = "SELECT * FROM Employee WHERE isDeleted = 0";
+
 
         try(ResultSet result = executer.getDataFromDatabase(query))
         {
+            
+            String dateStr = result.getString("DateOfBirth");
+            LocalDate dateOfBirth = null;
+
+            // Parse the date string into LocalDate
+            if (dateStr != null && !dateStr.isEmpty()) {
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    dateOfBirth = LocalDate.parse(dateStr, formatter);
+                } catch (DateTimeParseException e) {
+                    e.printStackTrace();
+                    // Optionally, handle the error or set dateOfBirth to null
+                }
+            }
+
             while(result.next())
             {
                 Employee employee = new Employee(
                     result.getString("FirstName"),
                     result.getString("LastName"),
-                    result.getDate("DateOfBirth").toLocalDate(),
+                    dateOfBirth,
                     result.getString("JobTitle"),
                     result.getString("Department"),
                     result.getString("WorkLocation"),
@@ -65,7 +84,7 @@ public class EmployeeDAO //DAO - Data Access Object
      */
     public void addEmployee(Employee employee) throws SQLException
     {
-        String query = "INSERT INTO Employees (firstName, lastName, dateOfBirth, jobTitle, department, workLocation, employmentStatus, " + 
+        String query = "INSERT INTO Employee (firstName, lastName, dateOfBirth, jobTitle, department, workLocation, employmentStatus, " + 
                        "email, phoneNumber, hourlyRate, notes, hardSkill1, hardSkill2, softSkill1, softSkill2, isManager, isCEO)" +
                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -98,7 +117,7 @@ public class EmployeeDAO //DAO - Data Access Object
      * @throws SQLException If a database access error occurs.
      */
     public void deleteEmployee(int employeeID) throws SQLException {
-        String query = "UPDATE Employees SET isDeleted = 1 WHERE EmployeeID = ?";
+        String query = "UPDATE Employee SET isDeleted = 1 WHERE EmployeeID = ?";
         executer.setDataInDatabase(query, employeeID);
     }
 

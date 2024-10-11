@@ -1,4 +1,4 @@
-package com.hrapp;
+/*package com.hrapp;
 
 import java.sql.SQLException;
 public class Main {
@@ -7,4 +7,4 @@ public class Main {
         new SimpleGUI();
     
     }
-}
+}*/

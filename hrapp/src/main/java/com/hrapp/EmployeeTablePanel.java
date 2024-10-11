@@ -36,6 +36,21 @@ public class EmployeeTablePanel extends JPanel
             {
                 return false;
             }
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex) 
+            {
+                switch (columnIndex) {
+                    case 0:
+                        return Integer.class;  // EmployeeID
+                    case 1:
+                    case 2:
+                    case 3:
+                        return String.class;   // FirstName, LastName, Email
+                    default:
+                        return Object.class;
+                }
+            }
         };
 
         //Create the Jtable with the model
@@ -199,6 +214,11 @@ public class EmployeeTablePanel extends JPanel
         {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
         }
+    }
+
+    public JTable getTable() 
+    {
+        return table;
     }
 
 }
