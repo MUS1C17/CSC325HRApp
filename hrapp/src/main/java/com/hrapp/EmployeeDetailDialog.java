@@ -1,8 +1,8 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Window;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 public class EmployeeDetailDialog extends JDialog {
 
     public EmployeeDetailDialog(Window parent, Employee employee) {
-        super(parent, "Employee Details", true);
+        super(parent, "Employee Details");
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

@@ -1,5 +1,6 @@
 package com.hrapp;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -7,6 +8,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+
+/*
+ * This class will handle all CRUD (Create, Read, Update, Delete) operations for 
+ * the Employee entity using the enhanced SQLExecuter
+ */
 
 public class EmployeeDAO //DAO - Data Access Object
 {
@@ -36,13 +43,16 @@ public class EmployeeDAO //DAO - Data Access Object
             LocalDate dateOfBirth = null;
 
             // Parse the date string into LocalDate
-            if (dateStr != null && !dateStr.isEmpty()) {
-                try {
+            if (dateStr != null && !dateStr.isEmpty()) 
+            {
+                try 
+                {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                     dateOfBirth = LocalDate.parse(dateStr, formatter);
-                } catch (DateTimeParseException e) {
+                } 
+                catch (DateTimeParseException e) 
+                {
                     e.printStackTrace();
-                    // Optionally, handle the error or set dateOfBirth to null
                 }
             }
 
@@ -75,6 +85,68 @@ public class EmployeeDAO //DAO - Data Access Object
 
         return employees;
     }
+
+    //Methd to get Details about employee that are not shown in the table 
+    public Employee getEmployeeDetails(int id) throws SQLException
+    {
+        String query = "SELECT * FROM Employee WHERE EmployeeID = ?";
+        try (PreparedStatement pstmt = executer.getConnection().prepareStatement(query)) 
+        {
+            pstmt.setInt(1, id);
+            try (ResultSet result = pstmt.executeQuery()) 
+            {
+                
+                if (result.next()) 
+                {
+                    String dateStr = result.getString("DateOfBirth");
+                    LocalDate dateOfBirth = null;
+                    if (dateStr != null && !dateStr.isEmpty()) 
+                    {
+                        try 
+                        {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                            dateOfBirth = LocalDate.parse(dateStr, formatter);
+                        } 
+                        catch (DateTimeParseException e) 
+                        {
+                            e.printStackTrace();
+                        }
+                    } 
+                        //Create Employee instance
+                        Employee employee = new Employee(
+                            result.getString("FirstName"),
+                            result.getString("LastName"),
+                            dateOfBirth,
+                            result.getString("JobTitle"),
+                            result.getString("Department"),
+                            result.getString("WorkLocation"),
+                            result.getString("EmploymentStatus"),
+                            result.getString("Email"),
+                            result.getString("PhoneNumber"),
+                            result.getBigDecimal("HourlyRate"),
+                            result.getString("Notes"),
+                            result.getString("HardSkill1"),
+                            result.getString("HardSkill2"),
+                            result.getString("SoftSkill1"),
+                            result.getString("SoftSkill2"),
+                            result.getInt("IsManager"),
+                            result.getInt("IsCEO")
+                        );
+
+                        employee.setEmployeeID(result.getInt("EmployeeID"));
+                        employee.setIsDeleted(result.getInt("IsDeleted"));
+                        return employee;
+                                       
+                } 
+                else 
+                {
+                    // Employee not found
+                    return null;
+                }
+            }
+        }
+    }
+    
 
     /**
      * Adds a new employee to the database.

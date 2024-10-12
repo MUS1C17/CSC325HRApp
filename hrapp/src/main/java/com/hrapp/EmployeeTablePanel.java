@@ -158,33 +158,15 @@ public class EmployeeTablePanel extends JPanel
      * 
      * @return An Employee object representing the selected employee, or null if no selection.
      */
-    public Employee getSelectedEmployee()
+    public Employee getSelectedEmployee() throws SQLException
     {
         int selectedRow = table.getSelectedRow();
-        if(selectedRow != -1)
+        if (selectedRow != -1) 
         {
             int modelRow = table.convertRowIndexToModel(selectedRow);
-            Employee emp = new Employee(
-                (String) tableModel.getValueAt(modelRow, 1),
-                (String) tableModel.getValueAt(modelRow, 2),
-                null, // Date of Birth is not fetched in this table view
-                null, // Job Title
-                null, // Department
-                null, // Work Location
-                null, // Employment Status
-                (String) tableModel.getValueAt(modelRow, 3),
-                null, // Phone Number
-                null, // Hourly Rate
-                null, // Notes
-                null, // HardSkill1
-                null, // HardSkill2
-                null, // SoftSkill1
-                null, // SoftSkill2
-                0,    // isManager
-                0     // isCEO
+            int employeeID = (Integer) tableModel.getValueAt(modelRow, 0);
 
-            );
-            emp.setEmployeeID((int) tableModel.getValueAt(modelRow, 0));
+            Employee emp = employeeDAO.getEmployeeDetails(employeeID);
             return emp;
         }
         return null;

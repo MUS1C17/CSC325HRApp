@@ -1,9 +1,17 @@
 package com.hrapp;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class HomePanel extends JPanel
 {
@@ -43,17 +51,22 @@ public class HomePanel extends JPanel
         add(employeeTablePanel, BorderLayout.CENTER);
         
         //Add Action Listener for search functionality
-        searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+        searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() 
+        {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) 
+            {
                 filter();
             }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            public void removeUpdate(javax.swing.event.DocumentEvent e) 
+            {
                 filter();
             }
-            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            public void changedUpdate(javax.swing.event.DocumentEvent e) 
+            {
                 filter();
             }
-            private void filter() {
+            private void filter() 
+            {
                 String query = searchField.getText();
                 employeeTablePanel.filterTable(query);
             }
@@ -106,14 +119,23 @@ public class HomePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //Get the selected employee
-                Employee selectedEmployee = employeeTablePanel.getSelectedEmployee();
+                //This try statement is made in order to handle SQLException
+                Employee selectedEmployee = null;
+                try
+                {
+                    //Get the selected employee
+                    selectedEmployee = employeeTablePanel.getSelectedEmployee();
+                }
+                catch(SQLException error)
+                {
+                    error.getMessage();
+                }
+
                 if (selectedEmployee != null)
                 {
                     int confirm = JOptionPane.showConfirmDialog(HomePanel.this,
                     "Are you sure you want to delete employee ID " + selectedEmployee.getEmployeeID() + "?",
-                    "Confirm Deletion",
-                    JOptionPane.YES_NO_OPTION);
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
                     if(confirm == JOptionPane.YES_OPTION)
                     {
@@ -129,6 +151,7 @@ public class HomePanel extends JPanel
                             "No Selection", JOptionPane.WARNING_MESSAGE);
                     }
                 }
+                
             }
         });
         
@@ -137,7 +160,16 @@ public class HomePanel extends JPanel
         {
             if (!event.getValueIsAdjusting() && employeeTablePanel.getTable().getSelectedRow() != -1) 
             {
-                Employee selectedEmployee = employeeTablePanel.getSelectedEmployee();
+                Employee selectedEmployee = null;
+                try
+                {
+                    selectedEmployee = employeeTablePanel.getSelectedEmployee();
+                }
+                catch(SQLException error)
+                {
+                    error.getMessage();
+                }
+                
                 if (selectedEmployee != null) 
                 {
                     // Open the detailed view dialog
