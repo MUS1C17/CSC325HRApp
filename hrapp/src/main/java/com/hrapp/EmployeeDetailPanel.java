@@ -6,17 +6,25 @@ import java.awt.Window;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
  * A dialog to display detailed information about an employee.
  */
-public class EmployeeDetailDialog extends JDialog {
+public class EmployeeDetailPanel extends JPanel {
 
-    public EmployeeDetailDialog(Window parent, Employee employee) {
-        super(parent, "Employee Details");
+    private MainApplication mainApp;
+    private Employee employee;
+
+    public EmployeeDetailPanel(Window parent, Employee employee)
+    {
+        this.mainApp = mainApp;
+        setLayout(new BorderLayout());
+    }
+
+
+
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

@@ -1,22 +1,36 @@
 package com.hrapp;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import java.awt.CardLayout;
+
+import javax.swing.*;
 
 public class MainApplication extends JFrame{
     private HomePanel homePanel;
+    private JPanel mainPanel;
+    private EmployeeDetailPanel employeeDetailPanel;
+    private CardLayout cardLayout;
+
 
     public MainApplication() 
     {
         setTitle("HRApp");
 
+        //Set up the CardLayout
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
         boolean isManagerOrCEO = checkUserRole();
 
         //Create an instance of HomePanel
-        homePanel = new HomePanel(isManagerOrCEO);
+        homePanel = new HomePanel(isManagerOrCEO, this);
+        employeeDetailPanel = new EmployeeDetailPanel(this);
 
         // Add the HomePanel to the Frame
-        add(homePanel);
+        mainPanel.add(homePanel, "HomePanel");
+        mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
+
+        //Add the mainPanel to the JFrame
+        add(mainPanel);
 
         // Frame settings 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +57,21 @@ public class MainApplication extends JFrame{
         homePanel.closeResources();
         super.dispose();
     }
+
+    //This method is used to switch to the specified panel in the CardLayout 
+    //using the name of the panel
+    public void switchToPanel(String panelName) 
+    {
+        cardLayout.show(mainPanel, panelName);
+    }
+
+    //Passes the selected Employee to the detail panel and then switches to it
+    public void showEmployeeDetails(Employee employee) 
+    {
+        employeeDetailPanel.setEmployee(employee);
+        switchToPanel("EmployeeDetailPanel");
+    }
+
 
     public static void main(String[] args) 
     {

@@ -19,9 +19,12 @@ public class HomePanel extends JPanel
     private JTextField searchField;
     private JButton addEmployeeButton;
     private JButton deleteEmployeeButton;
+    private MainApplication mainApp;
 
-    public HomePanel(boolean isManagerOrCEO)
+    public HomePanel(boolean isManagerOrCEO, MainApplication mainApp)
     {
+        this.mainApp = mainApp;
+
         setLayout(new BorderLayout());
 
         // Top Panel containing search bar and buttons
