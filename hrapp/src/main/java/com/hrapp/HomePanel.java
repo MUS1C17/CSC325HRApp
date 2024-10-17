@@ -26,7 +26,7 @@ public class HomePanel extends JPanel
 
         // Top Panel containing search bar and buttons
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         //search bar
         JLabel searchLabel = new JLabel("Search: ");
