@@ -191,6 +191,7 @@ public class EmployeeDAO //DAO - Data Access Object
     public void deleteEmployee(int employeeID) throws SQLException {
         String query = "UPDATE Employee SET isDeleted = 1 WHERE EmployeeID = ?";
         executer.setDataInDatabase(query, employeeID);
+        executer.closeConnection();
     }
 
     /**

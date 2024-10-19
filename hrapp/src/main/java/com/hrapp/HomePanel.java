@@ -2,24 +2,20 @@ package com.hrapp;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 public class HomePanel extends JPanel
 {
     private EmployeeTablePanel employeeTablePanel;
     private JTextField searchField;
     private JButton addEmployeeButton;
-    private JButton deleteEmployeeButton;
     private MainApplication mainApp;
+    private HomePanel homePanel;
 
     public HomePanel(boolean isManagerOrCEO, MainApplication mainApp)
     {
@@ -41,11 +37,6 @@ public class HomePanel extends JPanel
         addEmployeeButton = new JButton("Add Employee");
         addEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addEmployeeButton);
-
-        //Delete Employee button
-        deleteEmployeeButton = new JButton("Delete Employee");
-        deleteEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
-        topPanel.add(deleteEmployeeButton);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -74,6 +65,9 @@ public class HomePanel extends JPanel
                 employeeTablePanel.filterTable(query);
             }
         });
+
+        //Open AddEmployeePanel when clicking on Add Employee Button
+        addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
 
         /* 
         //Add Action Listener for Add Employee button
@@ -116,47 +110,6 @@ public class HomePanel extends JPanel
                 }
             }
         });*/
-
-        //Add Action Listener for Delete Employee button
-        deleteEmployeeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //This try statement is made in order to handle SQLException
-                Employee selectedEmployee = null;
-                try
-                {
-                    //Get the selected employee
-                    selectedEmployee = employeeTablePanel.getSelectedEmployee();
-                }
-                catch(SQLException error)
-                {
-                    error.getMessage();
-                }
-
-                if (selectedEmployee != null)
-                {
-                    int confirm = JOptionPane.showConfirmDialog(HomePanel.this,
-                    "Are you sure you want to delete employee ID " + selectedEmployee.getEmployeeID() + "?",
-                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-
-                    if(confirm == JOptionPane.YES_OPTION)
-                    {
-                        //Remove the employee from the table and database
-                        int selectedRow = employeeTablePanel.getTable().getSelectedRow();
-                        employeeTablePanel.removeEmployee(selectedRow);
-                        JOptionPane.showMessageDialog(HomePanel.this, "Employee deleted successfully.",
-                        "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(HomePanel.this, "Please select an employee to delete.",
-                            "No Selection", JOptionPane.WARNING_MESSAGE);
-                    }
-                }
-                
-            }
-        });
         
         // Add List Selection Listener to handle row selection for detailed view
         employeeTablePanel.getTable().getSelectionModel().addListSelectionListener(event -> 
@@ -175,14 +128,18 @@ public class HomePanel extends JPanel
                 
                 if (selectedEmployee != null) 
                 {
-                    // Open the detailed view dialog
-                    EmployeeDetailDialog detailDialog = new EmployeeDetailDialog(
-                            SwingUtilities.getWindowAncestor(HomePanel.this), selectedEmployee);
-                    detailDialog.setVisible(true);
+                    // Open the detailed view panel
+                    mainApp.showEmployeeDetails(selectedEmployee);
                 }
             }
         });
     }    
+
+    //Refresh employee table
+    public void refreshEmployeeTable() throws SQLException 
+    {
+        employeeTablePanel.loadEmployeeData();
+    }
     
     //Closes resources when the panel is no longer needed
     public void closeResources() 

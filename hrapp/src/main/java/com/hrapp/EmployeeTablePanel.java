@@ -88,8 +88,11 @@ public class EmployeeTablePanel extends JPanel
      /**
      * Loads employee data from the database and populates the table.
      */
-    private void loadEmployeeData() throws SQLException
+    public void loadEmployeeData() throws SQLException
     {
+        //Clear exisitng data
+        tableModel.setRowCount(0);
+
         List<Employee> employees = employeeDAO.getAllEmployees();
         for (Employee emp : employees)
         {
@@ -124,35 +127,7 @@ public class EmployeeTablePanel extends JPanel
             JOptionPane.showMessageDialog(this, "Error adding employee: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-     /**
-     * Marks an employee as deleted in the table and the database based on the row index.
-     * 
-     * @param rowIndex The index of the row to remove.
-     */
-    public void removeEmployee(int rowIndex)
-    {
-
-        if(rowIndex >= 0 && rowIndex < tableModel.getRowCount())
-        {
-            int modelRow = table.convertRowIndexToModel(rowIndex);
-            int employeeID = (int) tableModel.getValueAt(modelRow, 0);
-
-            try
-            {
-                //Mark as deleted in the database
-                employeeDAO.deleteEmployee(employeeID);
-
-                //Remove from table
-                tableModel.removeRow(modelRow);
-            }
-            catch(SQLException e)
-            {
-                JOptionPane.showMessageDialog(this, "Error deleting employee: " + e.getMessage(),"Database Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
+    
     /**
      * Retrieves the currently selected employee data.
      * 
@@ -167,6 +142,7 @@ public class EmployeeTablePanel extends JPanel
             int employeeID = (Integer) tableModel.getValueAt(modelRow, 0);
 
             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
+            //table.clearSelection();
             return emp;
         }
         return null;

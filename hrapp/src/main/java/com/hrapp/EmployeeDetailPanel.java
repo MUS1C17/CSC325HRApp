@@ -2,34 +2,58 @@ package com.hrapp;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * A dialog to display detailed information about an employee.
+ * A Panel  to display detailed information about an employee.
  */
-public class EmployeeDetailPanel extends JPanel {
+public class EmployeeDetailPanel extends JPanel 
+{
 
+    //Properties
     private MainApplication mainApp;
     private Employee employee;
+    private EmployeeDAO employeeDAO;
 
-    public EmployeeDetailPanel(Window parent, Employee employee)
+    public EmployeeDetailPanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
         setLayout(new BorderLayout());
+
+        try
+        {
+            employeeDAO = new EmployeeDAO();
+        }
+        catch(SQLException e)
+        {
+            e.getMessage();
+        }
+    }
+
+    public void setEmployee(Employee employee) 
+    {
+        this.employee = employee;
+        removeAll(); // Clear previous content
+        initUI();
+        revalidate();
+        repaint();
     }
 
 
-
-
+    public void initUI()
+    {
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Populate the dialog with employee details
+        // Populate the panel with employee details
         panel.add(new JLabel("Employee ID:"));
         panel.add(new JLabel(String.valueOf(employee.getEmployeeID())));
 
@@ -83,18 +107,63 @@ public class EmployeeDetailPanel extends JPanel {
 
         panel.add(new JLabel("Is CEO:"));
         panel.add(new JLabel(employee.getIsCEO() == 1 ? "Yes" : "No"));
+    
+        // Add the panel to the center
+        add(panel, BorderLayout.CENTER);
 
-        getContentPane().add(panel, BorderLayout.CENTER);
-
-        // Close button
-        JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(e -> dispose());
+        //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(closeButton);
-        getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
 
-        pack();
-        setResizable(false);
-        setLocationRelativeTo(parent);
+        //Back button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
+
+        //Delete Employee button
+        JButton deleteEmployeeButton = new JButton("Delete Employee");
+        deleteEmployeeButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent event)
+           {
+        
+            int confirm = JOptionPane.showConfirmDialog(EmployeeDetailPanel.this,
+                    "Are you sure you want to delete employee ID " + employee.getEmployeeID() + "?",
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+            if(confirm == JOptionPane.YES_OPTION)
+                {
+                    try
+                    {
+                        employeeDAO.deleteEmployee(employee.getEmployeeID()); // Delete employee in database
+        
+                        // Refresh the employee table in HomePanel
+                        mainApp.getHomePanel().refreshEmployeeTable();
+        
+                        // Switch back to HomePanel
+                        mainApp.switchToPanel("HomePanel");
+                    }
+                    catch(Exception error)
+                    {
+                        JOptionPane.showMessageDialog(EmployeeDetailPanel.this, 
+                        "Error deleting employee: " + error.getMessage(), 
+                        "Database Error", JOptionPane.ERROR_MESSAGE);
+                        error.printStackTrace();
+                    }
+                    finally
+                    {
+                        employeeDAO.close();
+                    }
+                    
+                }
+           } 
+        });
+
+        //Add buttons to the button panel
+        buttonPanel.add(backButton);
+        buttonPanel.add(deleteEmployeeButton);
+
+
+
+
+        add(buttonPanel, BorderLayout.PAGE_END);
     }
 }
