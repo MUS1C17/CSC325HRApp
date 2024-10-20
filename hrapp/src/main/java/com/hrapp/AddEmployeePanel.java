@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -69,6 +70,9 @@ public class AddEmployeePanel extends JPanel
         String[] workLoc = new String[]{null,"MSU", "Office", "Remote"};
         String[] status = new String[]{null, "Intern", "Full-time", "Part-time", "Contractor"};
         String [] yesOrNo = new String[]{"No", "Yes"};
+        String[] hardSkills = new String[]{null, "Java", "Python", "C#"};
+        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Time Management"};
+
 
         //Department
         panel.add(new JLabel("Department:"));
@@ -111,22 +115,22 @@ public class AddEmployeePanel extends JPanel
 
         //Hard Skill 1
         panel.add(new JLabel("Main Hard Skill:"));
-        JTextField hardSkillOne = new JTextField();
+        JComboBox hardSkillOne = new JComboBox(hardSkills);
         panel.add(hardSkillOne);
 
         //Hard Skill 2
         panel.add(new JLabel("Secondary Hard Skill:"));
-        JTextField hardSkillTwo = new JTextField();
+        JComboBox hardSkillTwo = new JComboBox(hardSkills);
         panel.add(hardSkillTwo);
 
         //Soft Skill 1
         panel.add(new JLabel("Main Soft Skill:"));
-        JTextField softSkillOne = new JTextField();
+        JComboBox softSkillOne = new JComboBox(softSkills);
         panel.add(softSkillOne);
 
         //Soft Skill 2
         panel.add(new JLabel("Secondary Soft Skill:"));
-        JTextField softSkillTwo = new JTextField();
+        JComboBox softSkillTwo = new JComboBox(softSkills);
         panel.add(softSkillTwo);
 
         //isManager
@@ -189,11 +193,30 @@ public class AddEmployeePanel extends JPanel
         email.getDocument().addDocumentListener(documentListener);
         phoneNumber.getDocument().addDocumentListener(documentListener);
 
+        //Save all the information to the database
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                
+                /*employeeDAO.addEmployee(new Employee(
+                    firstName.getText(),
+                    lastName.getText(),
+                    dateOfBirth.getText(),
+                    jobTitle.getText(),
+                    department.getSelectedItem().toString(),
+                    workLocation.getSelectedItem().toString(),
+                    employmentStatus.getSelectedItem().toString(),
+                    email.getText(),
+                    phoneNumber.getText(),
+                    new BigDecimal(hourlyRate.getText()),
+                    notes.getText(),
+                    hardSkillOne.getSelectedItem().toString(),
+                    hardSkillTwo.getSelectedItem().toString(),
+                    softSkillOne.getSelectedItem().toString(),
+                    softSkillTwo.getSelectedItem().toString(),
+                    isManager.getSelectedItem().equals("No") ? 0 : 1,
+                    isCEO.getSelectedItem().equals("No") ? 0 : 1
+                ));*/
             }
         });
 
