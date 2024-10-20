@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -16,12 +15,20 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import javafx.embed.swing.JFXPanel;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
+import javafx.scene.layout.StackPane;
 
 public class AddEmployeePanel extends JPanel
 {
     //Properties
     private MainApplication mainApp;
     private EmployeeDAO employeeDAO;
+    private JFXPanel panelForDate;
+    private DatePicker datePicker;
 
     //Constructor
     public AddEmployeePanel(MainApplication mainApp)
@@ -58,8 +65,14 @@ public class AddEmployeePanel extends JPanel
 
         //Date of Birth
         panel.add(new JLabel("Date of Birth:"));
-        JTextField dateOfBirth = new JTextField();
-        panel.add(dateOfBirth);
+        //JTextField dateOfBirth = new JTextField();
+        //panel.add(dateOfBirth);
+
+        panelForDate = new JFXPanel();
+        //panel.add(new JLabel("JavaFX Content:"));
+        panel.add(panelForDate);
+        
+        Platform.runLater(this::initFX);
 
         //JobTitle
         panel.add(new JLabel("Job Title:"));
@@ -177,7 +190,7 @@ public class AddEmployeePanel extends JPanel
                 // Check if all text fields contain text
                 boolean allFieldsFilled = !firstName.getText().trim().isEmpty() &&
                                           !lastName.getText().trim().isEmpty() &&
-                                          !dateOfBirth.getText().trim().isEmpty() &&
+                                          //!dateOfBirth.getText().trim().isEmpty() &&
                                           !jobTitle.getText().trim().isEmpty() &&
                                           (!email.getText().trim().isEmpty() ||
                                           !phoneNumber.getText().trim().isEmpty());
@@ -188,7 +201,7 @@ public class AddEmployeePanel extends JPanel
         //Add the DocumentListener to the TextFields
         firstName.getDocument().addDocumentListener(documentListener);
         lastName.getDocument().addDocumentListener(documentListener);
-        dateOfBirth.getDocument().addDocumentListener(documentListener);
+        //dateOfBirth.getDocument().addDocumentListener(documentListener);
         jobTitle.getDocument().addDocumentListener(documentListener);
         email.getDocument().addDocumentListener(documentListener);
         phoneNumber.getDocument().addDocumentListener(documentListener);
@@ -228,4 +241,20 @@ public class AddEmployeePanel extends JPanel
         add(buttonPanel, BorderLayout.PAGE_END);
 
     }   
+
+    // Method to initialize the JavaFX content
+    private void initFX() {
+        StackPane root = new StackPane();
+
+        // Create a DatePicker
+        datePicker = new DatePicker();
+        datePicker.setPromptText("Select Date");
+
+        // Add the DatePicker to the root StackPane
+        root.getChildren().add(datePicker);
+
+        // Create the scene and set it on the JFXPanel
+        Scene scene = new Scene(root, 300, 200);
+        panelForDate.setScene(scene);
+    }
 }
