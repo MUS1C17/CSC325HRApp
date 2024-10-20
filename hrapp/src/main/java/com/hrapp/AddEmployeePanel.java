@@ -4,18 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import javafx.embed.swing.JFXPanel;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -211,25 +212,41 @@ public class AddEmployeePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                /*employeeDAO.addEmployee(new Employee(
-                    firstName.getText(),
-                    lastName.getText(),
-                    dateOfBirth.getText(),
-                    jobTitle.getText(),
-                    department.getSelectedItem().toString(),
-                    workLocation.getSelectedItem().toString(),
-                    employmentStatus.getSelectedItem().toString(),
-                    email.getText(),
-                    phoneNumber.getText(),
-                    new BigDecimal(hourlyRate.getText()),
-                    notes.getText(),
-                    hardSkillOne.getSelectedItem().toString(),
-                    hardSkillTwo.getSelectedItem().toString(),
-                    softSkillOne.getSelectedItem().toString(),
-                    softSkillTwo.getSelectedItem().toString(),
-                    isManager.getSelectedItem().equals("No") ? 0 : 1,
-                    isCEO.getSelectedItem().equals("No") ? 0 : 1
-                ));*/
+                try
+                {
+                    employeeDAO.addEmployee(new Employee(
+                        firstName.getText(),
+                        lastName.getText(),
+                        datePicker.getValue(),
+                        jobTitle.getText(),
+                        department.getSelectedItem().toString(),
+                        workLocation.getSelectedItem().toString(),
+                        employmentStatus.getSelectedItem().toString(),
+                        email.getText(),
+                        phoneNumber.getText(),
+                        new BigDecimal(hourlyRate.getText()),
+                        notes.getText(),
+                        hardSkillOne.getSelectedItem().toString(),
+                        hardSkillTwo.getSelectedItem().toString(),
+                        softSkillOne.getSelectedItem().toString(),
+                        softSkillTwo.getSelectedItem().toString(),
+                        isManager.getSelectedItem().equals("No") ? 0 : 1,
+                        isCEO.getSelectedItem().equals("No") ? 0 : 1
+                    ));
+                    mainApp.switchToPanel("HomePanel");
+                    
+                }
+                catch(Exception error)
+                {
+                    JOptionPane.showMessageDialog(AddEmployeePanel.this, 
+                        "Error adding employee: " + error.getMessage(), 
+                        "Database Error", JOptionPane.ERROR_MESSAGE);
+                        error.printStackTrace();
+                }
+                finally
+                {
+                    employeeDAO.close();
+                }
             }
         });
 
@@ -241,6 +258,8 @@ public class AddEmployeePanel extends JPanel
         add(buttonPanel, BorderLayout.PAGE_END);
 
     }   
+
+    
 
     // Method to initialize the JavaFX content
     private void initFX() {

@@ -68,7 +68,7 @@ public class HomePanel extends JPanel
 
         //Open AddEmployeePanel when clicking on Add Employee Button
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
-
+        
         /* 
         //Add Action Listener for Add Employee button
         addEmployeeButton.addActionListener(new ActionListener() {

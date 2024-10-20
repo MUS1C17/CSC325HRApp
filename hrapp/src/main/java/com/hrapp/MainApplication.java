@@ -67,7 +67,7 @@ public class MainApplication extends JFrame{
 
     //This method is used to switch to the specified panel in the CardLayout 
     //using the name of the panel
-    public void switchToAddEmployeePanel(String panelName) 
+    public void switchToAddEmployeePanel(String panelName)
     {
         //Clears all the previous content and opens the panel
         addEmployeePanel.removeAll();
