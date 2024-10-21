@@ -82,7 +82,11 @@ public class EmployeeDetailPanel extends JPanel
         panel.add(new JLabel(employee.getEmail()));
 
         panel.add(new JLabel("Phone Number:"));
-        panel.add(new JLabel(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "N/A"));
+        panel.add(new JLabel(employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
+            employee.getPhoneNumber().substring(0, 3),
+            employee.getPhoneNumber().substring(3, 6),
+            employee.getPhoneNumber().substring(6, 10))
+        : "N/A")); //This outputs phone number in the format (123)-456-7890
 
         panel.add(new JLabel("Hourly Rate:"));
         panel.add(new JLabel(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
