@@ -70,10 +70,7 @@ public class MainApplication extends JFrame{
     public void switchToAddEmployeePanel(String panelName)
     {
         //Clears all the previous content and opens the panel
-        addEmployeePanel.removeAll();
-        addEmployeePanel.initUI();
-        addEmployeePanel.revalidate();
-        addEmployeePanel.repaint();
+        addEmployeePanel.resetFields();
         switchToPanel("AddEmployeePanel"); 
     }
 

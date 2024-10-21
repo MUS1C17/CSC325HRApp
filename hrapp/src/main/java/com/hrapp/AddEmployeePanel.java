@@ -31,11 +31,31 @@ public class AddEmployeePanel extends JPanel
     private JFXPanel panelForDate;
     private DatePicker datePicker;
 
+    //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
+    private JTextField firstName;
+    private JTextField lastName;
+    private JTextField jobTitle;
+    private JTextField email;
+    private JTextField phoneNumber;
+    private JTextField hourlyRate;
+    private JTextField notes;
+    private JComboBox<String> department;
+    private JComboBox<String> workLocation;
+    private JComboBox<String> employmentStatus;
+    private JComboBox<String> hardSkillOne;
+    private JComboBox<String> hardSkillTwo;
+    private JComboBox<String> softSkillOne;
+    private JComboBox<String> softSkillTwo;
+    private JComboBox<String> isManager;
+    private JComboBox<String> isCEO;
+
+
     //Constructor
     public AddEmployeePanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
         setLayout(new BorderLayout());
+        initUI();
 
         try
         {
@@ -56,28 +76,24 @@ public class AddEmployeePanel extends JPanel
 
         //First Name
         panel.add(new JLabel("First Name:"));
-        JTextField firstName = new JTextField();
+        firstName = new JTextField();
         panel.add(firstName);
 
         //Last Name
         panel.add(new JLabel("Last Name:"));
-        JTextField lastName = new JTextField();
+        lastName = new JTextField();
         panel.add(lastName);
 
         //Date of Birth
         panel.add(new JLabel("Date of Birth:"));
-        //JTextField dateOfBirth = new JTextField();
-        //panel.add(dateOfBirth);
-
         panelForDate = new JFXPanel();
-        //panel.add(new JLabel("JavaFX Content:"));
         panel.add(panelForDate);
         
         Platform.runLater(this::initFX);
 
         //JobTitle
         panel.add(new JLabel("Job Title:"));
-        JTextField jobTitle = new JTextField();
+        jobTitle = new JTextField();
         panel.add(jobTitle);
 
         String[] dep = new String[]{null,"SLS", "DEV", "MNG", "SPT"};
@@ -90,37 +106,37 @@ public class AddEmployeePanel extends JPanel
 
         //Department
         panel.add(new JLabel("Department:"));
-        JComboBox department = new JComboBox(dep);
+        department = new JComboBox(dep);
         panel.add(department);
 
         //Work Location
         panel.add(new JLabel("Work Location:"));
-        JComboBox workLocation = new JComboBox(workLoc);
+        workLocation = new JComboBox(workLoc);
         panel.add(workLocation);
 
         //Employment Status
         panel.add(new JLabel("Employment Status:"));
-        JComboBox employmentStatus = new JComboBox(status);
+        employmentStatus = new JComboBox(status);
         panel.add(employmentStatus);
 
         //Email
         panel.add(new JLabel("Email:"));
-        JTextField email = new JTextField();
+        email = new JTextField();
         panel.add(email);
 
         //Phone Number
         panel.add(new JLabel("Phone Number:"));
-        JTextField phoneNumber = new JTextField();
+        phoneNumber = new JTextField();
         panel.add(phoneNumber);
 
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
-        JTextField hourlyRate = new JTextField();
+        hourlyRate = new JTextField();
         panel.add(hourlyRate);
 
         //Notes
         panel.add(new JLabel("Notes:"));
-        JTextField notes = new JTextField();
+        notes = new JTextField();
         panel.add(notes);
 
         /*
@@ -129,32 +145,32 @@ public class AddEmployeePanel extends JPanel
 
         //Hard Skill 1
         panel.add(new JLabel("Main Hard Skill:"));
-        JComboBox hardSkillOne = new JComboBox(hardSkills);
+        hardSkillOne = new JComboBox(hardSkills);
         panel.add(hardSkillOne);
 
         //Hard Skill 2
         panel.add(new JLabel("Secondary Hard Skill:"));
-        JComboBox hardSkillTwo = new JComboBox(hardSkills);
+        hardSkillTwo = new JComboBox(hardSkills);
         panel.add(hardSkillTwo);
 
         //Soft Skill 1
         panel.add(new JLabel("Main Soft Skill:"));
-        JComboBox softSkillOne = new JComboBox(softSkills);
+        softSkillOne = new JComboBox(softSkills);
         panel.add(softSkillOne);
 
         //Soft Skill 2
         panel.add(new JLabel("Secondary Soft Skill:"));
-        JComboBox softSkillTwo = new JComboBox(softSkills);
+        softSkillTwo = new JComboBox(softSkills);
         panel.add(softSkillTwo);
 
         //isManager
         panel.add(new JLabel("Manager:"));
-        JComboBox isManager = new JComboBox(yesOrNo);
+        isManager = new JComboBox(yesOrNo);
         panel.add(isManager);
 
         //isCEO
         panel.add(new JLabel("CEO:"));
-        JComboBox isCEO = new JComboBox(yesOrNo);
+        isCEO = new JComboBox(yesOrNo);
         panel.add(isCEO);
         
         //Add panel to the AddEmployeePanel
@@ -260,10 +276,31 @@ public class AddEmployeePanel extends JPanel
 
     }   
 
-    
+    //Resets values in the fields when a new instance of the Panel will be open
+    public void resetFields()
+    {
+        firstName.setText("");
+        lastName.setText("");
+        datePicker.setValue(null);
+        jobTitle.setText("");
+        department.setSelectedIndex(0);
+        workLocation.setSelectedIndex(0);
+        employmentStatus.setSelectedIndex(0);
+        email.setText("");
+        phoneNumber.setText("");
+        hourlyRate.setText("");
+        notes.setText("");
+        hardSkillOne.setSelectedIndex(0);
+        hardSkillTwo.setSelectedIndex(0);
+        softSkillOne.setSelectedIndex(0);
+        softSkillTwo.setSelectedIndex(0);
+        isManager.setSelectedIndex(0);
+        isCEO.setSelectedIndex(0);
+    }
 
     // Method to initialize the JavaFX content
-    private void initFX() {
+    public void initFX() 
+    {
         StackPane root = new StackPane();
 
         // Create a DatePicker
