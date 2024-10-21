@@ -233,6 +233,11 @@ public class AddEmployeePanel extends JPanel
                         isManager.getSelectedItem().equals("No") ? 0 : 1,
                         isCEO.getSelectedItem().equals("No") ? 0 : 1
                     ));
+
+                    //Refresh the employee table in HomePanel
+                    mainApp.getHomePanel().refreshEmployeeTable();
+
+                    //Switch back to HomePanel
                     mainApp.switchToPanel("HomePanel");
                     
                 }
@@ -242,10 +247,6 @@ public class AddEmployeePanel extends JPanel
                         "Error adding employee: " + error.getMessage(), 
                         "Database Error", JOptionPane.ERROR_MESSAGE);
                         error.printStackTrace();
-                }
-                finally
-                {
-                    employeeDAO.close();
                 }
             }
         });

@@ -1,6 +1,9 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,8 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 
 public class EmployeeTablePanel extends JPanel
@@ -56,6 +62,9 @@ public class EmployeeTablePanel extends JPanel
         //Create the Jtable with the model
         table = new JTable(tableModel);
 
+        // Set Selection Mode to Single Selection
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
         //Enable sorting
         sorter = new TableRowSorter<>(tableModel);
         table.setRowSorter(sorter);
@@ -83,7 +92,82 @@ public class EmployeeTablePanel extends JPanel
         {
             JOptionPane.showMessageDialog(this, "Error loading employee data: " + e.getMessage(),"Database Error", JOptionPane.ERROR_MESSAGE);
         }
+
+
+         // Add MouseListener to the panel to detect clicks outside the table
+         addMouseListener(new MouseAdapter() 
+         {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                // Get the component that was clicked
+                Component clickedComponent = SwingUtilities.getDeepestComponentAt(EmployeeTablePanel.this,e.getX(), e.getY());
+
+                // If the clicked component is not the table or a child of the table, clear selection
+                if (!isDescendant(clickedComponent, table)) 
+                {
+                    table.clearSelection();
+                }
+            }
+        });
+
+        // Add MouseListener to the scroll pane's viewport to handle clicks on empty space
+        scrollPane.getViewport().addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                // Get the component that was clicked within the viewport
+                Component clickedComponent = SwingUtilities.getDeepestComponentAt(scrollPane.getViewport(), e.getX(), e.getY());
+
+                // If the clicked component is not the table or a child of the table, clear selection
+                if (!isDescendant(clickedComponent, table)) 
+                {
+                    table.clearSelection();
+                }
+            }
+        });
+
+        // **Add MouseListener to the JTable for row clicks**
+        table.addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                // Determine if the click was on a table row, not on the header
+                int row = table.rowAtPoint(e.getPoint());
+                int column = table.columnAtPoint(e.getPoint());
+
+                // Get the table header
+                JTableHeader header = table.getTableHeader();
+                int headerHeight = header.getHeight();
+
+                // If the click is within the header area, ignore
+                if (e.getY() <= headerHeight) 
+                {
+                    return; // Click was on the header, do nothing
+                }
+            }
+        });
     }
+
+    /**
+     * Helper method to determine if 'child' is a descendant of 'parent'.
+     * 
+     * @param child  The component that was clicked.
+     * @param parent The parent component to check against.
+     * @return true if 'child' is 'parent' or a descendant of 'parent', false otherwise.
+     */
+    private boolean isDescendant(Component child, Component parent) {
+        if (child == null) {
+            return false;
+        }
+        if (child == parent) {
+            return true;
+        }
+        return isDescendant(child.getParent(), parent);
+    }
+
 
      /**
      * Loads employee data from the database and populates the table.
@@ -142,7 +226,6 @@ public class EmployeeTablePanel extends JPanel
             int employeeID = (Integer) tableModel.getValueAt(modelRow, 0);
 
             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
-            //table.clearSelection();
             return emp;
         }
         return null;

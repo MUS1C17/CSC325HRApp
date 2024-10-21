@@ -180,6 +180,8 @@ public class EmployeeDAO //DAO - Data Access Object
             employee.getIsManager(),
             employee.getIsCEO()        
         );
+
+        executer.closeConnection();
     }
 
      /**

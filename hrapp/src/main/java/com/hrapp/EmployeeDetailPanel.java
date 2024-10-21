@@ -147,12 +147,7 @@ public class EmployeeDetailPanel extends JPanel
                         "Error deleting employee: " + error.getMessage(), 
                         "Database Error", JOptionPane.ERROR_MESSAGE);
                         error.printStackTrace();
-                    }
-                    finally
-                    {
-                        employeeDAO.close();
-                    }
-                    
+                    }    
                 }
            } 
         });
