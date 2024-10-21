@@ -25,6 +25,16 @@ public class EmployeeTablePanel extends JPanel
     private DefaultTableModel tableModel;
     private TableRowSorter<DefaultTableModel> sorter;
     private EmployeeDAO employeeDAO;
+    private EmployeeSelectionListener employeeSelectionListener;
+    public interface EmployeeSelectionListener
+    {
+        void employeeSelected(Employee employee);
+    }
+
+    public void setEmployeeSelectionListener(EmployeeSelectionListener listener)
+    {
+        this.employeeSelectionListener = listener;
+    }
 
     public EmployeeTablePanel()
     {
@@ -136,7 +146,6 @@ public class EmployeeTablePanel extends JPanel
             {
                 // Determine if the click was on a table row, not on the header
                 int row = table.rowAtPoint(e.getPoint());
-                int column = table.columnAtPoint(e.getPoint());
 
                 // Get the table header
                 JTableHeader header = table.getTableHeader();
@@ -146,6 +155,33 @@ public class EmployeeTablePanel extends JPanel
                 if (e.getY() <= headerHeight) 
                 {
                     return; // Click was on the header, do nothing
+                }
+
+                // If the click was on a row
+                if (row != -1)
+                {
+                    // Single-click: just select the row (default behavior)
+                    // Double-click: open the employee details
+                    if (e.getClickCount() == 2 && !e.isConsumed())
+                    {
+                        e.consume(); // Mark the event as consumed
+                        try
+                        {
+                            int modelRow = table.convertRowIndexToModel(row);
+                            int employeeID = (Integer) tableModel.getValueAt(modelRow, 0);
+
+                            Employee emp = employeeDAO.getEmployeeDetails(employeeID);
+
+                            if (employeeSelectionListener != null)
+                            {
+                                employeeSelectionListener.employeeSelected(emp);
+                            }
+                        }
+                        catch (SQLException ex)
+                        {
+                            JOptionPane.showMessageDialog(EmployeeTablePanel.this, "Error retrieving employee details: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
                 }
             }
         });

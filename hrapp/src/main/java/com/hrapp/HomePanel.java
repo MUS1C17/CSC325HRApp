@@ -66,73 +66,19 @@ public class HomePanel extends JPanel
             }
         });
 
-        //Open AddEmployeePanel when clicking on Add Employee Button
-        addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
-        
-        /* 
-        //Add Action Listener for Add Employee button
-        addEmployeeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //Open the AddEmployeeDialog
-                AddEmployeeDialog dialog = new AddEmployeeDialog(SwingUtilities.getWindowAncestor(HomePanel.this));
-                dialog.setVisible(true);
-
-                if (dialog.isSucceeded())
-                {
-                    //Retrive the new Employee data
-                    Object[] newEmployeeData = dialog.getEmployeeData();
-
-                    //Create an Employee object
-                    Employee newEmployee = new Employee(
-                        (String) newEmployeeData[1], // firstName
-                        (String) newEmployeeData[2], // lastName
-                        null, // dateOfBirth (to be set via additional dialogs or defaults)
-                        null, // jobTitle
-                        null, // department
-                        null, // workLocation
-                        null, // employmentStatus
-                        (String) newEmployeeData[3], // email
-                        null, // phoneNumber
-                        null, // hourlyRate
-                        null, // notes
-                        null, // hardSkill1
-                        null, // hardSkill2
-                        null, // softSkill1
-                        null, // softSkill2
-                        0,    // isManager
-                        0     // isCEO 
-                    );
-
-                    // Add the new employee to the table and database
-                    employeeTablePanel.addEmployee(newEmployee);
-                }
-            }
-        });*/
-        
-        // Add List Selection Listener to handle row selection for detailed view
-        employeeTablePanel.getTable().getSelectionModel().addListSelectionListener(event -> 
+        //Open Detailed view panel
+        employeeTablePanel.setEmployeeSelectionListener(new EmployeeTablePanel.EmployeeSelectionListener()
         {
-            if (!event.getValueIsAdjusting() && employeeTablePanel.getTable().getSelectedRow() != -1) 
+            @Override
+            public void employeeSelected(Employee employee)
             {
-                Employee selectedEmployee = null;
-                try
-                {
-                    selectedEmployee = employeeTablePanel.getSelectedEmployee();
-                }
-                catch(SQLException error)
-                {
-                    error.getMessage();
-                }
-                
-                if (selectedEmployee != null) 
-                {
-                    // Open the detailed view panel
-                    mainApp.showEmployeeDetails(selectedEmployee);
-                }
+                // Open the detailed view panel
+                mainApp.showEmployeeDetails(employee);
             }
         });
+
+        //Open AddEmployeePanel when clicking on Add Employee Button
+        addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
     }    
 
     //Refresh employee table
