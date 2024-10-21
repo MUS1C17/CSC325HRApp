@@ -1,9 +1,11 @@
 package com.hrapp;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -16,21 +18,28 @@ public class SimpleGUI {
     {
         String[] employmentStatusArray = { "Intern", "Full-time", "Part-time", "Contract" };
 
-        //Create a JFRame object
+        //Create a JFrame object
         JFrame addUserFrame = new JFrame("Add User Window");
         addUserFrame.setLayout(null);
         addUserFrame.setSize(800,600);
+
+        //Set background color
+        addUserFrame.getContentPane().setBackground(Color.decode("#e5d07b"));
 
         //Set the default close to close application when windows is closed
         addUserFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create a JLabel object with some text
-        JLabel exampleTitle = new JLabel("This is DEMO version of Add User Screen");
+        JLabel logo = new JLabel(new ImageIcon("C:\\Users\\ethan\\Downloads\\FRONTLINE HR Color Version.jpg"));
+        JLabel exampleTitle = new JLabel("Add a User");
+        JLabel demoLabel = new JLabel("DEMO");
         JLabel firstNameLabel = new JLabel("First Name: ");
         JLabel lastNameLabel = new JLabel("Last Name:");
         JLabel employementStatusLabel = new JLabel("Employement Status:");
 
-        exampleTitle.setBounds(250, 30, 300, 30);
+        logo.setBounds(30, 30, 200, 60);
+        exampleTitle.setBounds(350, 30, 300, 30);
+        demoLabel.setBounds(725, 30, 50, 30);
         firstNameLabel.setBounds(100, 100, 150, 30);
         lastNameLabel.setBounds(100, 150, 150, 30);
         employementStatusLabel.setBounds(100, 200, 150, 30);
@@ -87,7 +96,9 @@ public class SimpleGUI {
         });
 
         //Add all objects to the gui
+        addUserFrame.add(logo);
         addUserFrame.add(exampleTitle);
+        addUserFrame.add(demoLabel);
         addUserFrame.add(firstNameLabel);
         addUserFrame.add(lastNameLabel);
         addUserFrame.add(employementStatusLabel);
