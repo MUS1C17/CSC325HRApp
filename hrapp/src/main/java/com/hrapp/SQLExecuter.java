@@ -2,9 +2,9 @@ package com.hrapp;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SQLExecuter {
     
@@ -27,18 +27,28 @@ public class SQLExecuter {
         }
     }
 
-    // Method to execute a SELECT query
-    public ResultSet getDataFromDatabase(String query) throws SQLException 
+    // Method to execute a SELECT query using PreparedStatement
+    public ResultSet getDataFromDatabase(String query, Object...parameters) throws SQLException 
     {
-        Statement statement = connection.createStatement();
-        return statement.executeQuery(query);
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        setParameters(pstmt, parameters);
+        return pstmt.executeQuery();
     }
 
-    //Method to execute an UPDATE/DELETE/INSERT method
-    public void setDataInDatabase(String query) throws SQLException
+    //Method to execute an UPDATE/DELETE/INSERT method useing PreparedStatement
+    public void setDataInDatabase(String query, Object...parameters) throws SQLException
     {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        setParameters(pstmt, parameters);
+        pstmt.executeUpdate();
+    }
+
+    private void setParameters(PreparedStatement pstmt, Object...parameters) throws SQLException
+    {
+        for(int i = 0; i < parameters.length; i++)
+        {
+            pstmt.setObject(i + 1, parameters[i]);
+        }
     }
 
      // Method to close the database connection
@@ -56,6 +66,11 @@ public class SQLExecuter {
             e.printStackTrace();
         }
     }
-
+     
+    //Returns the current database connection.
+    public Connection getConnection() 
+    {
+        return connection;
+    }
 }
 
