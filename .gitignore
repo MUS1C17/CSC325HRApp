@@ -1,2 +1,3 @@
-# Ignore the tetDB.db file
+# Ignore specific database files
 database/testDB.db
+database/backup/testDB.db.sql
