@@ -162,7 +162,7 @@ public class AddEmployeePanel extends JPanel
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
         hourlyRate = new JTextField();
-        lastName.setDocument(new LimitedPlainDocument(4));
+        hourlyRate.setDocument(new LimitedPlainDocument(4));
         panel.add(hourlyRate);
 
         //Notes
@@ -256,17 +256,17 @@ public class AddEmployeePanel extends JPanel
                         lastName.getText(),
                         datePicker.getValue(),
                         jobTitle.getText(),
-                        department.getSelectedItem().toString(),
-                        workLocation.getSelectedItem().toString(),
-                        employmentStatus.getSelectedItem().toString(),
+                        department.getSelectedItem() != null ? department.getSelectedItem().toString() : null,                 //Pass null if department isn't specified
+                        workLocation.getSelectedItem() != null ? workLocation.getSelectedItem().toString() : null,             //Pass null if work location isn't specified
+                        employmentStatus.getSelectedItem() != null ? employmentStatus.getSelectedItem().toString() : null,     //Pass null if employment status isn't specified
                         email.getText(),
                         phoneNumber.getText(),
-                        new BigDecimal(hourlyRate.getText()),
+                        new BigDecimal(!hourlyRate.getText().isEmpty() ? hourlyRate.getText() : "0"),                          //Pass 0 if hourly rate is not specified
                         notes.getText(),
-                        hardSkillOne.getSelectedItem().toString(),
-                        hardSkillTwo.getSelectedItem().toString(),
-                        softSkillOne.getSelectedItem().toString(),
-                        softSkillTwo.getSelectedItem().toString(),
+                        hardSkillOne.getSelectedItem() != null ? hardSkillOne.getSelectedItem().toString() : null,             //Pass null if hard skill one status isn't specified
+                        hardSkillTwo.getSelectedItem() != null ? hardSkillTwo.getSelectedItem().toString() : null,             //Pass null if hard skill two status isn't specified
+                        softSkillOne.getSelectedItem() != null ? softSkillOne.getSelectedItem().toString() : null,             //Pass null if soft skill one status isn't specified
+                        softSkillTwo.getSelectedItem() != null ? softSkillTwo.getSelectedItem().toString() : null,             //Pass null if soft skill two status isn't specified
                         isManager.getSelectedItem().equals("No") ? 0 : 1,
                         isCEO.getSelectedItem().equals("No") ? 0 : 1
                     ));
