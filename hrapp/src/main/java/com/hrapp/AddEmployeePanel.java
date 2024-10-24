@@ -149,6 +149,7 @@ public class AddEmployeePanel extends JPanel
         //Phone Number
         panel.add(new JLabel("Phone Number:"));
         phoneNumber = new JTextField();
+        phoneNumber.setDocument(new LimitedPlainDocument(10));
         panel.add(phoneNumber);
 
         // Add FocusListeners to JTextFields
@@ -161,11 +162,13 @@ public class AddEmployeePanel extends JPanel
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
         hourlyRate = new JTextField();
+        lastName.setDocument(new LimitedPlainDocument(4));
         panel.add(hourlyRate);
 
         //Notes
         panel.add(new JLabel("Notes:"));
         notes = new JTextField();
+        notes.setDocument(new LimitedPlainDocument(350));
         panel.add(notes);
 
         /*
