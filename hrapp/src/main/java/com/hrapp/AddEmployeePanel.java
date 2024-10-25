@@ -9,10 +9,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,6 +24,7 @@ import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.NumberFormatter;
 import javax.swing.text.PlainDocument;
 
 import javafx.application.Platform;
@@ -52,8 +55,8 @@ public class AddEmployeePanel extends JPanel
     private JTextField lastName;
     private JTextField jobTitle;
     private JTextField email;
-    private JTextField phoneNumber;
-    private JTextField hourlyRate;
+    private JFormattedTextField phoneNumber;
+    private JFormattedTextField hourlyRate;
     private JTextField notes;
     private JComboBox<String> department;
     private JComboBox<String> workLocation;
@@ -148,8 +151,7 @@ public class AddEmployeePanel extends JPanel
 
         //Phone Number
         panel.add(new JLabel("Phone Number:"));
-        phoneNumber = new JTextField();
-        phoneNumber.setDocument(new LimitedPlainDocument(10));
+        phoneNumber = new JFormattedTextField(createIntegerNumberFormatter(0, 999999999));
         panel.add(phoneNumber);
 
         // Add FocusListeners to JTextFields
@@ -161,7 +163,7 @@ public class AddEmployeePanel extends JPanel
 
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
-        hourlyRate = new JTextField();
+        hourlyRate = new JFormattedTextField();
         hourlyRate.setDocument(new LimitedPlainDocument(4));
         panel.add(hourlyRate);
 
@@ -455,5 +457,30 @@ public class AddEmployeePanel extends JPanel
         
             textField.setBorder(defaultBorder);
         }
-    }
+    
 
+    public static NumberFormatter createIntegerNumberFormatter(Integer minimum, Integer maximum) 
+    {
+        // Define the number format for integers
+        NumberFormat integerFormat = NumberFormat.getIntegerInstance();
+        integerFormat.setGroupingUsed(false); // Disable grouping (e.g., no commas)
+
+        // Create a NumberFormatter with the integer format
+        NumberFormatter numberFormatter = new NumberFormatter(integerFormat);
+        numberFormatter.setValueClass(Integer.class); // Specify that the value is an Integer
+        numberFormatter.setAllowsInvalid(false); // Disallow invalid inputs
+        numberFormatter.setCommitsOnValidEdit(true); // Commit edits on each valid input
+
+        // Set minimum and maximum values if provided
+        if (minimum != null) 
+        {
+            numberFormatter.setMinimum(minimum);
+        }
+        if (maximum != null) 
+        {
+            numberFormatter.setMaximum(maximum);
+        }
+
+        return numberFormatter;
+    }
+}
