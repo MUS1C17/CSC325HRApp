@@ -9,7 +9,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,7 +25,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 import javax.swing.text.PlainDocument;
 
@@ -151,7 +155,19 @@ public class AddEmployeePanel extends JPanel
 
         //Phone Number
         panel.add(new JLabel("Phone Number:"));
-        phoneNumber = new JFormattedTextField(setIntegersInputOnly());
+        //Mask formatter is used to restrict user to input only 10 integers
+            //Note: You have to always put in the try-catch statement
+        MaskFormatter formatter = null;
+        try
+        {
+            formatter= new MaskFormatter("##########");
+        }
+        catch(ParseException e)
+        {
+            e.getMessage();
+        }
+
+        phoneNumber = new JFormattedTextField(formatter);
         phoneNumber.setDocument(new LimitedPlainDocument(10));
         panel.add(phoneNumber);
 
@@ -165,7 +181,8 @@ public class AddEmployeePanel extends JPanel
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
         hourlyRate = new JFormattedTextField();
-        hourlyRate.setDocument(new LimitedPlainDocument(5));
+        //hourlyRate.setDocument(new LimitedPlainDocument(5));
+        ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
         panel.add(hourlyRate);
 
         //Notes
@@ -434,7 +451,7 @@ public class AddEmployeePanel extends JPanel
             @Override
             public void focusGained(FocusEvent e) 
             {
-                // Optionally, you can remove the error border when the user focuses on the field
+                //Removes the error border when the user focuses on the field
                 textField.setBorder(defaultBorder);
             }
 
@@ -463,10 +480,42 @@ public class AddEmployeePanel extends JPanel
     private static NumberFormatter setIntegersInputOnly()
     {
         NumberFormat format = NumberFormat.getIntegerInstance();
+        //format.setMaximumIntegerDigits(10);
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setValueClass(Integer.class);
         formatter.setAllowsInvalid(false); 
-        formatter.setMaximum(10);
+        formatter.setMaximum(99999);
         return formatter;
     }
+
+    private static NumberFormatter setDecimalInputOnly() 
+    {
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setGroupingUsed(false); // Disable grouping (no commas)
+        decimalFormat.setMaximumIntegerDigits(5); // Maximum 5 digits before decimal
+        decimalFormat.setMaximumFractionDigits(2); // Maximum 2 digits after decimal
+        decimalFormat.setMinimumFractionDigits(0); // Minimum 0 digits after decimal
+
+        NumberFormatter formatter = new NumberFormatter(decimalFormat);
+        formatter.setValueClass(Double.class);
+        formatter.setAllowsInvalid(false);
+        formatter.setOverwriteMode(false);
+        formatter.setMinimum(0.0); // Set minimum value if needed
+        formatter.setMaximum(99999.99); // Set maximum value if needed
+        return formatter;
+    }
+
 }
+
+/*
+ * CLEAN CODE
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
