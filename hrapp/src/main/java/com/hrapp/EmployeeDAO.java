@@ -47,7 +47,7 @@ public class EmployeeDAO //DAO - Data Access Object
             {
                 try 
                 {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     dateOfBirth = LocalDate.parse(dateStr, formatter);
                 } 
                 catch (DateTimeParseException e) 
@@ -104,7 +104,7 @@ public class EmployeeDAO //DAO - Data Access Object
                     {
                         try 
                         {
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                             dateOfBirth = LocalDate.parse(dateStr, formatter);
                         } 
                         catch (DateTimeParseException e) 

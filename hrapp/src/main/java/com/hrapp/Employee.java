@@ -165,6 +165,11 @@ public class Employee
         return dateOfBirth;
     }
 
+    public String getDateOfBirthStringFormat()
+    {
+        return dateOfBirth.toString().substring(5,7) + "/" + dateOfBirth.toString().substring(8) + "/" + dateOfBirth.toString().substring(0, 4);
+    }
+
     public String getJobTitle()
     {
         return jobTitle;
