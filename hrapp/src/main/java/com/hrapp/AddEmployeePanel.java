@@ -9,9 +9,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,8 +24,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 import javax.swing.text.PlainDocument;
 
 import javafx.application.Platform;
@@ -59,7 +54,7 @@ public class AddEmployeePanel extends JPanel
     private JTextField lastName;
     private JTextField jobTitle;
     private JTextField email;
-    private JFormattedTextField phoneNumber;
+    private JTextField phoneNumber;
     private JFormattedTextField hourlyRate;
     private JTextField notes;
     private JComboBox<String> department;
@@ -155,19 +150,7 @@ public class AddEmployeePanel extends JPanel
 
         //Phone Number
         panel.add(new JLabel("Phone Number:"));
-        //Mask formatter is used to restrict user to input only 10 integers
-            //Note: You have to always put in the try-catch statement
-        MaskFormatter formatter = null;
-        try
-        {
-            formatter= new MaskFormatter("##########");
-        }
-        catch(ParseException e)
-        {
-            e.getMessage();
-        }
-
-        phoneNumber = new JFormattedTextField(formatter);
+        phoneNumber = new JTextField();
         phoneNumber.setDocument(new LimitedPlainDocument(10));
         panel.add(phoneNumber);
 
@@ -177,12 +160,13 @@ public class AddEmployeePanel extends JPanel
         addFocusListenerToField(jobTitle);
         addFocusListenerToField(email);
         addFocusListenerToField(phoneNumber);
+        
 
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
         hourlyRate = new JFormattedTextField();
-        //hourlyRate.setDocument(new LimitedPlainDocument(5));
-        ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
+        //Add restriction to only use numbers. Optionally allows to use 2 digits after dot.
+        ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter()); 
         panel.add(hourlyRate);
 
         //Notes
@@ -192,7 +176,7 @@ public class AddEmployeePanel extends JPanel
         panel.add(notes);
 
         /*
-         * TODO: MAKE COMBOBOXES FOR SKILLS
+         * TODO: MAKE COMBOBOXES FOR SKILLS WITH DATA FROM DATABASE
          */
 
         //Hard Skill 1
@@ -239,7 +223,7 @@ public class AddEmployeePanel extends JPanel
         addButton = new JButton("Add");
         addButton.setEnabled(false);
 
-        //Document listener to update state of the Add button
+        //Document listener to update state of the Add button depending if the field has expected values
         DocumentListener documentListener = new DocumentListener()
         {
             public void changedUpdate(DocumentEvent e) 
@@ -352,19 +336,19 @@ public class AddEmployeePanel extends JPanel
         datePicker.setValue(null);
         Platform.runLater(() -> datePicker.setStyle("")); //Sets DatePicker field back to default style
         jobTitle.setText("");
-        department.setSelectedIndex(0);
-        workLocation.setSelectedIndex(0);
-        employmentStatus.setSelectedIndex(0);
+        department.setSelectedIndex(0);         //Set drop box to the empty option
+        workLocation.setSelectedIndex(0);       //Set drop box to the empty option
+        employmentStatus.setSelectedIndex(0);   //Set drop box to the empty option
         email.setText("");
-        phoneNumber.setText("");
+        phoneNumber.setText(""); //Use setValue() method since phoneNumber is JFormattedTextField with MaskFormatter
         hourlyRate.setText("");
         notes.setText("");
-        hardSkillOne.setSelectedIndex(0);
-        hardSkillTwo.setSelectedIndex(0);
-        softSkillOne.setSelectedIndex(0);
-        softSkillTwo.setSelectedIndex(0);
-        isManager.setSelectedIndex(0);
-        isCEO.setSelectedIndex(0);
+        hardSkillOne.setSelectedIndex(0); //Set drop box to the empty option
+        hardSkillTwo.setSelectedIndex(0); //Set drop box to the empty option
+        softSkillOne.setSelectedIndex(0); //Set drop box to the empty option
+        softSkillTwo.setSelectedIndex(0); //Set drop box to the empty option
+        isManager.setSelectedIndex(0);    //Set drop box to the No option
+        isCEO.setSelectedIndex(0);        //Set drop box to the No option 
 
         //Set Borders of the required JTextFields to default color
         SwingUtilities.invokeLater(() -> 
@@ -417,14 +401,30 @@ public class AddEmployeePanel extends JPanel
 
         // Check if all required fields are filled
         boolean allFieldsFilled = !firstName.getText().trim().isEmpty() &&
-                                  !lastName.getText().trim().isEmpty() &&
-                                  (selectedDate != null) &&
-                                  !jobTitle.getText().trim().isEmpty() &&
-                                  !email.getText().trim().isEmpty() &&
-                                    !phoneNumber.getText().trim().isEmpty();
+                                    !lastName.getText().trim().isEmpty() &&
+                                    (selectedDate != null) &&
+                                    !jobTitle.getText().trim().isEmpty() &&
+                                    !email.getText().trim().isEmpty() &&
+                                    !phoneNumber.getText().trim().isEmpty() &&
+                                    isFieldInteger(phoneNumber)
+                                    && phoneNumber.getText().length() == 10;
 
         //Add Button becomes enabled if all the required fields are filled in
         addButton.setEnabled(allFieldsFilled);
+    }
+
+    private static boolean isFieldInteger(JTextField field)
+    {
+        try
+        {
+            Long.valueOf(field.getText());
+            return true;
+        }
+        catch(NumberFormatException e)
+        {
+            e.getMessage();
+            return false;
+        }
     }
 
     //Validates date picker and if it is null
@@ -476,35 +476,6 @@ public class AddEmployeePanel extends JPanel
             textField.setBorder(defaultBorder);
         }
     }
-
-    private static NumberFormatter setIntegersInputOnly()
-    {
-        NumberFormat format = NumberFormat.getIntegerInstance();
-        //format.setMaximumIntegerDigits(10);
-        NumberFormatter formatter = new NumberFormatter(format);
-        formatter.setValueClass(Integer.class);
-        formatter.setAllowsInvalid(false); 
-        formatter.setMaximum(99999);
-        return formatter;
-    }
-
-    private static NumberFormatter setDecimalInputOnly() 
-    {
-        DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setGroupingUsed(false); // Disable grouping (no commas)
-        decimalFormat.setMaximumIntegerDigits(5); // Maximum 5 digits before decimal
-        decimalFormat.setMaximumFractionDigits(2); // Maximum 2 digits after decimal
-        decimalFormat.setMinimumFractionDigits(0); // Minimum 0 digits after decimal
-
-        NumberFormatter formatter = new NumberFormatter(decimalFormat);
-        formatter.setValueClass(Double.class);
-        formatter.setAllowsInvalid(false);
-        formatter.setOverwriteMode(false);
-        formatter.setMinimum(0.0); // Set minimum value if needed
-        formatter.setMaximum(99999.99); // Set maximum value if needed
-        return formatter;
-    }
-
 }
 
 /*
