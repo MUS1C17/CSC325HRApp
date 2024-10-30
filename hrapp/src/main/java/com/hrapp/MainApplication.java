@@ -10,9 +10,11 @@ public class MainApplication extends JFrame{
     //Properties
     private HomePanel homePanel;
     private AddEmployeePanel addEmployeePanel;
+    private AddJobPanel addJobPanel;
     private JPanel mainPanel;
     private EmployeeDetailPanel employeeDetailPanel;
     private CardLayout cardLayout;
+    private JobHistoryPanel jobHistoryPanel;
 
 
     public MainApplication() 
@@ -29,11 +31,13 @@ public class MainApplication extends JFrame{
         homePanel = new HomePanel(isManagerOrCEO, this);
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
+        addJobPanel = new AddJobPanel(this);
 
         // Add the HomePanel to the Frame
         mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
+        mainPanel.add(addJobPanel, "AddJobPanel");
         
 
         //Add the mainPanel to the JFrame
@@ -82,6 +86,21 @@ public class MainApplication extends JFrame{
         switchToPanel("EmployeeDetailPanel");
     }
 
+    public void switchToAddJobPanel(int employeeID)
+    {
+        addJobPanel.resetFields();
+        addJobPanel.setEmployeeID(employeeID);
+        switchToPanel("AddJobPanel");
+    }
+
+    public void switchToJobHistoryPanel(int employeeID)
+    {
+        jobHistoryPanel.setEmployeeID(employeeID);
+        //jobHistoryPanel.removeAll();
+        switchToPanel("JobHistoryPanel");
+        jobHistoryPanel.showJobs(employeeID);
+    }
+    
     public void switchToPanel(String panelName) 
     {
         cardLayout.show(mainPanel, panelName);
