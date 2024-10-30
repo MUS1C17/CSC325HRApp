@@ -78,6 +78,7 @@ public class MainApplication extends JFrame{
     public void showEmployeeDetails(Employee employee) 
     {
         employeeDetailPanel.setEmployee(employee);
+        employeeDetailPanel.setDetailsButtonStatus(false); //Disable Details button
         switchToPanel("EmployeeDetailPanel");
     }
 

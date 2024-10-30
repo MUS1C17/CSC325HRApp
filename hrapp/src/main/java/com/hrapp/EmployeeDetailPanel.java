@@ -1,168 +1,163 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
-/**
- * A Panel  to display detailed information about an employee.
- */
+
 public class EmployeeDetailPanel extends JPanel 
 {
 
-    //Properties
+    // Properties
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
 
-    public EmployeeDetailPanel(MainApplication mainApp)
+    // Navigation and content panels
+    private JPanel navigationPanel;
+    private JPanel contentPanel;
+    private CardLayout contentCardLayout;
+
+    // Sub-panels
+    private DetailsPanel detailsPanel;
+    private JobHistoryPanel jobHistoryPanel;
+    private SprintEvaluationPanel sprintEvaluationPanel;
+
+    //Buttons
+    private JButton detailsButton;
+    private JButton jobHistoryButton;
+    private JButton sprintEvaluationButton;
+
+    public EmployeeDetailPanel(MainApplication mainApp) 
     {
         this.mainApp = mainApp;
         setLayout(new BorderLayout());
 
-        try
+        try 
         {
             employeeDAO = new EmployeeDAO();
-        }
-        catch(SQLException e)
+        } 
+        catch (SQLException e) 
         {
-            e.getMessage();
+            e.printStackTrace();
         }
+
+        initUI();
     }
 
     public void setEmployee(Employee employee) 
     {
         this.employee = employee;
-        removeAll(); // Clear previous content
-        initUI();
-        revalidate();
-        repaint();
+        detailsPanel.setEmployee(employee);
+        // If JobHistoryPanel and SprintEvaluationPanel need employee data, pass it to them here
     }
 
-
-    public void initUI()
+    private void initUI() 
     {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Left navigation panel
+        navigationPanel = new JPanel();
 
-        // Populate the panel with employee details
-        panel.add(new JLabel("Employee ID:"));
-        panel.add(new JLabel(String.valueOf(employee.getEmployeeID())));
-
-        panel.add(new JLabel("First Name:"));
-        panel.add(new JLabel(employee.getFirstName()));
-
-        panel.add(new JLabel("Last Name:"));
-        panel.add(new JLabel(employee.getLastName()));
-
-        panel.add(new JLabel("Date of Birth:"));
-        panel.add(new JLabel(employee.getDateOfBirth() != null ? employee.getDateOfBirth().toString() : "N/A"));
-
-        panel.add(new JLabel("Job Title:"));
-        panel.add(new JLabel(employee.getJobTitle() != null ? employee.getJobTitle() : "N/A"));
-
-        panel.add(new JLabel("Department:"));
-        panel.add(new JLabel(employee.getDepartment() != null ? employee.getDepartment() : "N/A"));
-
-        panel.add(new JLabel("Work Location:"));
-        panel.add(new JLabel(employee.getWorkLocation() != null ? employee.getWorkLocation() : "N/A"));
-
-        panel.add(new JLabel("Employment Status:"));
-        panel.add(new JLabel(employee.getEmploymentStatus() != null ? employee.getEmploymentStatus() : "N/A"));
-
-        panel.add(new JLabel("Email:"));
-        panel.add(new JLabel(employee.getEmail()));
-
-        panel.add(new JLabel("Phone Number:"));
-        panel.add(new JLabel(employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
-            employee.getPhoneNumber().substring(0, 3),
-            employee.getPhoneNumber().substring(3, 6),
-            employee.getPhoneNumber().substring(6, 10))
-        : "N/A")); //This outputs phone number in the format (123)-456-7890
-
-        panel.add(new JLabel("Hourly Rate:"));
-        panel.add(new JLabel(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
-
-        panel.add(new JLabel("Notes:"));
-        panel.add(new JLabel(employee.getNotes() != null ? employee.getNotes() : "N/A"));
-
-        panel.add(new JLabel("Hard Skill 1:"));
-        panel.add(new JLabel(employee.getHardSkill1() != null ? employee.getHardSkill1() : "N/A"));
-
-        panel.add(new JLabel("Hard Skill 2:"));
-        panel.add(new JLabel(employee.getHardSkill2() != null ? employee.getHardSkill2() : "N/A"));
-
-        panel.add(new JLabel("Soft Skill 1:"));
-        panel.add(new JLabel(employee.getSoftSkill1() != null ? employee.getSoftSkill1() : "N/A"));
-
-        panel.add(new JLabel("Soft Skill 2:"));
-        panel.add(new JLabel(employee.getSoftSkill2() != null ? employee.getSoftSkill2() : "N/A"));
-
-        panel.add(new JLabel("Is Manager:"));
-        panel.add(new JLabel(employee.getIsManager() == 1 ? "Yes" : "No"));
-
-        panel.add(new JLabel("Is CEO:"));
-        panel.add(new JLabel(employee.getIsCEO() == 1 ? "Yes" : "No"));
-    
-        // Add the panel to the center
-        add(panel, BorderLayout.CENTER);
-
-        //Button Panel at the bottom
-        JPanel buttonPanel = new JPanel();
-
-        //Back button
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
-
-        //Delete Employee button
-        JButton deleteEmployeeButton = new JButton("Delete Employee");
-        deleteEmployeeButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent event)
-           {
+        // Use BoxLayout with vertical alignment
+        navigationPanel.setLayout(new BoxLayout(navigationPanel, BoxLayout.Y_AXIS));
+        navigationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Optional padding
         
-            int confirm = JOptionPane.showConfirmDialog(EmployeeDetailPanel.this,
-                    "Are you sure you want to delete employee ID " + employee.getEmployeeID() + "?",
-                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        //Initialize buttons
+        detailsButton = new JButton("Details");
+        jobHistoryButton = new JButton("Job History");
+        sprintEvaluationButton = new JButton("Sprint Evaluations");
 
-            if(confirm == JOptionPane.YES_OPTION)
-                {
-                    try
-                    {
-                        employeeDAO.deleteEmployee(employee.getEmployeeID()); // Delete employee in database
+        // Create a vertical separator
+        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+        separator.setPreferredSize(new Dimension(1, 0)); // 1 pixel wide, height adjusts automatically
+
+       // Container panel to hold navigationPanel and separator
+       JPanel leftPanelContainer = new JPanel(new BorderLayout());
+       leftPanelContainer.add(navigationPanel, BorderLayout.WEST);
+       leftPanelContainer.add(separator, BorderLayout.EAST);
+
+        //Dimenstion for the buttons
+        Dimension buttonSize = new Dimension(200, 35);
+        detailsButton.setMaximumSize(buttonSize);
+        jobHistoryButton.setMaximumSize(buttonSize);
+        sprintEvaluationButton.setMaximumSize(buttonSize);
+
+
+        navigationPanel.add(detailsButton);
+        navigationPanel.add(jobHistoryButton);
+        navigationPanel.add(sprintEvaluationButton);
+
+        // Content panel with CardLayout
+        contentCardLayout = new CardLayout();
+        contentPanel = new JPanel(contentCardLayout);
+
+        // Initialize sub-panels
+        detailsPanel = new DetailsPanel(mainApp);
+        jobHistoryPanel = new JobHistoryPanel();
+        sprintEvaluationPanel = new SprintEvaluationPanel();
+
         
-                        // Refresh the employee table in HomePanel
-                        mainApp.getHomePanel().refreshEmployeeTable();
-        
-                        // Switch back to HomePanel
-                        mainApp.switchToPanel("HomePanel");
-                    }
-                    catch(Exception error)
-                    {
-                        JOptionPane.showMessageDialog(EmployeeDetailPanel.this, 
-                        "Error deleting employee: " + error.getMessage(), 
-                        "Database Error", JOptionPane.ERROR_MESSAGE);
-                        error.printStackTrace();
-                    }    
-                }
-           } 
+        // Add sub-panels to content panel
+        contentPanel.add(detailsPanel, "DetailsPanel");
+        contentPanel.add(jobHistoryPanel, "JobHistoryPanel");
+        contentPanel.add(sprintEvaluationPanel, "SprintEvaluationPanel");
+
+        // Add action listeners to buttons
+        detailsButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                contentCardLayout.show(contentPanel, "DetailsPanel");
+                detailsButton.setEnabled(false);            //Disable details button
+                jobHistoryButton.setEnabled(true);          //Enable Job History button
+                sprintEvaluationButton.setEnabled(true);    //Enable Sprint Evaluation button
+            }
         });
 
-        //Add buttons to the button panel
-        buttonPanel.add(backButton);
-        buttonPanel.add(deleteEmployeeButton);
+        jobHistoryButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                contentCardLayout.show(contentPanel, "JobHistoryPanel");
+                detailsButton.setEnabled(true);             //Enable details button
+                jobHistoryButton.setEnabled(false);         //Disable job history button
+                sprintEvaluationButton.setEnabled(true);    //Enable sprint evaluation button
+            }
+        });
 
+        sprintEvaluationButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                contentCardLayout.show(contentPanel, "SprintEvaluationPanel");
+                detailsButton.setEnabled(true);             //Enable details button
+                jobHistoryButton.setEnabled(true);          //Enable job hisotry button
+                sprintEvaluationButton.setEnabled(false);   //Disable sprint evaluation button
+            }
+        });
+    
+        // Add components to EmployeeDetailPanel
+        add(leftPanelContainer, BorderLayout.WEST);
+        add(contentPanel, BorderLayout.CENTER);
 
+        // Show the details panel by default
+        contentCardLayout.show(contentPanel, "DetailsPanel");
+    }
 
-
-        add(buttonPanel, BorderLayout.PAGE_END);
+    //Method to set details button status
+        //Note currently this method is used to set details button to disabled
+        //when details panel is open
+    public void setDetailsButtonStatus(boolean status)
+    {
+        detailsButton.setEnabled(status);
     }
 }
