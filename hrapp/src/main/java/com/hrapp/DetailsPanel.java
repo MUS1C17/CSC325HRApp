@@ -64,7 +64,7 @@ public class DetailsPanel extends JPanel
         panel.add(new JLabel(employee.getLastName()));
 
         panel.add(new JLabel("Date of Birth:"));
-        panel.add(new JLabel(employee.getDateOfBirth() != null ? employee.getDateOfBirth().toString() : "N/A"));
+        panel.add(new JLabel(employee.getDateOfBirth() != null ? employee.getDateOfBirthStringFormat() : "N/A"));
 
         panel.add(new JLabel("Job Title:"));
         panel.add(new JLabel(employee.getJobTitle() != null ? employee.getJobTitle() : "N/A"));
