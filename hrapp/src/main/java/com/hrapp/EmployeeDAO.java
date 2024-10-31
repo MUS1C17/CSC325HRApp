@@ -204,4 +204,35 @@ public class EmployeeDAO //DAO - Data Access Object
             executer.closeConnection();
         }
     }
+    /*
+     * Method to update the details of an existing employee
+     */
+    public void updateEmployee(Employee employee) throws SQLException {
+        String query = "UPDATE Employee SET FirstName = ?, LastName = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, " +
+                       "WorkLocation = ?, EmploymentStatus = ?, Email = ?, PhoneNumber = ?, HourlyRate = ?, Notes = ?, " +
+                       "HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?, IsManager = ?, IsCEO = ? " +
+                       "WHERE EmployeeID = ?";
+    
+        try (PreparedStatement pstmt = executer.getConnection().prepareStatement(query)) {
+            pstmt.setString(1, employee.getFirstName());
+            pstmt.setString(2, employee.getLastName());
+            pstmt.setString(4, employee.getJobTitle());
+            pstmt.setString(5, employee.getDepartment());
+            pstmt.setString(6, employee.getWorkLocation());
+            pstmt.setString(7, employee.getEmploymentStatus());
+            pstmt.setString(8, employee.getEmail());
+            pstmt.setString(9, employee.getPhoneNumber());
+            pstmt.setBigDecimal(10, employee.getHourlyrate());
+            pstmt.setString(11, employee.getNotes());
+            pstmt.setString(12, employee.getHardSkill1());
+            pstmt.setString(13, employee.getHardSkill2());
+            pstmt.setString(14, employee.getSoftSkill1());
+            pstmt.setString(15, employee.getSoftSkill2());
+            pstmt.setInt(16, employee.getIsManager());
+            pstmt.setInt(17, employee.getIsCEO());
+            pstmt.setInt(18, employee.getEmployeeID()); 
+    
+            pstmt.executeUpdate(); // Execute the update statement
+        }
+    }
 }

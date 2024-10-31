@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -11,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField; //New Import
+import javax.swing.JSpinner; //New Import
+import javax.swing.SpinnerDateModel; //New Import
 
 /**
  * A Panel  to display detailed information about an employee.
@@ -22,6 +26,26 @@ public class EmployeeDetailPanel extends JPanel
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
+
+    //Added properties for editing employee details
+    private JTextField firstNameField;
+    private JTextField lastNameField;
+    private JTextField emailField;
+    private JTextField phoneField;
+    private JTextField jobTitleField;
+    private JTextField departmentField;
+    private JTextField workLocationField;
+    private JTextField employmentStatusField;
+    private JTextField hourlyRateField;
+    private JTextField notesField;
+    private JTextField hardSkill1Field;
+    private JTextField hardSkill2Field;
+    private JTextField softSkill1Field;
+    private JTextField softSkill2Field;
+    private JSpinner dobSpinner; //Spinner for date of birth
+    private JButton editButton; //Edit button
+    private JButton saveButton; //Save Button
+    private boolean isEditMode = false; //Flag to check if edit mode is active
 
     public EmployeeDetailPanel(MainApplication mainApp)
     {
@@ -160,9 +184,162 @@ public class EmployeeDetailPanel extends JPanel
         buttonPanel.add(backButton);
         buttonPanel.add(deleteEmployeeButton);
 
+        //Edit button added
+        editButton = new JButton("Edit");
+        editButton.addActionListener(e -> enableEditing());
+        buttonPanel.add(editButton);
+
+        //Save button added
+        saveButton = new JButton("Save");
+        saveButton.setVisible(false);
+        saveButton.addActionListener(e -> saveChanges());
+        buttonPanel.add(saveButton);
 
 
 
         add(buttonPanel, BorderLayout.PAGE_END);
     }
-}
+
+    //Method to edit employees
+    private void enableEditing() {
+        firstNameField = new
+        JTextField(employee.getFirstName());
+        lastNameField = new
+        JTextField(employee.getLastName());
+
+        //Date of Birth (NEED HELP)
+
+        emailField = new JTextField(employee.getEmail());
+
+        phoneField = new JTextField(employee.getPhoneNumber());
+
+        jobTitleField = new JTextField(employee.getJobTitle());
+
+        departmentField = new JTextField(employee.getDepartment());
+
+        workLocationField = new JTextField(employee.getWorkLocation());
+
+        employmentStatusField = new JTextField(employee.getEmploymentStatus());
+
+        hourlyRateField = new JTextField(employee.getHourlyrate().toString());
+        
+        notesField = new JTextField(employee.getNotes());
+
+        hardSkill1Field = new JTextField(employee.getHardSkill1());
+
+        hardSkill2Field = new JTextField(employee.getHardSkill2());
+
+        softSkill1Field = new JTextField(employee.getSoftSkill1());
+
+        softSkill2Field = new JTextField(employee.getSoftSkill2());
+
+        //Updates the panel to show the text fields
+        JPanel editPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        editPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
+
+        editPanel.add(new JLabel("Employee ID:")); 
+        editPanel.add(new JLabel(String.valueOf(employee.getEmployeeID()))); // Keep this as JLabel (THIS IS NEW)
+
+        editPanel.add(new JLabel("First Name:")); 
+        editPanel.add(firstNameField); 
+
+        editPanel.add(new JLabel("Last Name:"));
+        editPanel.add(lastNameField); 
+
+
+        editPanel.add(new JLabel("Job Title:")); 
+        editPanel.add(jobTitleField); 
+
+        editPanel.add(new JLabel("Department:")); 
+        editPanel.add(departmentField); 
+
+        editPanel.add(new JLabel("Work Location:")); 
+        editPanel.add(workLocationField); 
+
+        editPanel.add(new JLabel("Employment Status:")); 
+        editPanel.add(employmentStatusField);
+
+        editPanel.add(new JLabel("Email:")); 
+        editPanel.add(emailField);
+
+        editPanel.add(new JLabel("Phone Number:")); 
+        editPanel.add(phoneField); 
+
+        editPanel.add(new JLabel("Hourly Rate:")); 
+        editPanel.add(hourlyRateField);
+
+        editPanel.add(new JLabel("Notes:")); 
+        editPanel.add(notesField); 
+
+        editPanel.add(new JLabel("Hard Skill 1:"));
+        editPanel.add(hardSkill1Field);
+
+        editPanel.add(new JLabel("Hard Skill 2:"));
+        editPanel.add(hardSkill2Field);
+
+        editPanel.add(new JLabel("Soft Skill 1:"));
+        editPanel.add(softSkill1Field);
+
+        editPanel.add(new JLabel("Soft Skill 2:"));
+        editPanel.add(softSkill2Field); 
+
+        editPanel.add(new JLabel("Is Manager:"));
+
+        editPanel.add(new JLabel(employee.getIsManager() == 1 ? "Yes" : "No"));
+
+        editPanel.add(new JLabel("Is CEO: "));
+        editPanel.add(new JLabel(employee.getIsCEO() == 1 ? "Yes" : "No"));
+
+        //Clear existing panel and add edit panel
+        removeAll();
+        add(editPanel, BorderLayout.CENTER);
+        saveButton.setVisible(true);
+        revalidate();
+        repaint();
+    }
+
+    //Method to save the changes that were made
+    private void saveChanges() {
+        try {
+            employee.setFirstName(firstNameField.getText());
+
+            employee.setLastName(lastNameField.getText());
+
+            employee.setEmail(emailField.getText()); 
+
+            employee.setPhoneNumber(phoneField.getText()); 
+
+            employee.setJobTitle(jobTitleField.getText()); 
+
+            employee.setDepartment(departmentField.getText());
+
+            employee.setWorkLocation(workLocationField.getText()); 
+
+            employee.setEmploymentStatus(employmentStatusField.getText()); 
+
+            employee.setHourlyRate(new BigDecimal(hourlyRateField.getText())); 
+
+            employee.setNotes(notesField.getText()); 
+
+            employee.setHardSkill1(hardSkill1Field.getText()); 
+
+            employee.setHardSkill2(hardSkill2Field.getText()); 
+
+            employee.setSoftSkill1(softSkill1Field.getText()); 
+
+            employee.setSoftSkill2(softSkill2Field.getText()); 
+
+            //Update in the database
+            employeeDAO.updateEmployee(employee);
+
+            JOptionPane.showMessageDialog(this, "Employee details updated successfully.");
+            setEmployee(employee); //Refreses the employee details view
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating employee: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+        }
+    }
+
+
+
