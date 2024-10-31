@@ -2,49 +2,57 @@ package com.hrapp;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.sql.*;
 
 public class CreateEvaluationForm extends JFrame {
-    private JTextArea feedbackField;
+    private JTextArea commentsArea;
     private JTextField ratingField;
     private JButton submitButton;
     private int employeeID;
+    private SprintEvaluations parentPanel;
 
-    public CreateEvaluationForm(int employeeID) {
+    public CreateEvaluationForm(int employeeID, SprintEvaluations parentPanel) {
         this.employeeID = employeeID;
-        setTitle("Create Sprint Evaluation");
-        setSize(400, 300);
+        this.parentPanel = parentPanel;
+
+        setTitle("New Sprint Evaluation");
         setLayout(new BorderLayout());
 
-        feedbackField = new JTextArea("Enter feedback here...");
-        ratingField = new JTextField("Enter rating (1-5)");
+        // Comments Field
+        commentsArea = new JTextArea(5, 20);
+        add(new JScrollPane(commentsArea), BorderLayout.CENTER);
 
-        submitButton = new JButton("Submit Evaluation");
-        submitButton.addActionListener(e -> submitEvaluation());
+        // Rating Field
+        JPanel ratingPanel = new JPanel();
+        ratingPanel.add(new JLabel("Rating:"));
+        ratingField = new JTextField(5);
+        ratingPanel.add(ratingField);
+        add(ratingPanel, BorderLayout.NORTH);
 
-        add(feedbackField, BorderLayout.CENTER);
-        add(ratingField, BorderLayout.NORTH);
+        // Submit Button
+        submitButton = new JButton("Submit");
+        submitButton.addActionListener((ActionEvent e) -> submitEvaluation());
         add(submitButton, BorderLayout.SOUTH);
 
-        setVisible(true);
+        pack();
     }
 
     private void submitEvaluation() {
-        String feedback = feedbackField.getText();
-        int rating = Integer.parseInt(ratingField.getText());
-
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO SprintEvaluations (employeeID, evaluationDate, feedback, rating, isSubmitted) VALUES (?, CURDATE(), ?, ?, TRUE)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrdb", "root", "password")) {
+            String query = "INSERT INTO SprintEvaluations (employeeID, evaluationDate, comments, rating, submitted) VALUES (?, NOW(), ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, employeeID);
-            stmt.setString(2, feedback);
-            stmt.setInt(3, rating);
+            stmt.setString(2, commentsArea.getText());
+            stmt.setInt(3, Integer.parseInt(ratingField.getText()));
+            stmt.setBoolean(4, true); // Set as submitted
+
             stmt.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Evaluation submitted successfully!");
-            dispose();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error submitting evaluation.");
+            parentPanel.loadEvaluations(); // Refresh table in parent panel
+            JOptionPane.showMessageDialog(this, "Sprint Evaluation submitted successfully!");
+            dispose(); // Close form after submission
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
