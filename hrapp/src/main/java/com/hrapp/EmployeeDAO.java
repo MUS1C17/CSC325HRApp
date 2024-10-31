@@ -47,7 +47,7 @@ public class EmployeeDAO //DAO - Data Access Object
             {
                 try 
                 {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     dateOfBirth = LocalDate.parse(dateStr, formatter);
                 } 
                 catch (DateTimeParseException e) 
@@ -104,7 +104,7 @@ public class EmployeeDAO //DAO - Data Access Object
                     {
                         try 
                         {
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                             dateOfBirth = LocalDate.parse(dateStr, formatter);
                         } 
                         catch (DateTimeParseException e) 
@@ -181,7 +181,7 @@ public class EmployeeDAO //DAO - Data Access Object
             employee.getIsCEO()        
         );
 
-        executer.closeConnection();
+        //executer.closeConnection();
     }
 
      /**
@@ -193,7 +193,7 @@ public class EmployeeDAO //DAO - Data Access Object
     public void deleteEmployee(int employeeID) throws SQLException {
         String query = "UPDATE Employee SET isDeleted = 1 WHERE EmployeeID = ?";
         executer.setDataInDatabase(query, employeeID);
-        executer.closeConnection();
+        //executer.closeConnection();
     }
 
     /**
