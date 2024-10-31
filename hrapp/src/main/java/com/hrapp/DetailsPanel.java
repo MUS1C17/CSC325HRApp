@@ -118,10 +118,6 @@ public class DetailsPanel extends JPanel
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
 
-        //Back button
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
-
         //Delete Employee button
         JButton deleteEmployeeButton = new JButton("Delete Employee");
         deleteEmployeeButton.addActionListener(new ActionListener() {
@@ -156,8 +152,7 @@ public class DetailsPanel extends JPanel
            } 
         });
 
-        //Add buttons to the button panel
-        buttonPanel.add(backButton);
+        //Add button to the button panel
         buttonPanel.add(deleteEmployeeButton);
 
 
