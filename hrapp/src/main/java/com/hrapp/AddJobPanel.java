@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -84,8 +86,6 @@ public class AddJobPanel extends JPanel
         panel.add(new JLabel("Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
-        
-        Platform.runLater(this::initFX);
 
         // End date
         panel.add(new JLabel("End Date:"));
@@ -167,6 +167,22 @@ public class AddJobPanel extends JPanel
             {
                 try
                 {
+                    // Array to hold the dates
+                    LocalDate[] dates = new LocalDate[2];
+                    // Create a CountDownLatch initialized with 1
+                    CountDownLatch latch = new CountDownLatch(1);
+
+                    // Retrieve date values on the JavaFX Application Thread
+                    Platform.runLater(() -> 
+                    {
+                        dates[0] = startDatePicker.getValue();
+                        dates[1] = endDatePicker.getValue();
+                        latch.countDown(); // Signal that dates are retrieved
+                    });
+
+                    // Wait for the latch to reach zero
+                    latch.await();
+                    
                     jobDAO.addJob(new Job(
                         jobTitle.getText(),
                         companyName.getText(),
@@ -219,7 +235,7 @@ public class AddJobPanel extends JPanel
             // Initialize the root pane for the first panel
             StackPane rootForStartDate = new StackPane();
             startDatePicker = new DatePicker();
-            endDatePicker.setPromptText("Select Start Date");
+            startDatePicker.setPromptText("Select Start Date");
             rootForStartDate.getChildren().add(startDatePicker);
 
             // Create a separate scene for the start date panel and set it on the JFXPanel
@@ -228,7 +244,7 @@ public class AddJobPanel extends JPanel
 
             // Initialize the root pane for the second panel
             StackPane rootForEndDate = new StackPane();
-            DatePicker endDatePicker = new DatePicker();
+            endDatePicker = new DatePicker();
             endDatePicker.setPromptText("Select End Date");
             rootForEndDate.getChildren().add(endDatePicker);
 
