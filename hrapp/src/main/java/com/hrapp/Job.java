@@ -58,6 +58,16 @@ public class Job
         return startDate;
     }
 
+    public String getStartDateStringFormat()
+    {
+        return startDate.toString().substring(5,7) + "/" + startDate.toString().substring(8) + "/" + startDate.toString().substring(0, 4);
+    }
+
+    public String getEndDateStringFormat()
+    {
+        return endDate.toString().substring(5,7) + "/" + endDate.toString().substring(8) + "/" + endDate.toString().substring(0, 4);
+    }
+
     public LocalDate getEndDate()
     {
         return endDate;

@@ -82,7 +82,7 @@ public class JobHistoryPanel extends JPanel
 
         // String of all the job details, organized neatly to fit in the box.
         String jobDetails = "Job title: " + job.getJobTitle() + "\nCompany name: " + job.getCompanyName() +
-        "\nCity: " + job.getCity() + " (" + job.getStartDate() + " - " + job.getEndDate() + ")" +
+        "\nCity: " + job.getCity() + " (" + job.getStartDateStringFormat() + " - " + job.getEndDateStringFormat() + ")" +
         "\n" + job.getJobDescription() + "\nTermination reason: " + job.getQuitReason();
 
         // JOB LABELS NOT WRAPPING OR STACKING PROPERLY!!!

@@ -26,8 +26,10 @@ public class AddJobPanel extends JPanel
     //Properties
     private MainApplication mainApp;
     private JobDAO jobDAO;
-    private JFXPanel panelForDate;
-    private DatePicker datePicker;
+    private JFXPanel panelForStartDate;
+    private JFXPanel panelForEndDate;
+    private DatePicker startDatePicker;
+    private DatePicker endDatePicker;
     private int employeeID;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
@@ -80,15 +82,15 @@ public class AddJobPanel extends JPanel
 
         // Start date
         panel.add(new JLabel("Start Date:"));
-        panelForDate = new JFXPanel();
-        panel.add(panelForDate);
+        panelForStartDate = new JFXPanel();
+        panel.add(panelForStartDate);
         
         Platform.runLater(this::initFX);
 
         // End date
         panel.add(new JLabel("End Date:"));
-        panelForDate = new JFXPanel();
-        panel.add(panelForDate);
+        panelForEndDate = new JFXPanel();
+        panel.add(panelForEndDate);
         
         Platform.runLater(this::initFX);
 
@@ -168,8 +170,8 @@ public class AddJobPanel extends JPanel
                     jobDAO.addJob(new Job(
                         jobTitle.getText(),
                         companyName.getText(),
-                        datePicker.getValue(),
-                        datePicker.getValue(),
+                        startDatePicker.getValue(),
+                        endDatePicker.getValue(),
                         city.getText(),
                         description.getText(),
                         quitReason.getText(),
@@ -213,17 +215,26 @@ public class AddJobPanel extends JPanel
     // Method to initialize the JavaFX content
     public void initFX() 
     {
-        StackPane root = new StackPane();
+        Platform.runLater(() -> {
+            // Initialize the root pane for the first panel
+            StackPane rootForStartDate = new StackPane();
+            startDatePicker = new DatePicker();
+            endDatePicker.setPromptText("Select Start Date");
+            rootForStartDate.getChildren().add(startDatePicker);
 
-        // Create a DatePicker
-        datePicker = new DatePicker();
-        datePicker.setPromptText("Select Date");
+            // Create a separate scene for the start date panel and set it on the JFXPanel
+            Scene sceneForStartDate = new Scene(rootForStartDate, 300, 200);
+            panelForStartDate.setScene(sceneForStartDate);
 
-        // Add the DatePicker to the root StackPane
-        root.getChildren().add(datePicker);
+            // Initialize the root pane for the second panel
+            StackPane rootForEndDate = new StackPane();
+            DatePicker endDatePicker = new DatePicker();
+            endDatePicker.setPromptText("Select End Date");
+            rootForEndDate.getChildren().add(endDatePicker);
 
-        // Create the scene and set it on the JFXPanel
-        Scene scene = new Scene(root, 300, 200);
-        panelForDate.setScene(scene);
+            // Create a separate scene for the end date panel and set it on the JFXPanel
+            Scene sceneForEndDate = new Scene(rootForEndDate, 300, 200);
+            panelForEndDate.setScene(sceneForEndDate);
+        });   
     }
 }

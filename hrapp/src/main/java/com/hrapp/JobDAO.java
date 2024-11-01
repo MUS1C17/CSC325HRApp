@@ -21,9 +21,10 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
     ArrayList<Job> jobs = new ArrayList<>();
     String query = "SELECT * FROM JobHistory WHERE isDeleted = 0 AND employeeID = " + employeeID; // Database query to get all job history data that is NOT deleted and relates to employee ID.
 
-    try (ResultSet result = executor.getDataFromDatabase(query)) {
+    
+    try (ResultSet result = executor.getDataFromDatabase(query)) {    
         while (result.next()) {
-            // Retrieve and parse start and end dates for each row.
+             // Retrieve and parse start and end dates for each row.
             LocalDate startDate = null;
             LocalDate endDate = null;
 
@@ -32,7 +33,7 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
 
             if (startStr != null && !startStr.isEmpty()) {
                 try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     startDate = LocalDate.parse(startStr, formatter);
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();
@@ -41,7 +42,7 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
 
             if (endStr != null && !endStr.isEmpty()) {
                 try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     endDate = LocalDate.parse(endStr, formatter);
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();
