@@ -12,6 +12,7 @@ public class MainApplication extends JFrame{
     private AddEmployeePanel addEmployeePanel;
     private JPanel mainPanel;
     private EmployeeDetailPanel employeeDetailPanel;
+    private UserSelectionPanel userSelectionPanel;
     private CardLayout cardLayout;
 
 
@@ -29,8 +30,10 @@ public class MainApplication extends JFrame{
         homePanel = new HomePanel(isManagerOrCEO, this);
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
+        userSelectionPanel = new UserSelectionPanel(this);
 
         // Add the HomePanel to the Frame
+        mainPanel.add(userSelectionPanel, "UserSelectionPanel");
         mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
