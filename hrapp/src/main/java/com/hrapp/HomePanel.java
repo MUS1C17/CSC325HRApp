@@ -1,9 +1,14 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,10 +22,13 @@ public class HomePanel extends JPanel
     private JButton addEmployeeButton;
     private MainApplication mainApp;
     private HomePanel homePanel;
+    private JPanel userInfoPanel;
+    private Employee currentUser;
 
-    public HomePanel(boolean isManagerOrCEO, MainApplication mainApp)
+    public HomePanel(boolean isManagerOrCEO, MainApplication mainApp, Employee currentUser)
     {
         this.mainApp = mainApp;
+        this.currentUser = currentUser;
 
         setLayout(new BorderLayout());
 
@@ -45,6 +53,10 @@ public class HomePanel extends JPanel
         topPanel.add(addEmployeeButton);
 
         add(topPanel, BorderLayout.NORTH);
+
+        // Initialize and add the user info panel
+        userInfoPanel = createUserInfoPanel();
+        add(userInfoPanel, BorderLayout.WEST);        
 
         //Employee Table Panel
         employeeTablePanel = new EmployeeTablePanel();
@@ -97,5 +109,24 @@ public class HomePanel extends JPanel
     public void closeResources() 
     {
         employeeTablePanel.closeDAO();
+    }
+
+    //Creates a Left Panel with user information
+    private JPanel createUserInfoPanel()
+    {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setPreferredSize(new Dimension(200, 0)); //Width - 200 and height adjusts automatically
+
+        Employee currentUser = mainApp.getCurrentUser(); //Get current employee user
+
+        //Add components
+        JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getFirstName());
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(welcomeLabel);
+        panel.add(Box.createVerticalStrut(20)); //Spacer
+        return panel;
     }
 }
