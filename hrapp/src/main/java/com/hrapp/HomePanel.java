@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.sql.SQLException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -24,6 +26,7 @@ public class HomePanel extends JPanel
     private HomePanel homePanel;
     private JPanel userInfoPanel;
     private Employee currentUser;
+    private JButton jobSatisfactionButton;
 
     public HomePanel(boolean isManagerOrCEO, MainApplication mainApp, Employee currentUser)
     {
@@ -117,16 +120,53 @@ public class HomePanel extends JPanel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setPreferredSize(new Dimension(200, 0)); //Width - 200 and height adjusts automatically
+        panel.setPreferredSize(new Dimension(250, 0)); //Width - 200 and height adjusts automatically
 
         Employee currentUser = mainApp.getCurrentUser(); //Get current employee user
 
         //Add components
-        JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getFirstName());
-        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        //Welcome Message
+        JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getFirstName() + "!");
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(welcomeLabel);
         panel.add(Box.createVerticalStrut(20)); //Spacer
+        
+        //First and Last name
+        JLabel firstAndLastName = new JLabel(currentUser.getFirstAndLastName());
+        panel.add(firstAndLastName);
+
+        //Email
+        JLabel email = new JLabel(currentUser.getEmail());
+        panel.add(email);
+
+        //Phone Number
+        JLabel phoneNumber = new JLabel("(" + currentUser.getPhoneNumber().substring(0, 3) + ")-" + currentUser.getPhoneNumber().substring(3, 6) + "-" +  currentUser.getPhoneNumber().substring(6));
+        panel.add(phoneNumber);
+
+        //Job Title
+        JLabel jobTitle = new JLabel(currentUser.getJobTitle());
+        panel.add(jobTitle);
+
+
+        /*
+         * TODO: Add the rest of needed elements here
+         */
+
+        //Job Satisfection Button
+        jobSatisfactionButton = new JButton("Job Satisfaction Reflection");
+        panel.add(Box.createVerticalStrut(300));
+        panel.add(jobSatisfactionButton);
+
+        jobSatisfactionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //Switch to the panel
+            }
+        });
+
+
         return panel;
     }
 }
