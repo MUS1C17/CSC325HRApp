@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -72,9 +73,14 @@ public class EmployeeDetailPanel extends JPanel
         navigationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Optional padding
         
         //Initialize buttons
-        detailsButton = new JButton("Details");
-        jobHistoryButton = new JButton("Job History");
-        sprintEvaluationButton = new JButton("Sprint Evaluations");
+        detailsButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover).png"));
+        jobHistoryButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover).png"));
+        sprintEvaluationButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover).png"));
+
+        //Set toggled look for each button
+        detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled).png"));
+        jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled).png"));
+        sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled).png"));
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -86,11 +92,18 @@ public class EmployeeDetailPanel extends JPanel
        leftPanelContainer.add(separator, BorderLayout.EAST);
 
         //Dimenstion for the buttons
-        Dimension buttonSize = new Dimension(200, 35);
+        Dimension buttonSize = new Dimension(100, 37);
         detailsButton.setMaximumSize(buttonSize);
         jobHistoryButton.setMaximumSize(buttonSize);
         sprintEvaluationButton.setMaximumSize(buttonSize);
 
+        //No border or background on the buttons
+        detailsButton.setBorderPainted(false);
+        detailsButton.setContentAreaFilled(false);
+        jobHistoryButton.setBorderPainted(false);
+        jobHistoryButton.setContentAreaFilled(false);
+        sprintEvaluationButton.setBorderPainted(false);
+        sprintEvaluationButton.setContentAreaFilled(false);
 
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);

@@ -2,6 +2,7 @@ package com.hrapp;
 
 import java.awt.CardLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -17,7 +18,8 @@ public class MainApplication extends JFrame{
 
     public MainApplication() 
     {
-        setTitle("HRApp");
+        setTitle("FRONTLINE HR App");
+        setIconImage(new ImageIcon("resources\\FRONTLINE HR App Badge (Large).png").getImage());
 
         //Set up the CardLayout
         cardLayout = new CardLayout();
@@ -41,7 +43,7 @@ public class MainApplication extends JFrame{
 
         // Frame settings 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1000, 800);
         setLocationRelativeTo(null); //Center the window
     }
 
