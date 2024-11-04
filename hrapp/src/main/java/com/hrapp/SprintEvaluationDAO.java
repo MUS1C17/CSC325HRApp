@@ -1,46 +1,45 @@
 package com.hrapp;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SprintEvaluationDAO {
-    private Connection conn;
 
-    public SprintEvaluationDAO() throws SQLException {
-        conn = DriverManager.getConnection("jdbc:your_database_url_here", "username", "password");
+    private final SQLExecuter sqlExecuter;
+
+    public SprintEvaluationDAO(SQLExecuter sqlExecuter) {
+        this.sqlExecuter = sqlExecuter;
     }
 
-    public List<SprintEvaluation> getEvaluationsByEmployeeId(int employeeId) throws SQLException {
-        String sql = "SELECT * FROM sprint_evaluations WHERE employee_id = ?";
+    // Add a new Sprint Evaluation to the database
+    public void addSprintEvaluation(SprintEvaluation evaluation) throws SQLException {
+        String query = "INSERT INTO SprintEvaluations (date, employeeId, content) VALUES (?, ?, ?)";
+        sqlExecuter.setDataInDatabase(query,
+            java.sql.Date.valueOf(evaluation.getDate()),
+            evaluation.getEmployeeId(),
+            evaluation.getContent()
+        );
+    }
+
+    // Retrieve all Sprint Evaluations for a specific employee
+    public List<SprintEvaluation> getSprintEvaluationsForEmployee(int employeeId) throws SQLException {
+        String query = "SELECT * FROM SprintEvaluations WHERE employeeId = ?";
+        ResultSet rs = sqlExecuter.getDataFromDatabase(query, employeeId);
+
         List<SprintEvaluation> evaluations = new ArrayList<>();
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, employeeId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                SprintEvaluation evaluation = new SprintEvaluation(
-                );
-                evaluations.add(evaluation);
-            }
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            LocalDate date = rs.getDate("date").toLocalDate();
+            String content = rs.getString("content");
+            evaluations.add(new SprintEvaluation(id, date, employeeId, content));
         }
-
         return evaluations;
     }
 
-    public void addEvaluation(SprintEvaluation evaluation) throws SQLException {
-        String sql = "INSERT INTO sprint_evaluations (employee_id, evaluation_date, performance_score, comments, submission_status) VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, evaluation.getEmployeeId());
-            stmt.setDate(2, new Date(evaluation.getEvaluationDate().getTime()));
-            stmt.setInt(3, evaluation.getPerformanceScore());
-            stmt.setString(4, evaluation.getComments());
-            stmt.setBoolean(5, evaluation.isSubmitted());
-            stmt.executeUpdate();
-        }
-    }
-
-    // Other DAO methods to update, delete, or fetch evaluations
+    // Implement other methods as needed (e.g., update or delete evaluations)
 }

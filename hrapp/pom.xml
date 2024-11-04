@@ -47,6 +47,18 @@
             <version>23.0.1</version>
         </dependency>
         
+    
+      <dependency>
+        <groupId>com.google.android</groupId>
+        <artifactId>android</artifactId>
+        <version>4.1.1.4</version>
+      </dependency>
+    
+      <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-1.0-sdk</artifactId>
+        <version>1.9.76</version>
+      </dependency>
     </dependencies>
 
     <build>
