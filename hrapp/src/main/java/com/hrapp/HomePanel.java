@@ -162,7 +162,7 @@ public class HomePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //Switch to the panel
+                mainApp.switchToPanel("AddSurveySatisfactionPanel");
             }
         });
 
