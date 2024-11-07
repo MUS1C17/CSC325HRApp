@@ -73,14 +73,14 @@ public class EmployeeDetailPanel extends JPanel
         navigationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Optional padding
         
         //Initialize buttons
-        detailsButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover).png"));
-        jobHistoryButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover).png"));
-        sprintEvaluationButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover).png"));
+        detailsButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
+        jobHistoryButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png"));
+        sprintEvaluationButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png"));
 
         //Set toggled look for each button
-        detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled).png"));
-        jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled).png"));
-        sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled).png"));
+        detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled) (1).png"));
+        jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
+        sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -92,7 +92,7 @@ public class EmployeeDetailPanel extends JPanel
        leftPanelContainer.add(separator, BorderLayout.EAST);
 
         //Dimenstion for the buttons
-        Dimension buttonSize = new Dimension(100, 37);
+        Dimension buttonSize = new Dimension(200, 76);
         detailsButton.setMaximumSize(buttonSize);
         jobHistoryButton.setMaximumSize(buttonSize);
         sprintEvaluationButton.setMaximumSize(buttonSize);
