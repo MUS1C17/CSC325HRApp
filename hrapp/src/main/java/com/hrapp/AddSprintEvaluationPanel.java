@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class SprintEvaluationDAO {
+public class AddSprintEvaluationPanel {
 
     private SQLExecuter sqlExecuter; // Assuming you have this class to handle DB connections
 

@@ -12,11 +12,16 @@ public class SprintEvaluationPanel extends JPanel {
 
     private SprintEvaluationDAO evaluationDAO;
     private JTextArea displayArea;
-    private JTextField contentField, employeeIdField;
+    private JTextField employeeIdField, contentField;
 
     // No-argument constructor
     public SprintEvaluationPanel() {
-        this.evaluationDAO = null; // Or handle initialization differently
+        try {
+            this.evaluationDAO = new SprintEvaluationDAO();  // Proper initialization of evaluationDAO
+        } catch (SQLException e) {
+            e.printStackTrace();
+            displayArea.append("Failed to initialize Evaluation DAO.\n");
+        }
         initUI(); // Call to initialize UI components
     }
 
@@ -30,28 +35,29 @@ public class SprintEvaluationPanel extends JPanel {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        // UI Components
+        // Input Panel (for form fields)
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(3, 2));
+        inputPanel.setLayout(new GridLayout(3, 2, 10, 10)); // 3 rows, 2 columns
 
+        // Employee ID field
         JLabel employeeLabel = new JLabel("Employee ID:");
         employeeIdField = new JTextField();
-
-        JLabel contentLabel = new JLabel("Content:");
-        contentField = new JTextField();
-
-        JButton addButton = new JButton("Add Evaluation");
-        JButton fetchButton = new JButton("Fetch Evaluations");
-
-        // Add components to input panel
         inputPanel.add(employeeLabel);
         inputPanel.add(employeeIdField);
+
+        // Content field
+        JLabel contentLabel = new JLabel("Evaluation Content:");
+        contentField = new JTextField();
         inputPanel.add(contentLabel);
         inputPanel.add(contentField);
+
+        // Buttons
+        JButton addButton = new JButton("Add Evaluation");
+        JButton fetchButton = new JButton("Fetch Evaluations");
         inputPanel.add(addButton);
         inputPanel.add(fetchButton);
 
-        // Display Area
+        // Display Area (TextArea to show results or feedback)
         displayArea = new JTextArea(10, 30);
         displayArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(displayArea);
@@ -59,7 +65,7 @@ public class SprintEvaluationPanel extends JPanel {
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Action Listeners
+        // Button Listeners
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addEvaluation();
@@ -93,9 +99,9 @@ public class SprintEvaluationPanel extends JPanel {
             contentField.setText("");
         } catch (SQLException ex) {
             ex.printStackTrace();
-            displayArea.append("Error adding evaluation.\n");
+            displayArea.append("Error adding evaluation: " + ex.getMessage() + "\n");
         } catch (NumberFormatException ex) {
-            displayArea.append("Invalid employee ID.\n");
+            displayArea.append("Invalid Employee ID.\n");
         }
     }
 
@@ -108,17 +114,21 @@ public class SprintEvaluationPanel extends JPanel {
 
         try {
             int employeeId = Integer.parseInt(employeeIdField.getText());
-            List<SprintEvaluation> evaluations = evaluationDAO.getSprintEvaluationsForEmployee(employeeId);
+            List<SprintEvaluation> evaluations = evaluationDAO.getAllSprintEvaluationsForEmployee(employeeId);
 
-            displayArea.setText(""); // Clear the area before displaying results
-            for (SprintEvaluation eval : evaluations) {
-                displayArea.append("Date: " + eval.getDate() + ", Content: " + eval.getContent() + "\n");
+            displayArea.setText(""); // Clear the display area before showing results
+            if (evaluations.isEmpty()) {
+                displayArea.append("No evaluations found for employee ID: " + employeeId + "\n");
+            } else {
+                for (SprintEvaluation eval : evaluations) {
+                    displayArea.append("Date: " + eval.getDate() + ", Content: " + eval.getContent() + "\n");
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            displayArea.append("Error fetching evaluations.\n");
+            displayArea.append("Error fetching evaluations: " + ex.getMessage() + "\n");
         } catch (NumberFormatException ex) {
-            displayArea.append("Invalid employee ID.\n");
+            displayArea.append("Invalid Employee ID.\n");
         }
     }
 }

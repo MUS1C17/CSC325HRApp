@@ -57,15 +57,6 @@ public class SQLExecuter {
     // Returns the current database connection.
     public Connection getConnection() {
         return connection;
-    }
-
-    // Method to insert dummy data into the database
-    public void insertDummyData() throws SQLException {
-        // Update the insert query to include the salary and department fields
-        String insertQuery = "INSERT INTO employees (name, position, salary, department) VALUES (?, ?, ?, ?)";
-        
-        // Provide a salary value and department for each employee being inserted
-        setDataInDatabase(insertQuery, "John Doe", "Developer", 60000, "IT"); // Example department
-        setDataInDatabase(insertQuery, "Jane Smith", "Manager", 80000, "HR"); // Example department
+    
     }
 }

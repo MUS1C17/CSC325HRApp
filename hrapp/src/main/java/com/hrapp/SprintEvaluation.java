@@ -3,36 +3,81 @@ package com.hrapp;
 import java.time.LocalDate;
 
 public class SprintEvaluation {
-    private int id;
+
+    private int SprintEvaluationID;
+    private int EmployeeID;
     private LocalDate date;
-    private int employeeId;
-    private String content;
+    private int score;
+    private String comments;
 
-    // Constructor without ID (for creating new evaluations)
-    public SprintEvaluation(LocalDate date, int employeeId, String content) {
+    // Constructor with SprintEvaluationID
+    public SprintEvaluation(int SprintEvaluationID, int EmployeeID, LocalDate date, int score, String comments) {
+        this.SprintEvaluationID = SprintEvaluationID;
+        this.EmployeeID = EmployeeID;
         this.date = date;
-        this.employeeId = employeeId;
-        this.content = content;
+        this.score = score;
+        this.comments = comments;
     }
 
-    // Constructor with ID (for retrieved evaluations)
-    public SprintEvaluation(int id, LocalDate date, int employeeId, String content) {
-        this.id = id;
+    // Constructor without SprintEvaluationID (for adding new evaluations)
+    public SprintEvaluation(int EmployeeID, LocalDate date, int score, String comments) {
+        this.EmployeeID = EmployeeID;
         this.date = date;
-        this.employeeId = employeeId;
-        this.content = content;
+        this.score = score;
+        this.comments = comments;
     }
 
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public SprintEvaluation(LocalDate date2, int employeeId2, String content) {
+        //TODO Auto-generated constructor stub
+    }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public SprintEvaluation(int int1, int employeeId2, String date2, int int2, String string) {
+        //TODO Auto-generated constructor stub
+    }
 
-    public int getEmployeeId() { return employeeId; }
-    public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
+    // Getter and setter methods
+    public int getSprintEvaluationID() {
+        return SprintEvaluationID;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public void setSprintEvaluationID(int SprintEvaluationID) {
+        this.SprintEvaluationID = SprintEvaluationID;
+    }
+
+    public int getEmployeeID() {
+        return EmployeeID;
+    }
+
+    public void setEmployeeID(int EmployeeID) {
+        this.EmployeeID = EmployeeID;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    // New method to return content (maps to 'content' column in DB)
+    public String getContent() {
+        return comments;
+    }
 }
