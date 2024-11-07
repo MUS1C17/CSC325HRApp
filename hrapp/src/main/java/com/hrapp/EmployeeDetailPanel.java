@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -13,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 
@@ -39,6 +41,8 @@ public class EmployeeDetailPanel extends JPanel
     private JButton jobHistoryButton;
     private JButton sprintEvaluationButton;
     private JButton backButton;
+    private JButton editButton;
+    private JButton saveButton;
 
     public EmployeeDetailPanel(MainApplication mainApp) 
     {
@@ -78,6 +82,8 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryButton = new JButton("Job History");
         sprintEvaluationButton = new JButton("Sprint Evaluations");
         backButton = new JButton("Back");
+        editButton = new JButton("Edit");
+        saveButton = new JButton("Save Changes");
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -94,11 +100,15 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryButton.setMaximumSize(buttonSize);
         sprintEvaluationButton.setMaximumSize(buttonSize);
         backButton.setMaximumSize(buttonSize);
+        editButton.setMaximumSize(buttonSize);
+        saveButton.setMaximumSize(buttonSize);
 
 
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);
         navigationPanel.add(sprintEvaluationButton);
+        navigationPanel.add(editButton);
+        navigationPanel.add(saveButton);
 
 
         // Add vertical glue to push the backButton to the bottom
@@ -184,6 +194,25 @@ public class EmployeeDetailPanel extends JPanel
                 sprintEvaluationButton.setEnabled(true);
             }
         });
+
+        //Action of the Edit button:
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                detailsPanel.enableEditing(true); //Enable edit mode in the details panel
+            }
+        });
+
+        //Action of the Save Button
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Save edited employee data
+                employee.setFirstName(firstNameField.getText());
+                employee.setLastName(lastNameField.getText());
+                employee.set
+            }
+        })
     
         // Add components to EmployeeDetailPanel
         add(leftPanelContainer, BorderLayout.WEST);
@@ -200,4 +229,71 @@ public class EmployeeDetailPanel extends JPanel
     {
         detailsButton.setEnabled(status);
     }
+
+    private JTextField firstNameField;
+    private JTextField lastNameField;
+    private JTextField dateofBirthField;
+    private JTextField emailField;
+    private JTextField phoneField;
+    private JTextField jobTitleField;
+    private JTextField departmentField;
+    private JTextField workLocationField;
+    private JTextField employmentStatusField;
+    private JTextField hourlyRateField;
+    private JTextField notesField;
+    private JTextField hardSkill1Field;
+    private JTextField hardSkill2Field;
+    private JTextField softSkill1Field;
+    private JTextField softSkill2Field;
+
+    //Method to enable or disable editing fields
+    public void enableEditing(boolean enable) {
+        firstNameField.setEditable(enable);
+        lastNameField.setEditable(enable);
+        dateofBirthField.setEditable(enable);
+        emailField.setEditable(enable);
+        phoneField.setEditable(enable);
+        jobTitleField.setEditable(enable);
+        departmentField.setEditable(enable);
+        workLocationField.setEditable(enable);
+        employmentStatusField.setEditable(enable);
+        hourlyRateField.setEditable(enable);
+        notesField.setEditable(enable);
+        hardSkill1Field.setEditable(enable);
+        hardSkill2Field.setEditable(enable);
+        softSkill1Field.setEditable(enable);
+        softSkill2Field.setEditable(enable);
+
+        saveButton.setVisible(enable);
+    }   
+
+    //Method to update Employee changes in the database
+    public void updateEmployee(Employee employee) throws SQLException {
+        String sql = "UPDATE Employee SET FirstName = ?, LastName = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, " +
+                       "WorkLocation = ?, EmploymentStatus = ?, Email = ?, PhoneNumber = ?, HourlyRate = ?, Notes = ?, " +
+                       "HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?, IsManager = ?, IsCEO = ? " +
+                       "WHERE EmployeeID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, employee.getFirstName());
+            stmt.setString(2, employee.getLastName());
+            stmt.setString(4, employee.getJobTitle());
+            stmt.setString(5, employee.getDepartment());
+            stmt.setString(6, employee.getWorkLocation());
+            stmt.setString(7, employee.getEmploymentStatus());
+            stmt.setString(8, employee.getEmail());
+            stmt.setString(9, employee.getPhoneNumber());
+            stmt.setBigDecimal(10, employee.getHourlyrate());
+            stmt.setString(11, employee.getNotes());
+            stmt.setString(12, employee.getHardSkill1());
+            stmt.setString(13, employee.getHardSkill2());
+            stmt.setString(14, employee.getSoftSkill1());
+            stmt.setString(15, employee.getSoftSkill2());
+            stmt.setInt(16, employee.getIsManager());
+            stmt.setInt(17, employee.getIsCEO());
+            stmt.setInt(18, employee.getEmployeeID()); 
+    
+            stmt.executeUpdate(); // Execute the update statement
+        }
+    }
+
 }
