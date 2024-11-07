@@ -20,7 +20,7 @@ public class SurveySatisfactionDAO
     public void addSurveySatisfaction(SurveySatisfaction survey) throws SQLException
     {
         //Query to add new SurveySatisfaction
-        String query = "INSERT INTO SurveySatisfaction (EmployeeID, SubmissionDate, SatisfactionLevel, GrwothOpportunities, FavoriteAspect, CommunicationRating, AdditionalComments)" +
+        String query = "INSERT INTO SurveySatisfaction (EmployeeID, SubmissionDate, SatisfactionLevel, GrowthOpportunities, FavoriteAspect, CommunicationRating, AdditionalComments)" +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         exectuer.setDataInDatabase(

@@ -125,6 +125,11 @@ public class MainApplication extends JFrame{
         return currentUser;
     }
 
+    public int getCurrentUserID()
+    {
+        return currentUser.getEmployeeID();
+    }
+
     public static void main(String[] args) 
     {
         SwingUtilities.invokeLater(() -> 

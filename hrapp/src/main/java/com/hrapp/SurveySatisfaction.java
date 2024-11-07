@@ -16,11 +16,10 @@ public class SurveySatisfaction
 
 
     //Constractor
-    public SurveySatisfaction(int surveyID, int employeeID, LocalDate submissionDate, 
+    public SurveySatisfaction(int employeeID, LocalDate submissionDate, 
                                 int satisfactionLevel, String growthOpportunites, String favoriteAspect,
                                 int communicationRating, String additionalComments)
     {
-        this.surveyID = surveyID;
         this.employeeID = employeeID;
         this.submissionDate = submissionDate;
         this.satisfactionLevel = satisfactionLevel;
