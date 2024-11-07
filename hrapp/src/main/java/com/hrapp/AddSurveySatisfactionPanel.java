@@ -40,7 +40,6 @@ public class AddSurveySatisfactionPanel extends JPanel
 
     public void initUI()
     {
-        String[] yesOrNo = new String[]{"Yes", "No"};
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -55,7 +54,7 @@ public class AddSurveySatisfactionPanel extends JPanel
 
         //Growth Opportunities
         panel.add(new JLabel("Do you feel you have opportunities for professional growth?"));
-        growthOpportunites = new JComboBox<>(yesOrNo);
+        growthOpportunites = new JComboBox<>(new String[]{"Yes", "No"});
         panel.add(growthOpportunites);
 
         //Add panel to the AddSurveySatisfactionPanel
