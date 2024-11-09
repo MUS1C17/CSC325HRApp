@@ -13,7 +13,12 @@ public class MainApplication extends JFrame{
     private AddEmployeePanel addEmployeePanel;
     private JPanel mainPanel;
     private EmployeeDetailPanel employeeDetailPanel;
+    private UserSelectionPanel userSelectionPanel;
+    private AddSurveySatisfactionPanel addSurveryPanel;
     private CardLayout cardLayout;
+
+    private Employee currentUser;
+
 
 
     public MainApplication() 
@@ -28,14 +33,18 @@ public class MainApplication extends JFrame{
         boolean isManagerOrCEO = checkUserRole();
 
         //Create an instance of HomePanel
-        homePanel = new HomePanel(isManagerOrCEO, this);
+        //homePanel = new HomePanel(isManagerOrCEO, this);
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
+        userSelectionPanel = new UserSelectionPanel(this);
+        addSurveryPanel = new AddSurveySatisfactionPanel(this);
 
         // Add the HomePanel to the Frame
-        mainPanel.add(homePanel, "HomePanel");
+        mainPanel.add(userSelectionPanel, "UserSelectionPanel");
+        //mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
+        mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
         
 
         //Add the mainPanel to the JFrame
@@ -67,6 +76,19 @@ public class MainApplication extends JFrame{
         super.dispose();
     }
 
+    public void createHomePanel(boolean isManagerOrCEO)
+    {
+        homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
+        mainPanel.add(homePanel, "HomePanel");
+    }
+
+    public void showHomePanel()
+    {
+        homePanel = new HomePanel(true, this, this.getCurrentUser());
+        mainPanel.add(homePanel, "HomePanel");
+        switchToPanel("HomePanel");
+    }
+
     //This method is used to switch to the specified panel in the CardLayout 
     //using the name of the panel
     public void switchToAddEmployeePanel(String panelName)
@@ -93,6 +115,21 @@ public class MainApplication extends JFrame{
     public HomePanel getHomePanel() 
     {
         return homePanel;
+    }
+
+    public void setCurrentUser(Employee user)
+    {
+        currentUser = user;
+    }
+
+    public Employee getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public int getCurrentUserID()
+    {
+        return currentUser.getEmployeeID();
     }
 
     public static void main(String[] args) 

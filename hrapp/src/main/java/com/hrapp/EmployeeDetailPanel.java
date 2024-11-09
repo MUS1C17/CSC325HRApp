@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +39,7 @@ public class EmployeeDetailPanel extends JPanel
     private JButton detailsButton;
     private JButton jobHistoryButton;
     private JButton sprintEvaluationButton;
+    private JButton backButton;
 
     public EmployeeDetailPanel(MainApplication mainApp) 
     {
@@ -76,11 +78,13 @@ public class EmployeeDetailPanel extends JPanel
         detailsButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
         jobHistoryButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png"));
         sprintEvaluationButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png"));
+        backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
 
         //Set toggled look for each button
         detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled) (1).png"));
         jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
         sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
+
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -104,10 +108,19 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryButton.setContentAreaFilled(false);
         sprintEvaluationButton.setBorderPainted(false);
         sprintEvaluationButton.setContentAreaFilled(false);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
 
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);
         navigationPanel.add(sprintEvaluationButton);
+
+
+        // Add vertical glue to push the backButton to the bottom
+        navigationPanel.add(Box.createVerticalGlue());
+        
+        // Add the backButton at the bottom
+        navigationPanel.add(backButton);
 
         // Content panel with CardLayout
         contentCardLayout = new CardLayout();
@@ -124,7 +137,10 @@ public class EmployeeDetailPanel extends JPanel
         contentPanel.add(jobHistoryPanel, "JobHistoryPanel");
         contentPanel.add(sprintEvaluationPanel, "SprintEvaluationPanel");
 
-        // Add action listeners to buttons
+        //Action of Details button:
+            //Switch to Deatils Panel
+            //Enable Job History and Sprint Evaluation button
+            //Disable Details button
         detailsButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e)
@@ -136,6 +152,10 @@ public class EmployeeDetailPanel extends JPanel
             }
         });
 
+        //Action of the Job History button:
+            //Switch to Job History Panel
+            //Enable Details and Sprint Evaluation button
+            //Disable Job History button
         jobHistoryButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e)
@@ -147,6 +167,10 @@ public class EmployeeDetailPanel extends JPanel
             }
         });
 
+        //Action of the Sprint Evaluation button
+            //Switch to Sprint Evaluation Panel
+            //Enable Details and Job History button
+            //Disable Sprint Evaluation button
         sprintEvaluationButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e)
@@ -155,6 +179,23 @@ public class EmployeeDetailPanel extends JPanel
                 detailsButton.setEnabled(true);             //Enable details button
                 jobHistoryButton.setEnabled(true);          //Enable job hisotry button
                 sprintEvaluationButton.setEnabled(false);   //Disable sprint evaluation button
+            }
+        });
+
+        //Action of the Back button:
+            //Swith to detail panel to force opening details panel in future
+            //Switch to HomePanel
+            //Enable Details, Job History, Sprint Evaluations buttons
+            //Enable buttons to prevent bugs with disabled buttons when constantly switching between panels
+        backButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                contentCardLayout.show(contentPanel, "DetailsPanel");
+                mainApp.switchToPanel("HomePanel");
+                detailsButton.setEnabled(true);
+                jobHistoryButton.setEnabled(true);
+                sprintEvaluationButton.setEnabled(true);
             }
         });
     

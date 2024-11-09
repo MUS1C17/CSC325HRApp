@@ -96,7 +96,7 @@ public class EmployeeDAO //DAO - Data Access Object
             try (ResultSet result = pstmt.executeQuery()) 
             {
                 
-                if (result.next()) 
+                if (result.next())
                 {
                     String dateStr = result.getString("DateOfBirth");
                     LocalDate dateOfBirth = null;

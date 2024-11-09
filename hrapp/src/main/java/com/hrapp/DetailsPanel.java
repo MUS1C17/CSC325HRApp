@@ -124,7 +124,7 @@ public class DetailsPanel extends JPanel
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
-
+        
         //Delete Employee button
         JButton deleteEmployeeButton = new JButton(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
         deleteEmployeeButton.setBorderPainted(false);
@@ -161,8 +161,7 @@ public class DetailsPanel extends JPanel
            } 
         });
 
-        //Add buttons to the button panel
-        buttonPanel.add(backButton);
+        //Add button to the button panel
         buttonPanel.add(deleteEmployeeButton);
 
 
