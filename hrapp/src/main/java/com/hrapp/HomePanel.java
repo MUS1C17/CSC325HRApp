@@ -1,8 +1,8 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
@@ -51,7 +51,10 @@ public class HomePanel extends JPanel
         topPanel.add(searchField);
 
         //Add Employee button
-        addEmployeeButton = new JButton("Add Employee");
+        addEmployeeButton = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+        addEmployeeButton.setMaximumSize(new Dimension(100, 45));
+        addEmployeeButton.setBorderPainted(false);
+        addEmployeeButton.setContentAreaFilled(false);
         addEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addEmployeeButton);
 

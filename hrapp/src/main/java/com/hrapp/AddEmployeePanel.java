@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -215,12 +216,18 @@ public class AddEmployeePanel extends JPanel
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
 
+
         //Back button
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
 
         //Add Employee button
-        addButton = new JButton("Add");
+        addButton = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+        addButton.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
+        addButton.setBorderPainted(false);
+        addButton.setContentAreaFilled(false);
         addButton.setEnabled(false);
 
         //Document listener to update state of the Add button depending if the field has expected values

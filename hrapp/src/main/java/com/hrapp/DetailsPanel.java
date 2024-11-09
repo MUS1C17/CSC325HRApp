@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -118,8 +119,16 @@ public class DetailsPanel extends JPanel
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
 
+        //Back button
+        JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
+        
         //Delete Employee button
-        JButton deleteEmployeeButton = new JButton("Delete Employee");
+        JButton deleteEmployeeButton = new JButton(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
+        deleteEmployeeButton.setBorderPainted(false);
+        deleteEmployeeButton.setContentAreaFilled(false);
         deleteEmployeeButton.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent event)
