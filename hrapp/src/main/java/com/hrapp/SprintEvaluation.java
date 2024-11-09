@@ -2,6 +2,23 @@ package com.hrapp;
 
 import java.time.LocalDate;
 
+/*
+ * Sprint evaluation stores answers to the following questions:
+ * 
+ * Over the last two weeks, did you notice any feelings of positivity or negativity while performing specific job tasks and if so, 
+   how would you describe those feelings? — feelings
+ *  
+ * If you could do one task at work all day which task would you choose and why? — favoriteTask
+ * 
+ * Are there any tasks you perform in your job that you feel you are really good at and if so, what are they? — proficientTask
+ * 
+ * Are there any tasks in your job you dread having to do and if so, what are they and what about them makes you dread them? — dreadTask
+ * 
+ * Are there any tasks in your job you look forward to doing and if so, what are they and why do you look forward to them? — potentialTask
+ * 
+ * Notes on current job satisfaction, proficiency, and efficiency — notes
+ */
+
 public class SprintEvaluation 
 {
     //Properties
