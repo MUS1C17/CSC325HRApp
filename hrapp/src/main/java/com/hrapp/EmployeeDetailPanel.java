@@ -5,8 +5,14 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -43,6 +49,8 @@ public class EmployeeDetailPanel extends JPanel
     private JButton backButton;
     private JButton editButton;
     private JButton saveButton;
+    //This is to verify if edit mode is active
+    private boolean isEditMode = false;
 
     public EmployeeDetailPanel(MainApplication mainApp) 
     {
@@ -84,6 +92,7 @@ public class EmployeeDetailPanel extends JPanel
         backButton = new JButton("Back");
         editButton = new JButton("Edit");
         saveButton = new JButton("Save Changes");
+        saveButton.setVisible(false); //initially hidden
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -108,7 +117,6 @@ public class EmployeeDetailPanel extends JPanel
         navigationPanel.add(jobHistoryButton);
         navigationPanel.add(sprintEvaluationButton);
         navigationPanel.add(editButton);
-        navigationPanel.add(saveButton);
 
 
         // Add vertical glue to push the backButton to the bottom
@@ -117,6 +125,12 @@ public class EmployeeDetailPanel extends JPanel
         // Add the backButton at the bottom
         navigationPanel.add(backButton);
         //navigationPanel.add(backButton);
+
+        //Add vertical glue to push the save button to the bottom
+        navigationPanel.add(Box.createVerticalGlue());
+
+        //Add the saveButton at the bottom
+        navigationPanel.add(saveButton);
 
         // Content panel with CardLayout
         contentCardLayout = new CardLayout();
@@ -210,9 +224,43 @@ public class EmployeeDetailPanel extends JPanel
                 //Save edited employee data
                 employee.setFirstName(firstNameField.getText());
                 employee.setLastName(lastNameField.getText());
-                employee.set
+                employee.setEmail(emailField.getText());
+                // Date of Birth - Convert from String to LocalDate
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // adjust format if necessary
+                    employee.setDateOfBirth(LocalDate.parse(dateofBirthField.getText(), formatter));
+                } catch (DateTimeParseException ex) {
+                    System.out.println("Invalid Date of Birth format.");
+                }
+                employee.setDepartment(departmentField.getText());
+                employee.setEmail(emailField.getText());
+                 // Employee ID - Convert from String to int
+                try {
+                    employee.setEmployeeID(Integer.parseInt(employeeIDField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid Employee ID format.");
+                }
+                employee.setPhoneNumber(phoneField.getText());
+                employee.setJobTitle(jobTitleField.getText());
+                employee.setDepartment(departmentField.getText());
+                employee.setWorkLocation(workLocationField.getText());
+                employee.setEmploymentStatus(employmentStatusField.getText());
+                 // Hourly Rate - Convert from String to BigDecimal
+                try {
+                    employee.setHourlyRate(new BigDecimal(hourlyRateField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid Hourly Rate format.");
+                }
+                employee.setNotes(notesField.getText());
+                employee.setHardSkill1(hardSkill1Field.getText());
+                employee.setHardSkill2(hardSkill2Field.getText());
+                employee.setSoftSkill1(softSkill1Field.getText());
+                employee.setSoftSkill2(softSkill2Field.getText());
+
+                isEditMode(false); //Exits Edit mode after changes are saved
             }
-        })
+        });
+        
     
         // Add components to EmployeeDetailPanel
         add(leftPanelContainer, BorderLayout.WEST);
@@ -234,6 +282,7 @@ public class EmployeeDetailPanel extends JPanel
     private JTextField lastNameField;
     private JTextField dateofBirthField;
     private JTextField emailField;
+    private JTextField employeeIDField;
     private JTextField phoneField;
     private JTextField jobTitleField;
     private JTextField departmentField;
@@ -252,6 +301,7 @@ public class EmployeeDetailPanel extends JPanel
         lastNameField.setEditable(enable);
         dateofBirthField.setEditable(enable);
         emailField.setEditable(enable);
+        employeeIDField.setEditable(enable);
         phoneField.setEditable(enable);
         jobTitleField.setEditable(enable);
         departmentField.setEditable(enable);
@@ -295,5 +345,13 @@ public class EmployeeDetailPanel extends JPanel
             stmt.executeUpdate(); // Execute the update statement
         }
     }
+
+    private void setEditMode(boolean enable) {
+        isEditMode = enable;
+        detailsPanel.enableEditing(enable); // Enable edit mode in DetailsPanel
+        saveButton.setVisible(enable);      // Show save button only in edit mode
+        editButton.setEnabled(!enable);     // Disable edit button in edit mode
+    }
+    
 
 }
