@@ -160,6 +160,11 @@ public class Employee
         return lastName;
     }
 
+    public String getFirstAndLastName()
+    {
+        return firstName + " " + lastName;
+    }
+
     public LocalDate getDateOfBirth()
     {
         return dateOfBirth;
