@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -51,10 +52,12 @@ public class EmployeeDetailPanel extends JPanel
     private JButton saveButton;
     //This is to verify if edit mode is active
     private boolean isEditMode = false;
+    private Connection connection;
 
-    public EmployeeDetailPanel(MainApplication mainApp) 
+    public EmployeeDetailPanel(MainApplication mainApp, Connection connection) 
     {
         this.mainApp = mainApp;
+        this.connection = connection;
         setLayout(new BorderLayout());
 
         try 
@@ -213,7 +216,7 @@ public class EmployeeDetailPanel extends JPanel
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                detailsPanel.enableEditing(true); //Enable edit mode in the details panel
+                enableEditing(true); //Enable edit mode in the details panel
             }
         });
 
@@ -257,7 +260,7 @@ public class EmployeeDetailPanel extends JPanel
                 employee.setSoftSkill1(softSkill1Field.getText());
                 employee.setSoftSkill2(softSkill2Field.getText());
 
-                isEditMode(false); //Exits Edit mode after changes are saved
+                setEditMode(false); //Exits Edit mode after changes are saved
             }
         });
         
@@ -348,10 +351,12 @@ public class EmployeeDetailPanel extends JPanel
 
     private void setEditMode(boolean enable) {
         isEditMode = enable;
-        detailsPanel.enableEditing(enable); // Enable edit mode in DetailsPanel
+        enableEditing(enable); // Enable edit mode in DetailsPanel
         saveButton.setVisible(enable);      // Show save button only in edit mode
         editButton.setEnabled(!enable);     // Disable edit button in edit mode
     }
+
+    
     
 
 }

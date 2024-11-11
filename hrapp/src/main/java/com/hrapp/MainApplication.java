@@ -27,7 +27,7 @@ public class MainApplication extends JFrame{
 
         //Create an instance of HomePanel
         homePanel = new HomePanel(isManagerOrCEO, this);
-        employeeDetailPanel = new EmployeeDetailPanel(this);
+        employeeDetailPanel = new EmployeeDetailPanel(this, null);
         addEmployeePanel = new AddEmployeePanel(this);
 
         // Add the HomePanel to the Frame
