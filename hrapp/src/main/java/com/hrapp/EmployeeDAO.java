@@ -184,6 +184,41 @@ public class EmployeeDAO //DAO - Data Access Object
         //executer.closeConnection();
     }
 
+    /**
+     * Updates information about existing employee in the database
+     * 
+     * @param employee The Employee object to add.
+     * @throws SQLException If a database access error occurs.
+     */
+    public void updateEmployee(Employee employee, int employeeID) throws SQLException
+    {
+        String query = "UPDATE Employee SET FirstName = ?, LastName = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, WorkLocation = ?, EmploymentStatus = ?, " +
+                        "Email = ?, PhoneNumber = ?, HourlyRate = ?, Notes = ?, HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?, IsManager = ?, IsCEO = ? " +
+                        "WHERE EmployeeID = ?";
+
+        executer.setDataInDatabase(
+            query,
+            employee.getFirstName(),
+            employee.getLastName(),
+            employee.getDateOfBirth(),
+            employee.getJobTitle(),
+            employee.getDepartment(),
+            employee.getWorkLocation(),
+            employee.getEmploymentStatus(),
+            employee.getEmail(),
+            employee.getPhoneNumber(),
+            employee.getHourlyrate(),
+            employee.getNotes(),
+            employee.getHardSkill1(),
+            employee.getHardSkill2(),
+            employee.getSoftSkill1(),
+            employee.getSoftSkill2(),
+            employee.getIsManager(),
+            employee.getIsCEO(),
+            employeeID);    //employeeID doesn't need employee in the beginning because we pass this value in the method
+
+    }
+
      /**
      * Marks an employee as deleted in the database.
      * 
