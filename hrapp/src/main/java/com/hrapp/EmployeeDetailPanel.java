@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -52,12 +51,10 @@ public class EmployeeDetailPanel extends JPanel
     private JButton saveButton;
     //This is to verify if edit mode is active
     private boolean isEditMode = false;
-    private Connection connection;
 
-    public EmployeeDetailPanel(MainApplication mainApp, Connection connection) 
+    public EmployeeDetailPanel(MainApplication mainApp) 
     {
         this.mainApp = mainApp;
-        this.connection = connection;
         setLayout(new BorderLayout());
 
         try 
@@ -280,7 +277,7 @@ public class EmployeeDetailPanel extends JPanel
     {
         detailsButton.setEnabled(status);
     }
-
+    
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField dateofBirthField;
@@ -319,35 +316,6 @@ public class EmployeeDetailPanel extends JPanel
 
         saveButton.setVisible(enable);
     }   
-
-    //Method to update Employee changes in the database
-    public void updateEmployee(Employee employee) throws SQLException {
-        String sql = "UPDATE Employee SET FirstName = ?, LastName = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, " +
-                       "WorkLocation = ?, EmploymentStatus = ?, Email = ?, PhoneNumber = ?, HourlyRate = ?, Notes = ?, " +
-                       "HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?, IsManager = ?, IsCEO = ? " +
-                       "WHERE EmployeeID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, employee.getFirstName());
-            stmt.setString(2, employee.getLastName());
-            stmt.setString(4, employee.getJobTitle());
-            stmt.setString(5, employee.getDepartment());
-            stmt.setString(6, employee.getWorkLocation());
-            stmt.setString(7, employee.getEmploymentStatus());
-            stmt.setString(8, employee.getEmail());
-            stmt.setString(9, employee.getPhoneNumber());
-            stmt.setBigDecimal(10, employee.getHourlyrate());
-            stmt.setString(11, employee.getNotes());
-            stmt.setString(12, employee.getHardSkill1());
-            stmt.setString(13, employee.getHardSkill2());
-            stmt.setString(14, employee.getSoftSkill1());
-            stmt.setString(15, employee.getSoftSkill2());
-            stmt.setInt(16, employee.getIsManager());
-            stmt.setInt(17, employee.getIsCEO());
-            stmt.setInt(18, employee.getEmployeeID()); 
-    
-            stmt.executeUpdate(); // Execute the update statement
-        }
-    }
 
     private void setEditMode(boolean enable) {
         isEditMode = enable;

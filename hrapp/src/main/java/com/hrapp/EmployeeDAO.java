@@ -3,6 +3,7 @@ package com.hrapp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -195,6 +196,37 @@ public class EmployeeDAO //DAO - Data Access Object
         executer.setDataInDatabase(query, employeeID);
         //executer.closeConnection();
     }
+
+    //Method to update Employee changes in the database
+    private Connection connection;
+    public void updateEmployee(Employee employee) throws SQLException {
+        String sql = "UPDATE Employee SET FirstName = ?, LastName = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, " +
+                       "WorkLocation = ?, EmploymentStatus = ?, Email = ?, PhoneNumber = ?, HourlyRate = ?, Notes = ?, " +
+                       "HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?, IsManager = ?, IsCEO = ? " +
+                       "WHERE EmployeeID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, employee.getFirstName());
+            stmt.setString(2, employee.getLastName());
+            stmt.setString(4, employee.getJobTitle());
+            stmt.setString(5, employee.getDepartment());
+            stmt.setString(6, employee.getWorkLocation());
+            stmt.setString(7, employee.getEmploymentStatus());
+            stmt.setString(8, employee.getEmail());
+            stmt.setString(9, employee.getPhoneNumber());
+            stmt.setBigDecimal(10, employee.getHourlyrate());
+            stmt.setString(11, employee.getNotes());
+            stmt.setString(12, employee.getHardSkill1());
+            stmt.setString(13, employee.getHardSkill2());
+            stmt.setString(14, employee.getSoftSkill1());
+            stmt.setString(15, employee.getSoftSkill2());
+            stmt.setInt(16, employee.getIsManager());
+            stmt.setInt(17, employee.getIsCEO());
+            stmt.setInt(18, employee.getEmployeeID()); 
+    
+            stmt.executeUpdate(); // Execute the update statement
+        }
+    }
+
 
     /**
      * Closes the database connection.
