@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -110,7 +113,27 @@ public class UserSelectionPanel extends JPanel
         leftPanel.add(Box.createVerticalGlue());
 
         //Create login button
-        loginButton = new JButton("Log in");
+        loginButton = new JButton(new ImageIcon("resources\\LoginButtons\\Login button (no hover).png"));
+        loginButton.setBorderPainted(false);
+        loginButton.setContentAreaFilled(false);
+
+        // Set hover actions
+        loginButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                loginButton.setIcon(new ImageIcon("resources\\LoginButtons\\Login button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                loginButton.setIcon(new ImageIcon("resources\\\\LoginButtons\\\\Login button (no hover).png"));
+            }
+        });
 
         //Open HomePanel after login button is clicked
         loginButton.addActionListener(new ActionListener(){

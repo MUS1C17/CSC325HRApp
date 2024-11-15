@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -57,6 +59,23 @@ public class HomePanel extends JPanel
         addEmployeeButton.setContentAreaFilled(false);
         addEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addEmployeeButton);
+
+        addEmployeeButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addEmployeeButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addEmployeeButton.setIcon(new ImageIcon("resources\\\\AddButtons\\\\Add button (no hover).png"));
+            }
+        });
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -157,7 +176,9 @@ public class HomePanel extends JPanel
          */
 
         //Job Satisfection Button
-        jobSatisfactionButton = new JButton("Job Satisfaction Reflection");
+        jobSatisfactionButton = new JButton(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png"));
+        jobSatisfactionButton.setBorderPainted(false);
+        jobSatisfactionButton.setContentAreaFilled(false);
         panel.add(Box.createVerticalStrut(300));
         panel.add(jobSatisfactionButton);
 
@@ -166,6 +187,24 @@ public class HomePanel extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 mainApp.switchToPanel("AddSurveySatisfactionPanel");
+            }
+        });
+
+        // Hover behavior for the jobSatisfactionButton
+        jobSatisfactionButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                jobSatisfactionButton.setIcon(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                jobSatisfactionButton.setIcon(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png"));
             }
         });
 
