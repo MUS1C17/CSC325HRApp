@@ -9,55 +9,37 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+public class EmployeeDAO {
 
-/*
- * This class will handle all CRUD (Create, Read, Update, Delete) operations for 
- * the Employee entity using the enhanced SQLExecuter
- */
-
-public class EmployeeDAO //DAO - Data Access Object
-{
     private SQLExecuter executer;
 
-    //EmployeeDAO constractor
-    public EmployeeDAO() throws SQLException 
-    {
+    // Constructor initializes the SQLExecuter for database interaction
+    public EmployeeDAO() throws SQLException {
         executer = new SQLExecuter();
     }
 
-    /**
-     * Fetches all active (non-deleted) employees from the database.
-     * 
-     * @return List of Employee objects.
-     */
-    public List<Employee> getAllEmployees() throws SQLException 
-    {
+    // Fetch all active employees (non-deleted) from the database
+    public List<Employee> getAllEmployees() throws SQLException {
         List<Employee> employees = new ArrayList<>();
-        String query = "SELECT * FROM Employee WHERE isDeleted = 0";
+        String query = "SELECT * FROM Employee WHERE isDeleted = 0";  // Only get non-deleted employees
+        
+        try (ResultSet result = executer.getDataFromDatabase(query)) {
+            // Iterate over each result and build Employee objects
+            while (result.next()) {
+                String dateStr = result.getString("DateOfBirth");
+                LocalDate dateOfBirth = null;
 
-
-        try(ResultSet result = executer.getDataFromDatabase(query))
-        {
-            
-            String dateStr = result.getString("DateOfBirth");
-            LocalDate dateOfBirth = null;
-
-            // Parse the date string into LocalDate
-            if (dateStr != null && !dateStr.isEmpty()) 
-            {
-                try 
-                {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    dateOfBirth = LocalDate.parse(dateStr, formatter);
-                } 
-                catch (DateTimeParseException e) 
-                {
-                    e.printStackTrace();
+                // Parse the date string into LocalDate, handling potential errors
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    try {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        dateOfBirth = LocalDate.parse(dateStr, formatter);
+                    } catch (DateTimeParseException e) {
+                        e.printStackTrace();  // Log parsing error
+                    }
                 }
-            }
 
-            while(result.next())
-            {
+                // Create a new Employee object and add it to the list
                 Employee employee = new Employee(
                     result.getString("FirstName"),
                     result.getString("LastName"),
@@ -79,87 +61,67 @@ public class EmployeeDAO //DAO - Data Access Object
                 );
                 employee.setEmployeeID(result.getInt("EmployeeID"));
                 employee.setIsDeleted(result.getInt("IsDeleted"));
-                employees.add(employee);
+                employees.add(employee);  // Add the employee to the list
             }
         }
-
         return employees;
     }
 
-    //Methd to get Details about employee that are not shown in the table 
-    public Employee getEmployeeDetails(int id) throws SQLException
-    {
+    // Fetch detailed employee information based on employee ID
+    public Employee getEmployeeDetails(int id) throws SQLException {
         String query = "SELECT * FROM Employee WHERE EmployeeID = ?";
-        try (PreparedStatement pstmt = executer.getConnection().prepareStatement(query)) 
-        {
-            pstmt.setInt(1, id);
-            try (ResultSet result = pstmt.executeQuery()) 
-            {
-                
-                if (result.next())
-                {
+        try (PreparedStatement pstmt = executer.getConnection().prepareStatement(query)) {
+            pstmt.setInt(1, id);  // Set employee ID parameter
+            try (ResultSet result = pstmt.executeQuery()) {
+                if (result.next()) {
+                    // Parse and build the Employee object
                     String dateStr = result.getString("DateOfBirth");
                     LocalDate dateOfBirth = null;
-                    if (dateStr != null && !dateStr.isEmpty()) 
-                    {
-                        try 
-                        {
+                    if (dateStr != null && !dateStr.isEmpty()) {
+                        try {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                             dateOfBirth = LocalDate.parse(dateStr, formatter);
-                        } 
-                        catch (DateTimeParseException e) 
-                        {
+                        } catch (DateTimeParseException e) {
                             e.printStackTrace();
                         }
-                    } 
-                        //Create Employee instance
-                        Employee employee = new Employee(
-                            result.getString("FirstName"),
-                            result.getString("LastName"),
-                            dateOfBirth,
-                            result.getString("JobTitle"),
-                            result.getString("Department"),
-                            result.getString("WorkLocation"),
-                            result.getString("EmploymentStatus"),
-                            result.getString("Email"),
-                            result.getString("PhoneNumber"),
-                            result.getBigDecimal("HourlyRate"),
-                            result.getString("Notes"),
-                            result.getString("HardSkill1"),
-                            result.getString("HardSkill2"),
-                            result.getString("SoftSkill1"),
-                            result.getString("SoftSkill2"),
-                            result.getInt("IsManager"),
-                            result.getInt("IsCEO")
-                        );
+                    }
 
-                        employee.setEmployeeID(result.getInt("EmployeeID"));
-                        employee.setIsDeleted(result.getInt("IsDeleted"));
-                        return employee;
-                                       
-                } 
-                else 
-                {
-                    // Employee not found
-                    return null;
+                    Employee employee = new Employee(
+                        result.getString("FirstName"),
+                        result.getString("LastName"),
+                        dateOfBirth,
+                        result.getString("JobTitle"),
+                        result.getString("Department"),
+                        result.getString("WorkLocation"),
+                        result.getString("EmploymentStatus"),
+                        result.getString("Email"),
+                        result.getString("PhoneNumber"),
+                        result.getBigDecimal("HourlyRate"),
+                        result.getString("Notes"),
+                        result.getString("HardSkill1"),
+                        result.getString("HardSkill2"),
+                        result.getString("SoftSkill1"),
+                        result.getString("SoftSkill2"),
+                        result.getInt("IsManager"),
+                        result.getInt("IsCEO")
+                    );
+                    employee.setEmployeeID(result.getInt("EmployeeID"));
+                    employee.setIsDeleted(result.getInt("IsDeleted"));
+                    return employee;  // Return the employee details
+                } else {
+                    return null;  // Return null if no employee found
                 }
             }
         }
     }
-    
 
-    /**
-     * Adds a new employee to the database.
-     * 
-     * @param employee The Employee object to add.
-     * @throws SQLException If a database access error occurs.
-     */
-    public void addEmployee(Employee employee) throws SQLException
-    {
+    // Adds a new employee to the database
+    public void addEmployee(Employee employee) throws SQLException {
         String query = "INSERT INTO Employee (firstName, lastName, dateOfBirth, jobTitle, department, workLocation, employmentStatus, " + 
                        "email, phoneNumber, hourlyRate, notes, hardSkill1, hardSkill2, softSkill1, softSkill2, isManager, isCEO)" +
                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+        
+        // Insert employee data into the database
         executer.setDataInDatabase(
             query,
             employee.getFirstName(),
@@ -171,7 +133,7 @@ public class EmployeeDAO //DAO - Data Access Object
             employee.getEmploymentStatus(),
             employee.getEmail(),
             employee.getPhoneNumber(),
-            employee.getHourlyrate(),
+            employee.getHourlyRate(),
             employee.getNotes(),
             employee.getHardSkill1(),
             employee.getHardSkill2(),
@@ -180,25 +142,15 @@ public class EmployeeDAO //DAO - Data Access Object
             employee.getIsManager(),
             employee.getIsCEO()        
         );
-
-        //executer.closeConnection();
     }
 
-     /**
-     * Marks an employee as deleted in the database.
-     * 
-     * @param employeeID The ID of the employee to delete.
-     * @throws SQLException If a database access error occurs.
-     */
+    // Marks an employee as deleted in the database
     public void deleteEmployee(int employeeID) throws SQLException {
         String query = "UPDATE Employee SET isDeleted = 1 WHERE EmployeeID = ?";
-        executer.setDataInDatabase(query, employeeID);
-        //executer.closeConnection();
+        executer.setDataInDatabase(query, employeeID);  // Mark employee as deleted
     }
 
-    /**
-     * Closes the database connection.
-     */
+    // Close the database connection when done
     public void close() {
         if (executer != null) {
             executer.closeConnection();
