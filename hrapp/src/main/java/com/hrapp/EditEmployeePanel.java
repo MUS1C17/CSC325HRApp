@@ -32,6 +32,7 @@ public class EditEmployeePanel extends JPanel
     private DatePicker datePicker;
 
     //Instance variables for input fields
+    private JTextField employeeID;
     private JTextField firstName;
     private JTextField lastName;
     private JTextField jobTitle;
@@ -72,6 +73,12 @@ public class EditEmployeePanel extends JPanel
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //Fill the Panel with labels and TextFields
+
+        //EmployeeID but make it not editable
+        panel.add(new JLabel("Employee ID"));
+        employeeID = new JTextField(Integer.toString(employee.getEmployeeID()));
+        employeeID.setEditable(false);  //Set this field to not editable since it is a primary key in database
+        panel.add(employeeID);
 
         //First Name label and input text field with limit of 50 characters
         panel.add(new JLabel("First Name:"));
