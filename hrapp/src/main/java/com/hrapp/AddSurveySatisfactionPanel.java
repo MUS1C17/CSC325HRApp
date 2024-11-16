@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -55,18 +54,18 @@ public class AddSurveySatisfactionPanel extends JPanel
         //Fill the Panel with label and TextFields
 
         //Favorite Aspect
-        panel.add(new JLabel("What do you like most about working here?"));
+        panel.add(new Label("What do you like most about working here?"));
         favoriteAspect = new JTextArea();
         //favoriteAspect.setDocument(new LimitedPlainDocument(250)); - THis is to limit the input. Uncomment in future
         panel.add(favoriteAspect);
 
         //Growth Opportunities
-        panel.add(new JLabel("Do you feel you have opportunities for professional growth?"));
+        panel.add(new Label("Do you feel you have opportunities for professional growth?"));
         growthOpportunites = new JComboBox<>(new String[]{"Yes", "No"});
         panel.add(growthOpportunites);
 
         // Communication Rating
-        panel.add(new JLabel("How would you rate the communication within the company?"));
+        panel.add(new Label("How would you rate the communication within the company?"));
         communicationRating = new JSlider(-5, 5, 0);
         communicationRating.setPaintTrack(true); //Make the line of the slider visible
         communicationRating.setPaintTicks(true); //Make small lines above numbers visible
@@ -75,7 +74,7 @@ public class AddSurveySatisfactionPanel extends JPanel
         panel.add(communicationRating);
 
         //Satisfaction Level
-        panel.add(new JLabel("How satisfied are you with your current role?"));
+        panel.add(new Label("How satisfied are you with your current role?"));
         satisfactionLevel = new JSlider(-5, 5, 0);
         satisfactionLevel.setPaintTrack(true); //Make the line of the slider visible
         satisfactionLevel.setPaintTicks(true); //Make small lines above numbers visible
@@ -84,7 +83,7 @@ public class AddSurveySatisfactionPanel extends JPanel
         panel.add(satisfactionLevel);
 
         //Additional Commments 
-        panel.add(new JLabel("Any additional comments or suggestions?"));
+        panel.add(new Label("Any additional comments or suggestions?"));
         additionalComments = new JTextArea();
         //additionalComments.setDocument(new LimitedPlainDocument(250)); - THis is to limit the input. Uncomment in future
         panel.add(additionalComments);

@@ -1,6 +1,7 @@
 package com.hrapp;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
