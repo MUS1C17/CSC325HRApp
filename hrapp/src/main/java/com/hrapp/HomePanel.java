@@ -214,7 +214,7 @@ public class HomePanel extends JPanel
         jobSatisfactionButton.setBorderPainted(false);
         jobSatisfactionButton.setContentAreaFilled(false);
 
-        panel.add(Box.createVerticalStrut(300));
+        panel.add(Box.createVerticalStrut(100));
         panel.add(jobSatisfactionButton);
 
         jobSatisfactionButton.addActionListener(new ActionListener()
