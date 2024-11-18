@@ -15,6 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -30,6 +34,8 @@ public class EditEmployeePanel extends JPanel
     private EmployeeDAO employeeDAO;
     private JFXPanel panelForDate;
     private DatePicker datePicker;
+    private JTextField[] requiredFields;
+    private JButton updateButton;
 
     //Instance variables for input fields
     private JTextField employeeID;
@@ -82,12 +88,18 @@ public class EditEmployeePanel extends JPanel
 
         //First Name label and input text field with limit of 50 characters
         panel.add(new JLabel("First Name:"));
-        firstName = new JTextField(employee.getFirstName());
+        firstName = new JTextField();
+        firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(50));
+        firstName.setName("firstName");
+        firstName.setText(employee.getFirstName());
         panel.add(firstName);
 
          //Last Name
         panel.add(new JLabel("Last Name:"));
-        lastName = new JTextField(employee.getLastName());
+        lastName = new JTextField();
+        lastName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(75));
+        lastName.setName("lastName");
+        lastName.setText(employee.getLastName());
         panel.add(lastName);
 
         //Date of Birth
@@ -99,7 +111,10 @@ public class EditEmployeePanel extends JPanel
 
         //JobTitle
         panel.add(new JLabel("Job Title:"));
-        jobTitle = new JTextField(employee.getJobTitle());
+        jobTitle = new JTextField();
+        jobTitle.setDocument(new EmployeeFormValidator.LimitedPlainDocument(100));
+        jobTitle.setName("jobTitle");
+        jobTitle.setText(employee.getJobTitle());
         panel.add(jobTitle);
 
         String[] dep = new String[]{null,"SLS", "DEV", "MNG", "SPT"};
@@ -130,18 +145,35 @@ public class EditEmployeePanel extends JPanel
 
         //Email
         panel.add(new JLabel("Email:"));
-        email = new JTextField(employee.getEmail());
+        email = new JTextField();
+        email.setDocument(new EmployeeFormValidator.LimitedPlainDocument(255));
+        email.setName("email");
+        email.setText(employee.getEmail());
         panel.add(email);
 
         //Phone Number
         panel.add(new JLabel("Phone Number:"));
-        phoneNumber = new JTextField(employee.getPhoneNumber());
+        phoneNumber = new JTextField();
+        phoneNumber.setDocument(new EmployeeFormValidator.LimitedPlainDocument(10));
+        phoneNumber.setName("phoneNumber");
+        phoneNumber.setText(employee.getPhoneNumber());
         panel.add(phoneNumber);
+
+        // Add FocusListeners to required fields
+        EmployeeFormValidator.addFocusListenerToField(firstName);
+        EmployeeFormValidator.addFocusListenerToField(lastName);
+        EmployeeFormValidator.addFocusListenerToField(jobTitle);
+        EmployeeFormValidator.addFocusListenerToField(email);
+        EmployeeFormValidator.addFocusListenerToField(phoneNumber);
+
+        //Required fields array
+        requiredFields = new JTextField[]{firstName, lastName, jobTitle, email, phoneNumber};
 
         //Hourly Rate
         panel.add(new JLabel("Hourly Rate:"));
-        hourlyRate = new JFormattedTextField(employee.getHourlyrate());
-        //Add restriction to only use numbers. Optionally allows to use 2 digits after dot.
+        hourlyRate = new JFormattedTextField();
+        ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
+        hourlyRate.setText(employee.getHourlyrate().toString());
         panel.add(hourlyRate);
 
         //Notes
@@ -206,7 +238,31 @@ public class EditEmployeePanel extends JPanel
         });
 
         //save information button
-        JButton updateButton = new JButton("Update");
+        updateButton = new JButton("Update");
+
+        //Document listener to update state of the Add button depending if the field has expected values
+        DocumentListener documentListener = new DocumentListener()
+        {
+            public void changedUpdate(DocumentEvent e) 
+            {
+                updateButtonState();
+            }
+            public void removeUpdate(DocumentEvent e) 
+            {
+                updateButtonState();
+            }
+            public void insertUpdate(DocumentEvent e) 
+            {
+                updateButtonState();
+            }
+        };
+
+        // Add DocumentListener to required fields
+        for (JTextField field : requiredFields) 
+        {
+            field.getDocument().addDocumentListener(documentListener);
+        }
+        updateButtonState();
 
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -233,7 +289,14 @@ public class EditEmployeePanel extends JPanel
                         softSkillTwo.getSelectedItem() != null ? softSkillTwo.getSelectedItem().toString() : null,             //Pass null if soft skill two status isn't specified
                         isManager.getSelectedItem().equals("No") ? 0 : 1,
                         isCEO.getSelectedItem().equals("No") ? 0 : 1
-                    ));
+                    ), 
+                    Integer.parseInt(employeeID.getText()));
+
+                    //Refresh the employee table in HomePanel
+                    mainApp.getHomePanel().refreshEmployeeTable();
+
+                    //Switch back to HomePanel
+                    mainApp.showEmployeeDetails(employee);
                 }
                 catch(Exception error)
                 {
@@ -253,6 +316,11 @@ public class EditEmployeePanel extends JPanel
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    private void updateButtonState() 
+    {
+        EmployeeFormValidator.updateButtonState(updateButton, requiredFields, datePicker);
+    }
+
      // Method to initialize the JavaFX content
     public void initFX() 
     {
@@ -269,7 +337,31 @@ public class EditEmployeePanel extends JPanel
         // Create the scene and set it on the JFXPanel
         Scene scene = new Scene(root, 300, 200);
         panelForDate.setScene(scene);
-        
+
+        // Add listener to DatePicker's valueProperty
+         datePicker.focusedProperty().addListener((observable, oldValue, newValue) -> 
+         {
+            if (!newValue) 
+            { // Focus lost
+                validateDatePickerOnFocusLost();
+                SwingUtilities.invokeLater(() -> updateButtonState());
+            }
+        });
+    }
+
+    private void validateDatePickerOnFocusLost() 
+    {
+        Platform.runLater(() -> 
+        {
+            if (datePicker.getValue() == null) 
+            {
+                datePicker.setStyle("-fx-border-color: red;");
+            } 
+            else 
+            {
+                datePicker.setStyle(""); // Reset to default
+            }
+        });
     }
 
 
