@@ -15,7 +15,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 
 public class EmployeeTablePanel extends JPanel
@@ -146,16 +145,6 @@ public class EmployeeTablePanel extends JPanel
             {
                 // Determine if the click was on a table row, not on the header
                 int row = table.rowAtPoint(e.getPoint());
-
-                // Get the table header
-                JTableHeader header = table.getTableHeader();
-                int headerHeight = header.getHeight();
-
-                // If the click is within the header area, ignore
-                if (e.getY() <= headerHeight) 
-                {
-                    return; // Click was on the header, do nothing
-                }
 
                 // If the click was on a row
                 if (row != -1)

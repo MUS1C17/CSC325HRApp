@@ -173,7 +173,7 @@ public class UserSelectionPanel extends JPanel
         passwordField = new JPasswordField(15);
         
         //Label to indicate current password
-        JLabel passwordLabel = new JLabel("Password is: 12345");
+        JLabel passwordLabel = new Label("Password is: 12345");
 
         //Add password to the login Information Panel
         loginInformationPanel.add(passwordLabel);
@@ -184,6 +184,4 @@ public class UserSelectionPanel extends JPanel
         add(buttonPanel, BorderLayout.SOUTH);
         add(loginInformationPanel, BorderLayout.CENTER);
     }
-
-
 }
