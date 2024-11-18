@@ -15,7 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -93,8 +92,8 @@ public class AddEmployeePanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         //First Name label and input text field with limit of 50 characters
-        panel.add(new JLabel("First Name:"));
-        firstName = new JTextField();
+        panel.add(new Label("First Name:"));
+        firstName = new TextField();
         firstName.setDocument(new LimitedPlainDocument(50)); 
         panel.add(firstName);
         
@@ -102,21 +101,21 @@ public class AddEmployeePanel extends JPanel
         defaultBorder = firstName.getBorder();
 
         //Last Name
-        panel.add(new JLabel("Last Name:"));
-        lastName = new JTextField();
+        panel.add(new Label("Last Name:"));
+        lastName = new TextField();
         lastName.setDocument(new LimitedPlainDocument(75));
         panel.add(lastName);
 
         //Date of Birth
-        panel.add(new JLabel("Date of Birth:"));
+        panel.add(new Label("Date of Birth:"));
         panelForDate = new JFXPanel();
         panel.add(panelForDate);
         //Shows the calendar
         Platform.runLater(this::initFX);
 
         //JobTitle
-        panel.add(new JLabel("Job Title:"));
-        jobTitle = new JTextField();
+        panel.add(new Label("Job Title:"));
+        jobTitle = new TextField();
         firstName.setDocument(new LimitedPlainDocument(100));
         panel.add(jobTitle);
 
@@ -129,29 +128,29 @@ public class AddEmployeePanel extends JPanel
 
 
         //Department
-        panel.add(new JLabel("Department:"));
+        panel.add(new Label("Department:"));
         department = new JComboBox(dep);
         panel.add(department);
 
         //Work Location
-        panel.add(new JLabel("Work Location:"));
+        panel.add(new Label("Work Location:"));
         workLocation = new JComboBox(workLoc);
         panel.add(workLocation);
 
         //Employment Status
-        panel.add(new JLabel("Employment Status:"));
+        panel.add(new Label("Employment Status:"));
         employmentStatus = new JComboBox(status);
         panel.add(employmentStatus);
 
         //Email
-        panel.add(new JLabel("Email:"));
-        email = new JTextField();
+        panel.add(new Label("Email:"));
+        email = new TextField();
         email.setDocument(new LimitedPlainDocument(255));
         panel.add(email);
 
         //Phone Number
-        panel.add(new JLabel("Phone Number:"));
-        phoneNumber = new JTextField();
+        panel.add(new Label("Phone Number:"));
+        phoneNumber = new TextField();
         phoneNumber.setDocument(new LimitedPlainDocument(10));
         panel.add(phoneNumber);
 
@@ -164,15 +163,15 @@ public class AddEmployeePanel extends JPanel
         
 
         //Hourly Rate
-        panel.add(new JLabel("Hourly Rate:"));
+        panel.add(new Label("Hourly Rate:"));
         hourlyRate = new JFormattedTextField();
         //Add restriction to only use numbers. Optionally allows to use 2 digits after dot.
         ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter()); 
         panel.add(hourlyRate);
 
         //Notes
-        panel.add(new JLabel("Notes:"));
-        notes = new JTextField();
+        panel.add(new Label("Notes:"));
+        notes = new TextField();
         notes.setDocument(new LimitedPlainDocument(350));
         panel.add(notes);
 
@@ -181,32 +180,32 @@ public class AddEmployeePanel extends JPanel
          */
 
         //Hard Skill 1
-        panel.add(new JLabel("Main Hard Skill:"));
+        panel.add(new Label("Main Hard Skill:"));
         hardSkillOne = new JComboBox(hardSkills);
         panel.add(hardSkillOne);
 
         //Hard Skill 2
-        panel.add(new JLabel("Secondary Hard Skill:"));
+        panel.add(new Label("Secondary Hard Skill:"));
         hardSkillTwo = new JComboBox(hardSkills);
         panel.add(hardSkillTwo);
 
         //Soft Skill 1
-        panel.add(new JLabel("Main Soft Skill:"));
+        panel.add(new Label("Main Soft Skill:"));
         softSkillOne = new JComboBox(softSkills);
         panel.add(softSkillOne);
 
         //Soft Skill 2
-        panel.add(new JLabel("Secondary Soft Skill:"));
+        panel.add(new Label("Secondary Soft Skill:"));
         softSkillTwo = new JComboBox(softSkills);
         panel.add(softSkillTwo);
 
         //isManager
-        panel.add(new JLabel("Manager:"));
+        panel.add(new Label("Manager:"));
         isManager = new JComboBox(yesOrNo);
         panel.add(isManager);
 
         //isCEO
-        panel.add(new JLabel("CEO:"));
+        panel.add(new Label("CEO:"));
         isCEO = new JComboBox(yesOrNo);
         panel.add(isCEO);
         
