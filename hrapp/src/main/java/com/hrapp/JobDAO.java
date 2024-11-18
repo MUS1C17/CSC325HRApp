@@ -32,7 +32,7 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
 
             if (startStr != null && !startStr.isEmpty()) {
                 try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     startDate = LocalDate.parse(startStr, formatter);
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();
@@ -41,7 +41,7 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
 
             if (endStr != null && !endStr.isEmpty()) {
                 try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     endDate = LocalDate.parse(endStr, formatter);
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();

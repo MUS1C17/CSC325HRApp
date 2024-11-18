@@ -162,4 +162,10 @@ public class EmployeeDetailPanel extends JPanel
     {
         detailsButton.setEnabled(status);
     }
+
+    // Refresh job history.
+    public void refreshJobHistory()
+    {
+        jobHistoryPanel.setEmployeeID(employee.getEmployeeID());
+    }
 }

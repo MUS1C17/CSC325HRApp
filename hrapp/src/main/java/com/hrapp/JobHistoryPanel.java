@@ -82,7 +82,7 @@ public class JobHistoryPanel extends JPanel
 
         // String of all the job details, organized neatly to fit in the box.
         String jobDetails = "Job title: " + job.getJobTitle() + "\nCompany name: " + job.getCompanyName() +
-        "\nCity: " + job.getCity() + " (" + job.getStartDate() + " - " + job.getEndDate() + ")" +
+        "\nCity: " + job.getCity() + " (" + job.getStartDateStringFormat() + " - " + job.getEndDateStringFormat() + ")" +
         "\n" + job.getJobDescription() + "\nTermination reason: " + job.getQuitReason();
 
         // JOB LABELS NOT WRAPPING OR STACKING PROPERLY!!!
@@ -96,7 +96,7 @@ public class JobHistoryPanel extends JPanel
 
         // create delete button
         JButton deleteJobButton = new JButton("Delete");
-        deleteJobButton.addActionListener(new ActionListener() { // DELETING A JOB BREAKS EVERYTHING!!
+        deleteJobButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 int confirm = JOptionPane.showConfirmDialog(JobHistoryPanel.this,
@@ -126,7 +126,7 @@ public class JobHistoryPanel extends JPanel
         return jobBox;
      }
 
-    public void initUI()
+    private void initUI()
     {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(15, 1, 1, 1));

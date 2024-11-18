@@ -93,14 +93,12 @@ public class MainApplication extends JFrame{
         switchToPanel("AddJobPanel");
     }
 
-    public void switchToJobHistoryPanel(int employeeID)
+    public void switchToJobHistoryPanel()
     {
-        jobHistoryPanel.setEmployeeID(employeeID);
-        //jobHistoryPanel.removeAll();
-        switchToPanel("JobHistoryPanel");
-        jobHistoryPanel.showJobs(employeeID);
+        employeeDetailPanel.refreshJobHistory();
+        switchToPanel("EmployeeDetailPanel");
     }
-    
+
     public void switchToPanel(String panelName) 
     {
         cardLayout.show(mainPanel, panelName);
