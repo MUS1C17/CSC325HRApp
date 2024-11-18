@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -85,6 +87,55 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
         sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
 
+        //Set hover behavior for each button
+        detailsButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                detailsButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (hover) (1).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                detailsButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
+            }
+        });
+        jobHistoryButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                jobHistoryButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (hover) (1).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                jobHistoryButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png"));
+            }
+        });
+        sprintEvaluationButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                sprintEvaluationButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (hover) (1).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                sprintEvaluationButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png"));
+            }
+        });
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -196,6 +247,23 @@ public class EmployeeDetailPanel extends JPanel
                 detailsButton.setEnabled(true);
                 jobHistoryButton.setEnabled(true);
                 sprintEvaluationButton.setEnabled(true);
+            }
+        });
+        //Hover behavior for Back button
+        backButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\\\BackButtons\\\\Back button (no hover).png"));
             }
         });
     

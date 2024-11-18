@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
@@ -222,12 +224,48 @@ public class AddEmployeePanel extends JPanel
         backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
 
+        //Hover behavior for Back button
+        backButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
+            }
+        });
+
         //Add Employee button
         addButton = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
         addButton.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
         addButton.setBorderPainted(false);
         addButton.setContentAreaFilled(false);
         addButton.setEnabled(false);
+
+        // Hover behavior for Add Employee button
+        addButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+            }
+        });
 
         //Document listener to update state of the Add button depending if the field has expected values
         DocumentListener documentListener = new DocumentListener()

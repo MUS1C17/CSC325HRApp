@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -158,6 +160,24 @@ public class DetailsPanel extends JPanel
                     }    
                 }
            } 
+        });
+
+        // Delete button hover behavior
+        deleteEmployeeButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                deleteEmployeeButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                deleteEmployeeButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
+            }
         });
 
         //Add button to the button panel

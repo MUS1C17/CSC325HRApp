@@ -225,7 +225,8 @@ public class EmployeeDAO //DAO - Data Access Object
      * @param employeeID The ID of the employee to delete.
      * @throws SQLException If a database access error occurs.
      */
-    public void deleteEmployee(int employeeID) throws SQLException {
+    public void deleteEmployee(int employeeID) throws SQLException
+    {
         String query = "UPDATE Employee SET isDeleted = 1 WHERE EmployeeID = ?";
         executer.setDataInDatabase(query, employeeID);
         //executer.closeConnection();
@@ -234,7 +235,8 @@ public class EmployeeDAO //DAO - Data Access Object
     /**
      * Closes the database connection.
      */
-    public void close() {
+    public void close() 
+    {
         if (executer != null) {
             executer.closeConnection();
         }
