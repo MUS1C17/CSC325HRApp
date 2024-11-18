@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 //import javafx.scene.shape.Box;
 
@@ -110,8 +111,8 @@ public class JobHistoryPanel extends JPanel
         
                         // Remove the job from the jobs list
                         jobs.remove(job);
-                        //mainApp.switchToPanel("HomePanel"); // This is really stupid, but it would not work if switching to job history immediately.
-                        //mainApp.switchToJobHistoryPanel(employeeID);
+                        mainApp.switchToPanel("HomePanel");
+                        mainApp.switchToJobHistoryPanel();
                     } catch (Exception error) {
                         JOptionPane.showMessageDialog(JobHistoryPanel.this,
                                 "Error deleting job: " + error.getMessage(),
@@ -157,7 +158,7 @@ public class JobHistoryPanel extends JPanel
 
         // Back button
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> mainApp.switchToPanel("EmployeeDetailPanel"));
+        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
 
         // Add job button
         JButton addJobButton = new JButton("Add New Job");

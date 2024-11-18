@@ -199,7 +199,7 @@ public class AddJobPanel extends JPanel
                     ));
 
                     //Switch back to JobHistoryPanel
-                    
+                    mainApp.switchToJobHistoryPanel();
                     
                 }
                 catch(Exception error)
