@@ -1,19 +1,23 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URI;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 /**
  * A Panel  to display detailed information about an employee.
  */
@@ -84,11 +88,40 @@ public class DetailsPanel extends JPanel
         panel.add(new Label(employee.getEmail()));
 
         panel.add(new Label("Phone Number:"));
-        panel.add(new Label(employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
+        JLabel phoneNumberLabel = new JLabel("<html><a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
             employee.getPhoneNumber().substring(0, 3),
             employee.getPhoneNumber().substring(3, 6),
             employee.getPhoneNumber().substring(6, 10))
-        : "N/A")); //This outputs phone number in the format (123)-456-7890
+        : "N/A") + "</a></html>"); //This outputs phone number in the format (123)-456-7890
+
+        phoneNumberLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); //Cursor becomes a hand
+
+        //Add mouse click listener to the label
+        phoneNumberLabel.addMouseListener( new MouseAdapter() 
+        {
+            @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    String phoneNumber = employee.getPhoneNumber();
+                    try
+                    {
+                        //Create a URI with the tel: scheme
+                        URI uri = new URI("tel:" + phoneNumber);
+                        Desktop desktop = Desktop.getDesktop();
+                        
+                        if(desktop.isSupported(Desktop.Action.BROWSE))
+                        {
+                            desktop.browse(uri);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(mainApp, "Error opening phone application");
+                    }
+                }       
+        });
+        panel.add(phoneNumberLabel);
 
         panel.add(new Label("Hourly Rate:"));
         panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
