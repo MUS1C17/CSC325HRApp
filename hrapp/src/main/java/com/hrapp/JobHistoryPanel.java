@@ -1,6 +1,7 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 //import javafx.scene.shape.Box;
 
@@ -79,7 +80,9 @@ public class JobHistoryPanel extends JPanel
      */
      {
         JPanel jobBox = new JPanel();
+        jobBox.setLayout(new BoxLayout(jobBox, BoxLayout.Y_AXIS));
         jobBox.setMaximumSize(new Dimension(800,150));
+        jobBox.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         // String of all the job details, organized neatly to fit in the box.
         String jobDetails = "Job title: " + job.getJobTitle() + "\nCompany name: " + job.getCompanyName() +
@@ -97,6 +100,7 @@ public class JobHistoryPanel extends JPanel
 
         // create delete button
         JButton deleteJobButton = new JButton("Delete");
+        deleteJobButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         deleteJobButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -150,8 +154,13 @@ public class JobHistoryPanel extends JPanel
             panel.add(noJobsLabel);
         }
 
+        // Scroll pane wrapper
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         // Adds the panel to the center.
-        add(panel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Adds button panel to the bottom.
         JPanel buttonPanel = new JPanel();
