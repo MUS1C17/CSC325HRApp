@@ -30,6 +30,8 @@ public class DetailsPanel extends JPanel
 
     private Label emailLabel;
     private Label phoneNumberLabel;
+
+    // Get the desktop environment to perform desktop-related actions
     private Desktop desktop = Desktop.getDesktop();
 
     public DetailsPanel(MainApplication mainApp)
@@ -109,7 +111,10 @@ public class DetailsPanel extends JPanel
                     //If yes option is clicked
                     if(choice == JOptionPane.YES_OPTION)
                     {
+                        // Create a URI for the mailto action using the employee's email
                         URI emailURI = new URI("mailto:" + employee.getEmail());
+
+                        // Check if the desktop environment supports the "browse" action
                         if(desktop.isSupported(Desktop.Action.BROWSE))
                         {
                             desktop.browse(emailURI);
@@ -162,8 +167,10 @@ public class DetailsPanel extends JPanel
                         {
                             //If call button is clicked, then open Windows Phone Call
                             case 0:     
+                                // Create a URI for the tel: action using the employee's phonenumber
                                 URI callURI = new URI("tel:" + employee.getPhoneNumber());
                                 
+                                // Check if the desktop environment supports the "browse" action
                                 if(desktop.isSupported(Desktop.Action.BROWSE))
                                 {
                                     desktop.browse(callURI);
@@ -172,8 +179,11 @@ public class DetailsPanel extends JPanel
                             
                             //If Message button is clicked, then open Windows Phone Message
                             case 1:
+
+                                // Create a URI for the sms: action using the employee's phoneNumber
                                 URI smsURI = new URI("sms:" + employee.getPhoneNumber());
 
+                                // Check if the desktop environment supports the "browse" action
                                 if(desktop.isSupported(Desktop.Action.BROWSE))
                                 {
                                     desktop.browse(smsURI);
