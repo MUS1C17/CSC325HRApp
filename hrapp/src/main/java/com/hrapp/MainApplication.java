@@ -1,7 +1,6 @@
 package com.hrapp;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -53,7 +52,7 @@ public class MainApplication extends JFrame{
 
         // Frame settings 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 800);
+        setSize(1250, 800);
         setLocationRelativeTo(null); //Center the window
     }
 

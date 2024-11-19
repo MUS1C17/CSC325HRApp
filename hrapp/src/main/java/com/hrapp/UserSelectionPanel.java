@@ -1,7 +1,9 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,6 +105,18 @@ public class UserSelectionPanel extends JPanel
         // Add the JList to a JScrollPane to allow for scrolling
         JScrollPane leftScrollPane = new JScrollPane(userList);
 
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("Welcome! Please sign in.", 32, Color.WHITE));
+
         // To center the JList vertically, use a BoxLayout with vertical glue
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -166,6 +180,7 @@ public class UserSelectionPanel extends JPanel
         
         //Button panel to hold login button at the bottom of the screen
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
         buttonPanel.add(loginButton);
         
         //Right panel that will have password field
@@ -180,6 +195,7 @@ public class UserSelectionPanel extends JPanel
         loginInformationPanel.add(passwordField);
 
 
+        add(topPanel, BorderLayout.NORTH);
         add(leftPanel, BorderLayout.WEST);
         add(buttonPanel, BorderLayout.SOUTH);
         add(loginInformationPanel, BorderLayout.CENTER);
