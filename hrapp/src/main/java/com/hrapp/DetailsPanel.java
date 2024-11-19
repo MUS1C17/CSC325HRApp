@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 /**
@@ -28,6 +27,10 @@ public class DetailsPanel extends JPanel
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
+
+    private Label emailLabel;
+    private Label phoneNumberLabel;
+    private Desktop desktop = Desktop.getDesktop();
 
     public DetailsPanel(MainApplication mainApp)
     {
@@ -85,33 +88,99 @@ public class DetailsPanel extends JPanel
         panel.add(new Label(employee.getEmploymentStatus() != null ? employee.getEmploymentStatus() : "N/A"));
 
         panel.add(new Label("Email:"));
-        panel.add(new Label(employee.getEmail()));
+        emailLabel = new Label("<a href =''>" + (employee.getEmail()) + "</a>");
+
+        //Cursor becomes a hand
+        emailLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        //Add mouse click listener to the email label
+        emailLabel.addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                try
+                {
+                    int choice = JOptionPane.showConfirmDialog(mainApp,
+                    "Would you like to email " + employee.getFirstAndLastName() + "?",
+                    "Send Email",
+                    JOptionPane.YES_NO_OPTION);
+
+                    //If yes option is clicked
+                    if(choice == JOptionPane.YES_OPTION)
+                    {
+                        URI emailURI = new URI("mailto:" + employee.getEmail());
+                        if(desktop.isSupported(Desktop.Action.BROWSE))
+                        {
+                            desktop.browse(emailURI);
+                        }
+                    }
+                    //No code needed for no option since it will automatically close the JOptionPane
+
+                } 
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(mainApp, "Error opening phone application: " + ex.getMessage());
+                }
+            }
+
+        });
+
+        panel.add(emailLabel);
 
         panel.add(new Label("Phone Number:"));
-        JLabel phoneNumberLabel = new JLabel("<html><a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
+        phoneNumberLabel = new Label("<a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
             employee.getPhoneNumber().substring(0, 3),
             employee.getPhoneNumber().substring(3, 6),
             employee.getPhoneNumber().substring(6, 10))
-        : "N/A") + "</a></html>"); //This outputs phone number in the format (123)-456-7890
+        : "N/A") + "</a>"); //This outputs phone number in the format (123)-456-7890
 
-        phoneNumberLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); //Cursor becomes a hand
+        //Cursor becomes a hand
+        phoneNumberLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
 
-        //Add mouse click listener to the label
+        //Add mouse click listener to the phoneNubmerLabel
         phoneNumberLabel.addMouseListener( new MouseAdapter() 
         {
             @Override
                 public void mouseClicked(MouseEvent e)
                 {
-                    String phoneNumber = employee.getPhoneNumber();
+                    String[] contactOptions = {"Call", "Message", "Cancel",};
                     try
                     {
-                        //Create a URI with the tel: scheme
-                        URI uri = new URI("tel:" + phoneNumber);
-                        Desktop desktop = Desktop.getDesktop();
-                        
-                        if(desktop.isSupported(Desktop.Action.BROWSE))
+                        int choice = JOptionPane.showOptionDialog(mainApp, 
+                        "How would you like to contact " + employee.getFirstAndLastName() + "?", 
+                        "Choose Contact Option",
+                        JOptionPane.DEFAULT_OPTION,   // Option type
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        contactOptions,
+                        contactOptions[0]);
+                        //Desktop desktop = Desktop.getDesktop();
+
+                        switch (choice) 
                         {
-                            desktop.browse(uri);
+                            //If call button is clicked, then open Windows Phone Call
+                            case 0:     
+                                URI callURI = new URI("tel:" + employee.getPhoneNumber());
+                                
+                                if(desktop.isSupported(Desktop.Action.BROWSE))
+                                {
+                                    desktop.browse(callURI);
+                                }
+                                break;
+                            
+                            //If Message button is clicked, then open Windows Phone Message
+                            case 1:
+                                URI smsURI = new URI("sms:" + employee.getPhoneNumber());
+
+                                if(desktop.isSupported(Desktop.Action.BROWSE))
+                                {
+                                    desktop.browse(smsURI);
+                                }
+                                break;
+                            
+                            //No need for switch case for Cancel button since it will close the OptionPane anyway 
                         }
                     }
                     catch(Exception ex)
