@@ -23,7 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.StackPane;
 
-public class AddJobPanel extends JPanel
+public class EditJobPanel extends JPanel
 {
     //Properties
     private MainApplication mainApp;
@@ -32,7 +32,7 @@ public class AddJobPanel extends JPanel
     private JFXPanel panelForEndDate;
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
-    private int employeeID;
+    private int jobID;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField jobTitle;
@@ -43,7 +43,7 @@ public class AddJobPanel extends JPanel
 
 
     //Constructor
-    public AddJobPanel(MainApplication mainApp)
+    public EditJobPanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
         setLayout(new BorderLayout());
@@ -59,10 +59,10 @@ public class AddJobPanel extends JPanel
         }
     }
 
-    // Set employeeID
-    public void setEmployeeID(int employeeID)
+    // Set jobID
+    public void setJobID(int jobID)
     {
-        this.employeeID = employeeID;
+        this.jobID = jobID;
     }
 
     public void initUI()
@@ -122,9 +122,9 @@ public class AddJobPanel extends JPanel
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
 
-        //Add job button
-        JButton add = new JButton("Add");
-        add.setEnabled(false);
+        //Update job button.
+        JButton update = new JButton("Update");
+        update.setEnabled(false);
 
         //Document listener to update state of the Add button
         DocumentListener documentListener = new DocumentListener()
@@ -150,7 +150,7 @@ public class AddJobPanel extends JPanel
                                           !city.getText().trim().isEmpty() &&
                                           (!description.getText().trim().isEmpty() ||
                                           !quitReason.getText().trim().isEmpty());
-                add.setEnabled(allFieldsFilled);
+                update.setEnabled(allFieldsFilled);
             }
         };
 
@@ -163,7 +163,7 @@ public class AddJobPanel extends JPanel
         quitReason.getDocument().addDocumentListener(documentListener);
 
         //Save all the information to the database
-        add.addActionListener(new ActionListener() {
+        update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -185,8 +185,8 @@ public class AddJobPanel extends JPanel
                     // Wait for the latch to reach zero
                     latch.await();
                     
-                    
-                    jobDAO.addJob(new Job(
+                    // Tells database to update job.
+                    jobDAO.updateJob(new Job(
                         jobTitle.getText(),
                         companyName.getText(),
                         startDatePicker.getValue(),
@@ -195,8 +195,8 @@ public class AddJobPanel extends JPanel
                         description.getText(),
                         quitReason.getText(),
                         0,
-                        employeeID
-                    ));
+                        0
+                    ), jobID);
 
                     //Switch back to JobHistoryPanel
                     mainApp.switchToJobHistoryPanel();
@@ -204,8 +204,8 @@ public class AddJobPanel extends JPanel
                 }
                 catch(Exception error)
                 {
-                    JOptionPane.showMessageDialog(AddJobPanel.this, 
-                        "Error adding job: " + error.getMessage(), 
+                    JOptionPane.showMessageDialog(EditJobPanel.this, 
+                        "Error editing job: " + error.getMessage(), 
                         "Database Error", JOptionPane.ERROR_MESSAGE);
                         error.printStackTrace();
                 }
@@ -214,7 +214,7 @@ public class AddJobPanel extends JPanel
 
         //Add buttons to the button panel
         buttonPanel.add(backButton);
-        buttonPanel.add(add);
+        buttonPanel.add(update);
         
         //Add Button Panel to the main panel
         add(buttonPanel, BorderLayout.PAGE_END);

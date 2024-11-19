@@ -3,6 +3,7 @@ package com.hrapp;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -63,17 +64,9 @@ public class JobHistoryPanel extends JPanel
     public void showJobs(int employeeID) // This is supposed to actually display the jobs and initialize the UI.
     {
         removeAll();
-        System.out.println("Removed all UI elements for job history.");
         getJobs();
-        System.out.println("Got jobs");
         initUI();
-        System.out.println("Called initUI()");
     }
-
-    /*
-        This is all temporary. I am just trying to get an idea of how
-        it works.
-     */
 
      private JPanel createJobHistoryBox(Job job) /*
         This method creates individual box objects to display the information about the given job.
@@ -89,14 +82,17 @@ public class JobHistoryPanel extends JPanel
         "\nCity: " + job.getCity() + " (" + job.getStartDateStringFormat() + " - " + job.getEndDateStringFormat() + ")" +
         "\n" + job.getJobDescription() + "\nTermination reason: " + job.getQuitReason();
 
-        // JOB LABELS NOT WRAPPING OR STACKING PROPERLY!!!
-        // WIP
         JTextArea jobTextArea = new JTextArea(jobDetails, 5, 50);
         jobTextArea.setAlignmentX(CENTER_ALIGNMENT);
         jobTextArea.setWrapStyleWord(true);
         jobTextArea.setLineWrap(true);
 
         jobBox.add(jobTextArea);
+
+        // create edit button
+        JButton editButton = new JButton("Edit");
+        editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID()));
 
         // create delete button
         JButton deleteJobButton = new JButton("Delete");
@@ -126,7 +122,15 @@ public class JobHistoryPanel extends JPanel
                 }
             }
         });
-        jobBox.add(deleteJobButton);
+
+        // button panel for buttons.
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(editButton);
+        buttonPanel.add(deleteJobButton);
+
+        jobBox.add(buttonPanel);
         
         return jobBox;
      }

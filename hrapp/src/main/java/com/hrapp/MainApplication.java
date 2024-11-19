@@ -15,6 +15,7 @@ public class MainApplication extends JFrame{
     private EmployeeDetailPanel employeeDetailPanel;
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
+    private EditJobPanel editJobPanel;
 
 
     public MainApplication() 
@@ -32,12 +33,14 @@ public class MainApplication extends JFrame{
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
         addJobPanel = new AddJobPanel(this);
+        editJobPanel = new EditJobPanel(this);
 
         // Add the HomePanel to the Frame
         mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
         mainPanel.add(addJobPanel, "AddJobPanel");
+        mainPanel.add(editJobPanel, "EditJobPanel");
         
 
         //Add the mainPanel to the JFrame
@@ -86,6 +89,7 @@ public class MainApplication extends JFrame{
         switchToPanel("EmployeeDetailPanel");
     }
 
+    // Passes employeeID to the job panel to display matching jobs.
     public void switchToAddJobPanel(int employeeID)
     {
         addJobPanel.resetFields();
@@ -93,6 +97,14 @@ public class MainApplication extends JFrame{
         switchToPanel("AddJobPanel");
     }
 
+    // Passes jobID to edit panel so the panel knows which job to update in the database.
+    public void switchToEditJobPanel(int jobID)
+    {
+        editJobPanel.resetFields();
+        editJobPanel.setJobID(jobID);
+        switchToPanel("EditJobPanel");
+    }
+    
     public void switchToJobHistoryPanel()
     {
         employeeDetailPanel.refreshJobHistory();

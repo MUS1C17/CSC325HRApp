@@ -92,6 +92,22 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
         //executor.closeConnection();
     }
 
+    // Updates job in database with specified information.
+    public void updateJob(Job job, int jobID) throws SQLException
+    {
+        String query = "UPDATE JobHistory SET jobTitle = ?, companyName = ?, city = ?, startDate = ?, " +
+        "endDate = ?, description = ?, quitReason = ? WHERE JobHistoryID = ?";
+        executor.setDataInDatabase(query, 
+        job.getJobTitle(),
+        job.getCompanyName(),
+        job.getCity(),
+        job.getStartDate(),
+        job.getEndDate(),
+        job.getJobDescription(),
+        job.getQuitReason(),
+        jobID);
+    }
+
     public void close()
     {
         if (executor != null)
