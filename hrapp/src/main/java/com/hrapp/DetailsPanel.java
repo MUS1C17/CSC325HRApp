@@ -119,6 +119,12 @@ public class DetailsPanel extends JPanel
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
 
+        JButton editButton = new JButton("Edit");
+        editButton.setBorderPainted(false);
+        editButton.setContentAreaFilled(false);
+        editButton.addActionListener(e -> mainApp.switchToPanel("EditEmployeePanel"));
+
+
         //Back button
         JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
         backButton.setBorderPainted(false);
@@ -163,6 +169,7 @@ public class DetailsPanel extends JPanel
 
         //Add button to the button panel
         buttonPanel.add(deleteEmployeeButton);
+        buttonPanel.add(editButton);
 
 
 
