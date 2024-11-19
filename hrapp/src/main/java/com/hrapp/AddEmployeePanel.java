@@ -261,6 +261,7 @@ public class AddEmployeePanel extends JPanel
 
         //Add Employee button
         addButton = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+        addButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
         addButton.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
         addButton.setBorderPainted(false);
         addButton.setContentAreaFilled(false);
