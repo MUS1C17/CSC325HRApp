@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 /*
  * This panel is the first panel to show up in the app. 
@@ -117,14 +118,23 @@ public class UserSelectionPanel extends JPanel
 
         topPanel.add(new Label("Welcome! Please sign in.", 32, Color.WHITE));
 
+        // Create a JPanel within the UserSelectionPanel to house the center components
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BorderLayout());
+
+        // Create a title text for the list
+        Label label = new Label("Select from the list of users below.", 24);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        centerPanel.add(label, BorderLayout.NORTH);
+
         // To center the JList vertically, use a BoxLayout with vertical glue
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        JPanel listPanel = new JPanel();
+        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
 
         // Add vertical glue before the list to push it to the center
-        leftPanel.add(Box.createVerticalGlue());
-        leftPanel.add(leftScrollPane);
-        leftPanel.add(Box.createVerticalGlue());
+        listPanel.add(Box.createVerticalGlue());
+        listPanel.add(leftScrollPane);
+        listPanel.add(Box.createVerticalGlue());
 
         //Create login button
         loginButton = new JButton(new ImageIcon("resources\\LoginButtons\\Login button (no hover).png"));
@@ -196,8 +206,9 @@ public class UserSelectionPanel extends JPanel
 
 
         add(topPanel, BorderLayout.NORTH);
-        add(leftPanel, BorderLayout.WEST);
         add(buttonPanel, BorderLayout.SOUTH);
-        add(loginInformationPanel, BorderLayout.CENTER);
+        centerPanel.add(listPanel, BorderLayout.CENTER);
+        centerPanel.add(loginInformationPanel, BorderLayout.SOUTH);
+        add(centerPanel, BorderLayout.CENTER);
     }
 }
