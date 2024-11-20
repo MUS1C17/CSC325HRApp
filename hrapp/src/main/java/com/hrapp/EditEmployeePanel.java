@@ -26,15 +26,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.StackPane;
 
+/*
+ * This is the panel for editing employees. It performs actions such as:
+ * -being able to update an employee's information in the database
+ * -displaying employee information and allowing that to be edited
+ * -allowing changes to be saved only when the correct information is inputed
+ */
+
 public class EditEmployeePanel extends JPanel
 {
     //Properties
     private MainApplication mainApp;
     private Employee employee;          //Employee ojbect that is to be edited
-    private Employee updatedEmployee;   //Emplloyee object after it was edited
+    private Employee updatedEmployee;   //Employee object after it was edited
     private EmployeeDAO employeeDAO;
-    private JFXPanel panelForDate;
-    private DatePicker datePicker;
+
+    //UI components for date selection
+    private JFXPanel panelForDate;      
+    private DatePicker datePicker;   
+    
+    //UI components for required fields and buttons
     private JTextField[] requiredFields;
     private JButton updateButton;
 
@@ -60,10 +71,11 @@ public class EditEmployeePanel extends JPanel
     //Constructor
     public EditEmployeePanel(MainApplication mainApp, Employee employee)
     {
-        this.mainApp = mainApp;
-        this.employee = employee;
+        this.mainApp = mainApp; //Instance of mainapp
+        this.employee = employee; //Instance of employee
         setLayout(new BorderLayout());
         initUI();
+        //Initialize the DAO for database connection
         try
         {
             employeeDAO = new EmployeeDAO();
@@ -118,6 +130,15 @@ public class EditEmployeePanel extends JPanel
         jobTitle.setText(employee.getJobTitle());
         panel.add(jobTitle);
 
+        /*
+         * dropdown options for:
+         * -department
+         * -work location
+         * -employment status
+         * -manager or CEO
+         * -hardskills
+         * -softskills
+         */
         String[] dep = new String[]{null,"SLS", "DEV", "MNG", "SPT"};
         String[] workLoc = new String[]{null,"MSU", "Office", "Remote"};
         String[] status = new String[]{null, "Intern", "Full-time", "Part-time", "Contractor"};
@@ -321,6 +342,7 @@ public class EditEmployeePanel extends JPanel
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    //Method to make the update button turn OFF if the field requirements are not met
     private void updateButtonState() 
     {
         EmployeeFormValidator.updateButtonState(updateButton, requiredFields, datePicker);
