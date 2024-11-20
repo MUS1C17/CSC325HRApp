@@ -129,7 +129,7 @@ public class EmployeeDetailPanel extends JPanel
         // Initialize sub-panels
         detailsPanel = new DetailsPanel(mainApp);
         jobHistoryPanel = new JobHistoryPanel();
-        sprintEvaluationPanel = new SprintEvaluationPanel();
+        sprintEvaluationPanel = new SprintEvaluationPanel(mainApp);
 
         
         // Add sub-panels to content panel
