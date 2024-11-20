@@ -30,7 +30,8 @@ public class EditEmployeePanel extends JPanel
 {
     //Properties
     private MainApplication mainApp;
-    private Employee employee;
+    private Employee employee;          //Employee ojbect that is to be edited
+    private Employee updatedEmployee;   //Emplloyee object after it was edited
     private EmployeeDAO employeeDAO;
     private JFXPanel panelForDate;
     private DatePicker datePicker;
@@ -270,8 +271,10 @@ public class EditEmployeePanel extends JPanel
             {
                 try
                 {
-                    employeeDAO.updateEmployee(new Employee
+                    //Assign updateEmployee with an updated Employee object
+                    updatedEmployee = new Employee
                     (
+                        Integer.parseInt(employeeID.getText()),
                         firstName.getText(),
                         lastName.getText(),
                         datePicker.getValue(),
@@ -289,14 +292,16 @@ public class EditEmployeePanel extends JPanel
                         softSkillTwo.getSelectedItem() != null ? softSkillTwo.getSelectedItem().toString() : null,             //Pass null if soft skill two status isn't specified
                         isManager.getSelectedItem().equals("No") ? 0 : 1,
                         isCEO.getSelectedItem().equals("No") ? 0 : 1
-                    ), 
-                    Integer.parseInt(employeeID.getText()));
+                    );
+
+                    //Pass updatedEmployee object into updateEmployee method
+                    employeeDAO.updateEmployee(updatedEmployee);
 
                     //Refresh the employee table in HomePanel
                     mainApp.getHomePanel().refreshEmployeeTable();
 
-                    //Switch back to HomePanel
-                    mainApp.showEmployeeDetails(employee);
+                    //Switch back to EmployeeDetailsPanel to show updated information for the given employee
+                    mainApp.showEmployeeDetails(updatedEmployee);
                 }
                 catch(Exception error)
                 {
