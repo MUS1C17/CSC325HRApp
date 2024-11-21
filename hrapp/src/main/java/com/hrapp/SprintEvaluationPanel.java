@@ -1,33 +1,56 @@
 package com.hrapp;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.sql.SQLException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class SprintEvaluationPanel extends JPanel {
-    private AddSprintEvaluationPanel addSprintEvaluationPanel;
     private MainApplication mainApp;
-    private JFrame parentFrame;
+    private SprintEvaluationDAO sprintDAO;
+    private Employee employee;
+
 
     // Constructor for SprintEvaluationPanel with parentFrame parameter
     public SprintEvaluationPanel(MainApplication mainApp) {
-        this.mainApp = mainApp;  // Correctly assign the passed parentFrame
+        this.mainApp = mainApp;
         setLayout(new BorderLayout());
 
-        // Label for displaying message
-        JLabel label = new JLabel("Sprint Evaluations", SwingConstants.CENTER);
-        add(label, BorderLayout.NORTH);
+        try 
+        {
+            //Initialize the sprintDAO variable that holds SprintEvaluationDAO ojbect to handle all the 
+            //database connections
+            sprintDAO = new SprintEvaluationDAO();
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+    }
 
-        // Add button to open AddSprintEvaluationPanel
+    public void setEmployee(Employee employee)
+    {
+        this.employee = employee;
+        initUI();
+    }
+
+    //This method initializes all the elements on the panel
+    public void initUI()
+    {
+
+        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        panel.add(new JLabel("YOU CAN ADD EVERYTHING HERE"));
+        add(panel, BorderLayout.CENTER);
+
+        //Switch to AddSprintEvaluationPanel
         JButton addButton = new JButton("Add Sprint Evaluation");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Display AddSprintEvaluationPanel when button is clicked
-                showAddSprintEvaluationPanel();
-            }
-        });
+        addButton.addActionListener(e -> mainApp.switchToAddSprintEvaluationPanel(employee));
 
         // Adding button to the bottom of the panel
         JPanel buttonPanel = new JPanel();
@@ -35,16 +58,4 @@ public class SprintEvaluationPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    // Show the AddSprintEvaluationPanel
-    private void showAddSprintEvaluationPanel() {
-        if (addSprintEvaluationPanel == null) {
-            addSprintEvaluationPanel = new AddSprintEvaluationPanel(mainApp);
-        }
-        
-        // Switch to the AddSprintEvaluationPanel
-        this.removeAll();
-        this.add(addSprintEvaluationPanel, BorderLayout.CENTER);
-        this.revalidate();
-        this.repaint();
-    }
 }

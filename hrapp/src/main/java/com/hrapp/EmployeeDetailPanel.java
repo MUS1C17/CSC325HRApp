@@ -63,6 +63,7 @@ public class EmployeeDetailPanel extends JPanel
         this.employee = employee;
         detailsPanel.setEmployee(employee);
         // If JobHistoryPanel and SprintEvaluationPanel need employee data, pass it to them here
+        sprintEvaluationPanel.setEmployee(employee);
     }
 
     private void initUI() 

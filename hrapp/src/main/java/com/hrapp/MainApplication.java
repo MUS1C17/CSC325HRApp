@@ -15,6 +15,7 @@ public class MainApplication extends JFrame{
     private EmployeeDetailPanel employeeDetailPanel;
     private UserSelectionPanel userSelectionPanel;
     private AddSurveySatisfactionPanel addSurveryPanel;
+    private AddSprintEvaluationPanel addSprintEvaluationPanel;
     private CardLayout cardLayout;
 
     private Employee currentUser;
@@ -38,6 +39,7 @@ public class MainApplication extends JFrame{
         addEmployeePanel = new AddEmployeePanel(this);
         userSelectionPanel = new UserSelectionPanel(this);
         addSurveryPanel = new AddSurveySatisfactionPanel(this);
+        addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
 
         // Add the HomePanel to the Frame
         mainPanel.add(userSelectionPanel, "UserSelectionPanel");
@@ -45,6 +47,7 @@ public class MainApplication extends JFrame{
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
         mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
+        mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
         
 
         //Add the mainPanel to the JFrame
@@ -96,6 +99,14 @@ public class MainApplication extends JFrame{
         //Clears all the previous content and opens the panel
         addEmployeePanel.resetFields();
         switchToPanel("AddEmployeePanel"); 
+    }
+
+    //This method is used to switch to AddSprintEvaluationPanel
+    public void switchToAddSprintEvaluationPanel(Employee employee)
+    {
+        switchToPanel("AddSprintEvaluationPanel"); 
+        //Set employee on the add panel to then get employee's id
+        addSprintEvaluationPanel.setEmployee(employee);
     }
 
     //Passes the selected Employee to the detail panel and then switches to it
