@@ -9,6 +9,7 @@ public class JobPosition
     private String hardSkill2;
     private String softSkill1;
     private String softSkill2;
+    private int isDeleted;
 
     //Constructor
     public JobPosition(String jobPostionName, String hardSkill1, String hardSkill2,
@@ -53,6 +54,11 @@ public class JobPosition
         this.softSkill2 = skill;
     }
 
+    public void setIsDeleted(int isDeleted)
+    {
+        this.isDeleted = isDeleted;
+    }
+
     //Getter methods
     public int getJobPositionID()
     {
@@ -82,5 +88,10 @@ public class JobPosition
     public String getSoftSkill2()
     {
         return softSkill2;
+    }
+
+    public int getIsDeleted()
+    {
+        return isDeleted;
     }
 }
