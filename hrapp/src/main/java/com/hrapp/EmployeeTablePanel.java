@@ -6,7 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.Box;
 
+import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,14 +19,25 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.hrapp.EmployeeTablePanel.EmployeeSelectionListener;
+
 public class EmployeeTablePanel extends JPanel
 {
-    //Properties
-    private JTable table;
-    private DefaultTableModel tableModel;
-    private TableRowSorter<DefaultTableModel> sorter;
+    // Properties for Employee Table
+    private JTable employeeTable;
+    private DefaultTableModel employeeTableModel;
+    private TableRowSorter<DefaultTableModel> employeeSorter;
     private EmployeeDAO employeeDAO;
     private EmployeeSelectionListener employeeSelectionListener;
+
+    // Properties for Job Position Table
+    private JTable jobPositionTable;
+    private DefaultTableModel jobPositionTableModel;
+    private TableRowSorter<DefaultTableModel> jobPositionSorter;
+    private JobPositionDAO jobPositionDAO;
+
+
+    
     public interface EmployeeSelectionListener
     {
         void employeeSelected(Employee employee);
@@ -35,15 +48,53 @@ public class EmployeeTablePanel extends JPanel
         this.employeeSelectionListener = listener;
     }
 
+    
     public EmployeeTablePanel()
     {
-        setLayout(new BorderLayout());
+        // Initialize DAOs
+        try 
+        {
+            employeeDAO = new EmployeeDAO();
+            jobPositionDAO = new JobPositionDAO();
+        } 
+        catch (SQLException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error initializing DAOs: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Create panels for each table
+        JPanel employeeTablePanel = createEmployeeTablePanel();
+        JPanel jobPositionTablePanel = createJobPositionTablePanel();
+
+        // Create a panel to hold both tables vertically
+        JPanel tablesPanel = new JPanel();
+        tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.Y_AXIS));
+
+        // Add employee table panel
+        tablesPanel.add(employeeTablePanel);
+        // Add spacing between tables
+        tablesPanel.add(Box.createVerticalStrut(20));
+        // Add job position table panel
+        tablesPanel.add(jobPositionTablePanel);
+
+        // Add the tables panel to a scroll pane
+        JScrollPane scrollPane = new JScrollPane(tablesPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // For smoother scrolling
+
+        // Add the scroll pane to the main panel
+        add(scrollPane, BorderLayout.CENTER);
+    }
+    
+    private JPanel createEmployeeTablePanel()
+    {
+        JPanel panel = new JPanel(new BorderLayout());
 
         //Column Names
         String[] columnNames = {"ID", "First Name", "Last Name", "Email"};
 
         //Initialize the table model with column names and zero rows
-        tableModel = new DefaultTableModel(columnNames, 0)
+        employeeTableModel  = new DefaultTableModel(columnNames, 0)
         {
             //Make cells non-editable
             @Override
@@ -69,32 +120,31 @@ public class EmployeeTablePanel extends JPanel
         };
 
         //Create the Jtable with the model
-        table = new JTable(tableModel);
+        employeeTable = new JTable(employeeTableModel);
 
         // Set Selection Mode to Single Selection
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        employeeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         //Enable sorting
-        sorter = new TableRowSorter<>(tableModel);
-        table.setRowSorter(sorter);
+        employeeSorter  = new TableRowSorter<>(employeeTableModel);
+        employeeTable.setRowSorter(employeeSorter);
 
         // Optional: Adjust column widths for better appearance
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.getColumnModel().getColumn(0).setPreferredWidth(80);  // EmployeeID
-        table.getColumnModel().getColumn(1).setPreferredWidth(100); // FirstName
-        table.getColumnModel().getColumn(2).setPreferredWidth(100); // LastName
-        table.getColumnModel().getColumn(3).setPreferredWidth(200); // Email
+        employeeTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        employeeTable.getColumnModel().getColumn(0).setPreferredWidth(80);  // EmployeeID
+        employeeTable.getColumnModel().getColumn(1).setPreferredWidth(100); // FirstName
+        employeeTable.getColumnModel().getColumn(2).setPreferredWidth(100); // LastName
+        employeeTable.getColumnModel().getColumn(3).setPreferredWidth(200); // Email
 
         //Add the table to a scroll pane
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(employeeTable);
 
-        //Add the scroll pane to the panel
-        add(scrollPane, BorderLayout.CENTER);
+        // Add the scroll pane to the panel
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         //Initialize EMployeeDAO and load data
         try
         {
-            employeeDAO = new EmployeeDAO(); //Connects to the database
             loadEmployeeData();
         }
         catch(SQLException e)
@@ -104,8 +154,8 @@ public class EmployeeTablePanel extends JPanel
 
 
          // Add MouseListener to the panel to detect clicks outside the table
-         addMouseListener(new MouseAdapter() 
-         {
+        addMouseListener(new MouseAdapter() 
+        {
             @Override
             public void mouseClicked(MouseEvent e) 
             {
@@ -113,12 +163,14 @@ public class EmployeeTablePanel extends JPanel
                 Component clickedComponent = SwingUtilities.getDeepestComponentAt(EmployeeTablePanel.this,e.getX(), e.getY());
 
                 // If the clicked component is not the table or a child of the table, clear selection
-                if (!isDescendant(clickedComponent, table)) 
+                if (!isDescendant(clickedComponent, employeeTable)) 
                 {
-                    table.clearSelection();
+                    employeeTable.clearSelection();
                 }
             }
         });
+
+
 
         // Add MouseListener to the scroll pane's viewport to handle clicks on empty space
         scrollPane.getViewport().addMouseListener(new MouseAdapter() 
@@ -130,21 +182,21 @@ public class EmployeeTablePanel extends JPanel
                 Component clickedComponent = SwingUtilities.getDeepestComponentAt(scrollPane.getViewport(), e.getX(), e.getY());
 
                 // If the clicked component is not the table or a child of the table, clear selection
-                if (!isDescendant(clickedComponent, table)) 
+                if (!isDescendant(clickedComponent, employeeTable)) 
                 {
-                    table.clearSelection();
+                    employeeTable.clearSelection();
                 }
             }
         });
 
         // **Add MouseListener to the JTable for row clicks**
-        table.addMouseListener(new MouseAdapter() 
+        employeeTable.addMouseListener(new MouseAdapter() 
         {
             @Override
             public void mouseClicked(MouseEvent e) 
             {
                 // Determine if the click was on a table row, not on the header
-                int row = table.rowAtPoint(e.getPoint());
+                int row = employeeTable.rowAtPoint(e.getPoint());
 
                 // If the click was on a row
                 if (row != -1)
@@ -156,8 +208,8 @@ public class EmployeeTablePanel extends JPanel
                         e.consume(); // Mark the event as consumed
                         try
                         {
-                            int modelRow = table.convertRowIndexToModel(row);
-                            int employeeID = (Integer) tableModel.getValueAt(modelRow, 0);
+                            int modelRow = employeeTable.convertRowIndexToModel(row);
+                            int employeeID = (Integer) employeeTable.getValueAt(modelRow, 0);
 
                             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
 
@@ -174,6 +226,70 @@ public class EmployeeTablePanel extends JPanel
                 }
             }
         });
+
+        return panel;
+    }
+
+
+    // Method to create the Job Position Table Panel
+    private JPanel createJobPositionTablePanel() 
+    {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        // Column Names for Job Position Table
+        String[] columnNames = {"Position Name", "Hard Skill 1", "Hard Skill 2", "Soft Skill 1", "Soft Skill 2"};
+
+        // Initialize the table model
+        jobPositionTableModel = new DefaultTableModel(columnNames, 0) 
+        {
+            // Make cells non-editable
+            @Override
+            public boolean isCellEditable(int row, int column) 
+            {
+                return false;
+            }
+
+            // Specify column classes
+            @Override
+            public Class<?> getColumnClass(int columnIndex) 
+            {
+                return String.class;
+            }
+        };
+
+        // Create the JTable
+        jobPositionTable = new JTable(jobPositionTableModel);
+
+        // Enable sorting
+        jobPositionSorter = new TableRowSorter<>(jobPositionTableModel);
+        jobPositionTable.setRowSorter(jobPositionSorter);
+
+        // Adjust column widths
+        jobPositionTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jobPositionTable.getColumnModel().getColumn(0).setPreferredWidth(150); // Position Name
+        jobPositionTable.getColumnModel().getColumn(1).setPreferredWidth(100); // Hard Skill 1
+        jobPositionTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Hard Skill 2
+        jobPositionTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Soft Skill 1
+        jobPositionTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Soft Skill 2
+
+        // Add the table to a scroll pane
+        JScrollPane scrollPane = new JScrollPane(jobPositionTable);
+
+        // Add the scroll pane to the panel
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Load job position data
+        try 
+        {
+            loadJobPositionData();
+        } 
+        catch (SQLException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error loading job position data: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return panel;
     }
 
     /**
@@ -213,6 +329,27 @@ public class EmployeeTablePanel extends JPanel
                 emp.getEmail()
             };
             tableModel.addRow(rowData);
+        }
+    }
+
+    // Method to load job position data
+    public void loadJobPositionData() throws SQLException 
+    {
+        // Clear existing data
+        jobPositionTableModel.setRowCount(0);
+
+        List<JobPosition> jobPositions = jobPositionDAO.getAllJobPositions();
+        for (JobPosition job : jobPositions) 
+        {
+            Object[] rowData = 
+            {
+                    job.getJobPositionName(),
+                    job.getHardSkill1(),
+                    job.getHardSkill2(),
+                    job.getSoftSkill1(),
+                    job.getSoftSkill2()
+            };
+            jobPositionTableModel.addRow(rowData);
         }
     }
 
@@ -279,6 +416,19 @@ public class EmployeeTablePanel extends JPanel
         else
         {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
+        }
+    }
+
+    // Method to filter the job position table
+    public void filterJobPositionTable(String query) 
+    {
+        if (query.trim().length() == 0) 
+        {
+            jobPositionSorter.setRowFilter(null);
+        } 
+        else 
+        {
+            jobPositionSorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
         }
     }
 
