@@ -94,7 +94,6 @@ public class EmployeeTablePanel extends JPanel
     private JPanel createEmployeeTablePanel()
     {
         JPanel panel = new JPanel(new BorderLayout());
-
         //Column Names
         String[] columnNames = {"ID", "First Name", "Last Name", "Email"};
 
