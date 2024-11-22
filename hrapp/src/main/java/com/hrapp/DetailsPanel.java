@@ -3,6 +3,7 @@ package com.hrapp;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -231,6 +232,7 @@ public class DetailsPanel extends JPanel
 
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
         JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));

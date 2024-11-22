@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.swing.JLabel;
 
 public class Label extends JLabel 
-{ //TODO: Set up try-catch with font formatting for new font Montserrat and variants
+{
     public Label(String text) 
     {
         super("<html>" + text + "</html>");

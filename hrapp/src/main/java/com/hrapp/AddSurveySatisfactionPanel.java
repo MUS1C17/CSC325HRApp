@@ -1,6 +1,8 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +12,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -23,7 +27,7 @@ public class AddSurveySatisfactionPanel extends JPanel
     //Properties 
     private MainApplication mainApp;
     private SurveySatisfactionDAO surveyDAO;
-    private JButton addButton;
+    private JButton saveButton;
 
     private JTextArea favoriteAspect;
     private JTextArea additionalComments;
@@ -50,6 +54,19 @@ public class AddSurveySatisfactionPanel extends JPanel
 
     public void initUI()
     {
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("Job Satisfaction Reflection", 32, Color.WHITE));
+
+        add(topPanel, BorderLayout.NORTH);
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -96,6 +113,7 @@ public class AddSurveySatisfactionPanel extends JPanel
 
         //Button panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
         JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
@@ -121,12 +139,12 @@ public class AddSurveySatisfactionPanel extends JPanel
         });
 
         //Add Button
-        addButton = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
-        addButton.setBorderPainted(false);
-        addButton.setContentAreaFilled(false);
-        addButton.setEnabled(true);
+        saveButton = new JButton(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
+        saveButton.setBorderPainted(false);
+        saveButton.setContentAreaFilled(false);
+        saveButton.setEnabled(true);
 
-        addButton.addMouseListener(new MouseListener() {
+        saveButton.addMouseListener(new MouseListener() {
             @Override
             public void mousePressed(MouseEvent e) {}
             @Override
@@ -135,16 +153,16 @@ public class AddSurveySatisfactionPanel extends JPanel
             public void mouseClicked(MouseEvent e) {}
             @Override
             public void mouseEntered(MouseEvent e) {
-                addButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
+                saveButton.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (hover).png"));
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setIcon(new ImageIcon("resources\\\\AddButtons\\\\Add button (no hover).png"));
+                saveButton.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
             }
         });
 
         //Save information into database when Save button is clicked
-        addButton.addActionListener(new ActionListener(){
+        saveButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -176,7 +194,7 @@ public class AddSurveySatisfactionPanel extends JPanel
         });
 
         buttonPanel.add(backButton);
-        buttonPanel.add(addButton);
+        buttonPanel.add(saveButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
     }
