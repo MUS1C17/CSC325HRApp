@@ -48,7 +48,7 @@ public class JobPositionDAO
                 );
 
                 jobPosition.setJobPositionID(result.getInt("JobPositionID"));   //Set Postion ID
-                jobPosition.setIsDeleted(result.getInt("IsDelted"));            //Set isDeleted
+                jobPosition.setIsDeleted(result.getInt("IsDeleted"));            //Set isDeleted
                 jobPositions.add(jobPosition);  //Add JobPosition to the list
             }
         }

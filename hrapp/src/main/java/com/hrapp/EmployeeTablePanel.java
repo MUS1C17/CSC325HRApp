@@ -2,12 +2,13 @@ package com.hrapp;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
-import javax.swing.Box;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -51,6 +52,8 @@ public class EmployeeTablePanel extends JPanel
     
     public EmployeeTablePanel()
     {
+        setLayout(new BorderLayout());
+
         // Initialize DAOs
         try 
         {
@@ -77,6 +80,8 @@ public class EmployeeTablePanel extends JPanel
         tablesPanel.add(Box.createVerticalStrut(20));
         // Add job position table panel
         tablesPanel.add(jobPositionTablePanel);
+
+        
 
         // Add the tables panel to a scroll pane
         JScrollPane scrollPane = new JScrollPane(tablesPanel);
@@ -136,11 +141,13 @@ public class EmployeeTablePanel extends JPanel
         employeeTable.getColumnModel().getColumn(2).setPreferredWidth(100); // LastName
         employeeTable.getColumnModel().getColumn(3).setPreferredWidth(200); // Email
 
+        // Set preferred viewport size to show 15 rows
+        employeeTable.setPreferredScrollableViewportSize(new Dimension(employeeTable.getPreferredSize().width,
+                      employeeTable.getRowHeight() * 15));
+
         //Add the table to a scroll pane
         JScrollPane scrollPane = new JScrollPane(employeeTable);
 
-        // Add the scroll pane to the panel
-        panel.add(scrollPane, BorderLayout.CENTER);
 
         //Initialize EMployeeDAO and load data
         try
@@ -152,6 +159,8 @@ public class EmployeeTablePanel extends JPanel
             JOptionPane.showMessageDialog(this, "Error loading employee data: " + e.getMessage(),"Database Error", JOptionPane.ERROR_MESSAGE);
         }
 
+        // Add the scroll pane to the panel
+        panel.add(scrollPane, BorderLayout.CENTER);
 
          // Add MouseListener to the panel to detect clicks outside the table
         addMouseListener(new MouseAdapter() 
@@ -272,6 +281,11 @@ public class EmployeeTablePanel extends JPanel
         jobPositionTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Soft Skill 1
         jobPositionTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Soft Skill 2
 
+        // Set preferred viewport size to show 15 rows
+        jobPositionTable.setPreferredScrollableViewportSize(new Dimension(jobPositionTable.getPreferredSize().width,
+            jobPositionTable.getRowHeight() * 10));
+
+
         // Add the table to a scroll pane
         JScrollPane scrollPane = new JScrollPane(jobPositionTable);
 
@@ -316,7 +330,7 @@ public class EmployeeTablePanel extends JPanel
     public void loadEmployeeData() throws SQLException
     {
         //Clear exisitng data
-        tableModel.setRowCount(0);
+        employeeTableModel.setRowCount(0);
 
         List<Employee> employees = employeeDAO.getAllEmployees();
         for (Employee emp : employees)
@@ -328,7 +342,7 @@ public class EmployeeTablePanel extends JPanel
                 emp.getLastName(),
                 emp.getEmail()
             };
-            tableModel.addRow(rowData);
+            employeeTableModel.addRow(rowData);
         }
     }
 
@@ -381,11 +395,11 @@ public class EmployeeTablePanel extends JPanel
      */
     public Employee getSelectedEmployee() throws SQLException
     {
-        int selectedRow = table.getSelectedRow();
+        int selectedRow = employeeTable.getSelectedRow();
         if (selectedRow != -1) 
         {
-            int modelRow = table.convertRowIndexToModel(selectedRow);
-            int employeeID = (Integer) tableModel.getValueAt(modelRow, 0);
+            int modelRow = employeeTable.convertRowIndexToModel(selectedRow);
+            int employeeID = (Integer) employeeTableModel.getValueAt(modelRow, 0);
 
             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
             return emp;
@@ -411,11 +425,11 @@ public class EmployeeTablePanel extends JPanel
     {
         if(query.trim().length() == 0)
         {
-            sorter.setRowFilter(null);
+            employeeSorter.setRowFilter(null);
         }
         else
         {
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
+            employeeSorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
         }
     }
 
@@ -432,9 +446,13 @@ public class EmployeeTablePanel extends JPanel
         }
     }
 
-    public JTable getTable() 
-    {
-        return table;
+    // Getter methods if needed
+    public JTable getEmployeeTable() {
+        return employeeTable;
+    }
+
+    public JTable getJobPositionTable() {
+        return jobPositionTable;
     }
 
 }
