@@ -2,6 +2,7 @@ package com.hrapp;
 
 import java.awt.CardLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -13,14 +14,20 @@ public class MainApplication extends JFrame{
     private AddJobPanel addJobPanel;
     private JPanel mainPanel;
     private EmployeeDetailPanel employeeDetailPanel;
+    private UserSelectionPanel userSelectionPanel;
+    private AddSurveySatisfactionPanel addSurveryPanel;
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
     private EditJobPanel editJobPanel;
 
+    private Employee currentUser;
+
+
 
     public MainApplication() 
     {
-        setTitle("HRApp");
+        setTitle("FRONTLINE HR App");
+        setIconImage(new ImageIcon("resources\\FRONTLINE HR App Badge (Large).png").getImage());
 
         //Set up the CardLayout
         cardLayout = new CardLayout();
@@ -29,18 +36,24 @@ public class MainApplication extends JFrame{
         boolean isManagerOrCEO = checkUserRole();
 
         //Create an instance of HomePanel
-        homePanel = new HomePanel(isManagerOrCEO, this);
+        //homePanel = new HomePanel(isManagerOrCEO, this);
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
         addJobPanel = new AddJobPanel(this);
         editJobPanel = new EditJobPanel(this);
+        userSelectionPanel = new UserSelectionPanel(this);
+        addSurveryPanel = new AddSurveySatisfactionPanel(this);
+
 
         // Add the HomePanel to the Frame
-        mainPanel.add(homePanel, "HomePanel");
+        mainPanel.add(userSelectionPanel, "UserSelectionPanel");
+        //mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
         mainPanel.add(addJobPanel, "AddJobPanel");
         mainPanel.add(editJobPanel, "EditJobPanel");
+        mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
+
         
 
         //Add the mainPanel to the JFrame
@@ -48,7 +61,7 @@ public class MainApplication extends JFrame{
 
         // Frame settings 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1250, 800);
         setLocationRelativeTo(null); //Center the window
     }
 
@@ -70,6 +83,19 @@ public class MainApplication extends JFrame{
     {
         homePanel.closeResources();
         super.dispose();
+    }
+
+    public void createHomePanel(boolean isManagerOrCEO)
+    {
+        homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
+        mainPanel.add(homePanel, "HomePanel");
+    }
+
+    public void showHomePanel()
+    {
+        homePanel = new HomePanel(true, this, this.getCurrentUser());
+        mainPanel.add(homePanel, "HomePanel");
+        switchToPanel("HomePanel");
     }
 
     //This method is used to switch to the specified panel in the CardLayout 
@@ -120,6 +146,21 @@ public class MainApplication extends JFrame{
     public HomePanel getHomePanel() 
     {
         return homePanel;
+    }
+
+    public void setCurrentUser(Employee user)
+    {
+        currentUser = user;
+    }
+
+    public Employee getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public int getCurrentUserID()
+    {
+        return currentUser.getEmployeeID();
     }
 
     public static void main(String[] args) 

@@ -1,5 +1,6 @@
 package com.hrapp;
 
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,9 +14,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -189,5 +191,6 @@ public class JobHistoryPanel extends JPanel
         buttonPanel.add(addJobButton);
 
         add(buttonPanel, BorderLayout.PAGE_END);
+
     }
 }
