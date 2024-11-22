@@ -145,7 +145,8 @@ public class EditJobPanel extends JPanel
                 updateButtonState();
             }
 
-            private void updateButtonState() {
+            private void updateButtonState() 
+            {
                 // Check if all text fields contain text
                 boolean allFieldsFilled = !jobTitle.getText().trim().isEmpty() &&
                                           !companyName.getText().trim().isEmpty() &&
@@ -160,19 +161,20 @@ public class EditJobPanel extends JPanel
         //Add the DocumentListener to the TextFields
         jobTitle.getDocument().addDocumentListener(documentListener);
         companyName.getDocument().addDocumentListener(documentListener);
-        //dateOfBirth.getDocument().addDocumentListener(documentListener);
         city.getDocument().addDocumentListener(documentListener);
         description.getDocument().addDocumentListener(documentListener);
         quitReason.getDocument().addDocumentListener(documentListener);
 
         //Save all the information to the database
-        update.addActionListener(new ActionListener() {
+        update.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 Platform.runLater(() -> 
                 {
-                    try {
+                    try 
+                    {
                         LocalDate startDate = startDatePicker.getValue();
                         LocalDate endDate = endDatePicker.getValue();
             

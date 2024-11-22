@@ -98,15 +98,19 @@ public class JobHistoryPanel extends JPanel
         // create delete button
         JButton deleteJobButton = new JButton("Delete");
         deleteJobButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        deleteJobButton.addActionListener(new ActionListener() {
+        deleteJobButton.addActionListener(new ActionListener() 
+        {
             @Override
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(ActionEvent event) 
+            {
                 int confirm = JOptionPane.showConfirmDialog(JobHistoryPanel.this,
                         "Are you sure you want to delete job ID " + job.getJobID() + "?",
                         "Confirm Deletion", JOptionPane.YES_NO_OPTION);
         
-                if (confirm == JOptionPane.YES_OPTION) {
-                    try {
+                if (confirm == JOptionPane.YES_OPTION) 
+                {
+                    try 
+                    {
                         // Delete the job from the database
                         jobDAO.deleteJob(job.getJobID());
         
@@ -114,11 +118,13 @@ public class JobHistoryPanel extends JPanel
                         jobs.remove(job);
                         mainApp.switchToPanel("HomePanel");
                         mainApp.switchToJobHistoryPanel();
-                    } catch (Exception error) {
+                    } 
+                    catch (Exception error) 
+                    {
                         JOptionPane.showMessageDialog(JobHistoryPanel.this,
                                 "Error deleting job: " + error.getMessage(),
                                 "Database Error", JOptionPane.ERROR_MESSAGE);
-                        error.printStackTrace();
+                        error.getMessage();
                     }
                 }
             }

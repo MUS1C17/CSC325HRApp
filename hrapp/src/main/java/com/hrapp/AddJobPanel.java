@@ -142,11 +142,11 @@ public class AddJobPanel extends JPanel
                 updateButtonState();
             }
 
-            private void updateButtonState() {
+            private void updateButtonState() 
+            {
                 // Check if all text fields contain text
                 boolean allFieldsFilled = !jobTitle.getText().trim().isEmpty() &&
                                           !companyName.getText().trim().isEmpty() &&
-                                          //!dateOfBirth.getText().trim().isEmpty() &&
                                           !city.getText().trim().isEmpty() &&
                                           (!description.getText().trim().isEmpty() ||
                                           !quitReason.getText().trim().isEmpty());
@@ -157,13 +157,13 @@ public class AddJobPanel extends JPanel
         //Add the DocumentListener to the TextFields
         jobTitle.getDocument().addDocumentListener(documentListener);
         companyName.getDocument().addDocumentListener(documentListener);
-        //dateOfBirth.getDocument().addDocumentListener(documentListener);
         city.getDocument().addDocumentListener(documentListener);
         description.getDocument().addDocumentListener(documentListener);
         quitReason.getDocument().addDocumentListener(documentListener);
 
         //Save all the information to the database
-        add.addActionListener(new ActionListener() {
+        add.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -177,9 +177,9 @@ public class AddJobPanel extends JPanel
                     // Retrieve date values on the JavaFX Application Thread
                     Platform.runLater(() -> 
                     {
-                    dates[0] = startDatePicker.getValue();
-                    dates[1] = endDatePicker.getValue();
-                    latch.countDown(); // Signal that dates are retrieved
+                        dates[0] = startDatePicker.getValue();
+                        dates[1] = endDatePicker.getValue();
+                        latch.countDown(); // Signal that dates are retrieved
                     });
                     
                     // Wait for the latch to reach zero
