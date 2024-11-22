@@ -92,6 +92,26 @@ public class HomePanel extends JPanel
         addJobButton.setContentAreaFilled(false);
         addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addJobButton);
+
+        addJobButton.addMouseListener(new MouseListener() 
+        {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) 
+            {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) 
+            {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+            }
+        });
         //TODO: Event handlers required, particularly when implementing the job/skill add screen/DAO
 
 
