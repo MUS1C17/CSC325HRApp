@@ -86,16 +86,14 @@ public class AddJobPanel extends JPanel
         panel.add(new JLabel("Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
-        
-        Platform.runLater(this::initFX);
 
         // End date
         panel.add(new JLabel("End Date:"));
         panelForEndDate = new JFXPanel();
         panel.add(panelForEndDate);
         
+        //Initialize the datepickers
         Platform.runLater(this::initFX);
-
 
         // city
         panel.add(new JLabel("City:"));

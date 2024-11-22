@@ -97,8 +97,8 @@ public class EditJobPanel extends JPanel
         panelForEndDate = new JFXPanel();
         panel.add(panelForEndDate);
         
+        //Initialize the datepickers
         Platform.runLater(this::initFX);
-
 
         // city
         panel.add(new JLabel("City:"));

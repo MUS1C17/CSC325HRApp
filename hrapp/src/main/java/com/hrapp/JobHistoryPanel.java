@@ -104,7 +104,7 @@ public class JobHistoryPanel extends JPanel
             public void actionPerformed(ActionEvent event) 
             {
                 int confirm = JOptionPane.showConfirmDialog(JobHistoryPanel.this,
-                        "Are you sure you want to delete job ID " + job.getJobID() + "?",
+                        "Are you sure you want to delete " + job.getJobTitle() + " job?",
                         "Confirm Deletion", JOptionPane.YES_NO_OPTION);
         
                 if (confirm == JOptionPane.YES_OPTION) 
