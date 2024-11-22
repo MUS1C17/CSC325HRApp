@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.concurrent.CountDownLatch;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -33,6 +33,7 @@ public class EditJobPanel extends JPanel
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     private int jobID;
+    private Job job;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField jobTitle;
@@ -47,7 +48,6 @@ public class EditJobPanel extends JPanel
     {
         this.mainApp = mainApp;
         setLayout(new BorderLayout());
-        initUI();
 
         try
         {
@@ -60,9 +60,14 @@ public class EditJobPanel extends JPanel
     }
 
     // Set jobID
-    public void setJobID(int jobID)
+    public void setJobID(int jobID, Job job)
     {
         this.jobID = jobID;
+        this.job = job;
+        removeAll(); // Clear previous content
+        initUI();
+        revalidate();
+        repaint();
     }
 
     public void initUI()
@@ -74,20 +79,18 @@ public class EditJobPanel extends JPanel
 
         // Job title
         panel.add(new JLabel("Job Title:"));
-        jobTitle = new JTextField();
+        jobTitle = new JTextField(job.getJobTitle());
         panel.add(jobTitle);
 
         // Company name
         panel.add(new JLabel("Company Name:"));
-        companyName = new JTextField();
+        companyName = new JTextField(job.getCompanyName());
         panel.add(companyName);
 
         // Start date
         panel.add(new JLabel("Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
-        
-        Platform.runLater(this::initFX);
 
         // End date
         panel.add(new JLabel("End Date:"));
@@ -99,17 +102,17 @@ public class EditJobPanel extends JPanel
 
         // city
         panel.add(new JLabel("City:"));
-        city = new JTextField();
+        city = new JTextField(job.getCity());
         panel.add(city);
 
         // Job description
         panel.add(new JLabel("Job Description:"));
-        description = new JTextField();
+        description = new JTextField(job.getJobDescription());
         panel.add(description);
 
         // Quit reason
         panel.add(new JLabel("Reason for termination:"));
-        quitReason = new JTextField();
+        quitReason = new JTextField(job.getQuitReason());
         panel.add(quitReason);
 
         //Add panel to the AddJobPanel.
@@ -167,39 +170,27 @@ public class EditJobPanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
+                Platform.runLater(() -> 
                 {
-                    // Array to hold the dates
-                    LocalDate[] dates = new LocalDate[2];
-                    // Create a CountDownLatch initialized with 1
-                    CountDownLatch latch = new CountDownLatch(1);
-                    
-                    // Retrieve date values on the JavaFX Application Thread
-                    Platform.runLater(() -> 
-                    {
-                    dates[0] = startDatePicker.getValue();
-                    dates[1] = endDatePicker.getValue();
-                    latch.countDown(); // Signal that dates are retrieved
-                    });
-                    
-                    // Wait for the latch to reach zero
-                    latch.await();
-                    
-                    // Tells database to update job.
-                    jobDAO.updateJob(new Job(
-                        jobTitle.getText(),
-                        companyName.getText(),
-                        startDatePicker.getValue(),
-                        endDatePicker.getValue(),
-                        city.getText(),
-                        description.getText(),
-                        quitReason.getText(),
-                        0,
-                        0
-                    ), jobID);
-
-                    //Switch back to JobHistoryPanel
-                    mainApp.switchToJobHistoryPanel();
+                    try {
+                        LocalDate startDate = startDatePicker.getValue();
+                        LocalDate endDate = endDatePicker.getValue();
+            
+                        // Update the job in the database
+                        jobDAO.updateJob(new Job(
+                            jobTitle.getText(),
+                            companyName.getText(),
+                            startDate,
+                            endDate,
+                            city.getText(),
+                            description.getText(),
+                            quitReason.getText(),
+                            0,
+                            0
+                        ), jobID);
+            
+                        // Switch back to JobHistoryPanel on the EDT
+                        SwingUtilities.invokeLater(() -> mainApp.switchToJobHistoryPanel());
                     
                 }
                 catch(Exception error)
@@ -209,6 +200,7 @@ public class EditJobPanel extends JPanel
                         "Database Error", JOptionPane.ERROR_MESSAGE);
                         error.printStackTrace();
                 }
+            });
             }
         });
 
@@ -234,26 +226,23 @@ public class EditJobPanel extends JPanel
     // Method to initialize the JavaFX content
     public void initFX() 
     {
-        Platform.runLater(() -> {
-            // Initialize the root pane for the first panel
+        Platform.runLater(() -> 
+        {
+            // Start Date Picker
             StackPane rootForStartDate = new StackPane();
             startDatePicker = new DatePicker();
             startDatePicker.setPromptText("Select Start Date");
+            startDatePicker.setValue(job.getStartDate()); // Set existing start date
             rootForStartDate.getChildren().add(startDatePicker);
+            panelForStartDate.setScene(new Scene(rootForStartDate));
 
-            // Create a separate scene for the start date panel and set it on the JFXPanel
-            Scene sceneForStartDate = new Scene(rootForStartDate, 300, 200);
-            panelForStartDate.setScene(sceneForStartDate);
-
-            // Initialize the root pane for the second panel
+            // End Date Picker
             StackPane rootForEndDate = new StackPane();
             endDatePicker = new DatePicker();
             endDatePicker.setPromptText("Select End Date");
+            endDatePicker.setValue(job.getEndDate()); // Set existing end date
             rootForEndDate.getChildren().add(endDatePicker);
-
-            // Create a separate scene for the end date panel and set it on the JFXPanel
-            Scene sceneForEndDate = new Scene(rootForEndDate, 300, 200);
-            panelForEndDate.setScene(sceneForEndDate);
+            panelForEndDate.setScene(new Scene(rootForEndDate));
         });   
     }
 }

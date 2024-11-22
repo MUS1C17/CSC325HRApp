@@ -98,10 +98,10 @@ public class MainApplication extends JFrame{
     }
 
     // Passes jobID to edit panel so the panel knows which job to update in the database.
-    public void switchToEditJobPanel(int jobID)
+    public void switchToEditJobPanel(int jobID, Job job)
     {
-        editJobPanel.resetFields();
-        editJobPanel.setJobID(jobID);
+        //editJobPanel.resetFields();
+        editJobPanel.setJobID(jobID, job);
         switchToPanel("EditJobPanel");
     }
     

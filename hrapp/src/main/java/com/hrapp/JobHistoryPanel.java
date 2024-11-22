@@ -27,6 +27,7 @@ public class JobHistoryPanel extends JPanel
     private JobDAO jobDAO;
     private ArrayList<Job> jobs;
     private int employeeID;
+    private Job job;
 
     public JobHistoryPanel(MainApplication mainApp)
     {
@@ -92,7 +93,7 @@ public class JobHistoryPanel extends JPanel
         // create edit button
         JButton editButton = new JButton("Edit");
         editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID()));
+        editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job));
 
         // create delete button
         JButton deleteJobButton = new JButton("Delete");
