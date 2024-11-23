@@ -30,6 +30,7 @@ public class JobHistoryPanel extends JPanel
     private ArrayList<Job> jobs;
     private int employeeID;
     private Job job;
+    private Employee employee;
 
     public JobHistoryPanel(MainApplication mainApp)
     {
@@ -46,9 +47,10 @@ public class JobHistoryPanel extends JPanel
         }
     }
 
-    public void setEmployeeID(int employeeID)
+    public void setEmployeeID(int employeeID, Employee employee)
     {
         this.employeeID = employeeID;
+        this.employee = employee;
         showJobs(employeeID);
     }
 
@@ -95,7 +97,7 @@ public class JobHistoryPanel extends JPanel
         // create edit button
         JButton editButton = new JButton("Edit");
         editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job));
+        editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job, employee));
 
         // create delete button
         JButton deleteJobButton = new JButton("Delete");
@@ -178,16 +180,11 @@ public class JobHistoryPanel extends JPanel
         // Adds button panel to the bottom.
         JPanel buttonPanel = new JPanel();
 
-        // Back button
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
-
         // Add job button
         JButton addJobButton = new JButton("Add New Job");
-        addJobButton.addActionListener(e -> mainApp.switchToAddJobPanel(employeeID));
+        addJobButton.addActionListener(e -> mainApp.switchToAddJobPanel(employee));
 
         // Adds buttons to button panel.
-        buttonPanel.add(backButton);
         buttonPanel.add(addJobButton);
 
         add(buttonPanel, BorderLayout.PAGE_END);

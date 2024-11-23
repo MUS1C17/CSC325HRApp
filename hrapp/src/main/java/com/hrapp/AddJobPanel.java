@@ -33,6 +33,7 @@ public class AddJobPanel extends JPanel
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     private int employeeID;
+    private Employee employee;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField jobTitle;
@@ -60,9 +61,9 @@ public class AddJobPanel extends JPanel
     }
 
     // Set employeeID
-    public void setEmployeeID(int employeeID)
+    public void setEmployee(Employee employee)
     {
-        this.employeeID = employeeID;
+        this.employee = employee;
     }
 
     public void initUI()
@@ -118,7 +119,7 @@ public class AddJobPanel extends JPanel
 
         //Back button
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
+        backButton.addActionListener(e -> mainApp.showJobHistoryDetails(employee));
 
         //Add job button
         JButton add = new JButton("Add");
@@ -193,7 +194,7 @@ public class AddJobPanel extends JPanel
                         description.getText(),
                         quitReason.getText(),
                         0,
-                        employeeID
+                        employee.getEmployeeID()
                     ));
 
                     //Switch back to JobHistoryPanel
@@ -224,6 +225,8 @@ public class AddJobPanel extends JPanel
     {
         jobTitle.setText("");
         companyName.setText("");
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
         city.setText("");
         description.setText("");
         quitReason.setText("");

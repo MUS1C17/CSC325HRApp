@@ -115,19 +115,28 @@ public class MainApplication extends JFrame{
         switchToPanel("EmployeeDetailPanel");
     }
 
+    //This method can only be used when pressing back button on the EditJobPanel & AddJobPanel.
+    //It will disable JobHistory button
+    public void showJobHistoryDetails(Employee employee)
+    {
+        employeeDetailPanel.setEmployee(employee);
+        employeeDetailPanel.setJobHistoryButtonStatus(false); //Disable Job History button
+        switchToPanel("EmployeeDetailPanel");
+    }
+
     // Passes employeeID to the job panel to display matching jobs.
-    public void switchToAddJobPanel(int employeeID)
+    public void switchToAddJobPanel(Employee employee)
     {
         addJobPanel.resetFields();
-        addJobPanel.setEmployeeID(employeeID);
+        addJobPanel.setEmployee(employee);
         switchToPanel("AddJobPanel");
     }
 
     // Passes jobID to edit panel so the panel knows which job to update in the database.
-    public void switchToEditJobPanel(int jobID, Job job)
+    public void switchToEditJobPanel(int jobID, Job job, Employee employee)
     {
         //editJobPanel.resetFields();
-        editJobPanel.setJobID(jobID, job);
+        editJobPanel.setInformation(jobID, job, employee);
         switchToPanel("EditJobPanel");
     }
     
