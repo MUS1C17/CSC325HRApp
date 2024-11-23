@@ -11,11 +11,14 @@ public class MainApplication extends JFrame{
     //Properties
     private HomePanel homePanel;
     private AddEmployeePanel addEmployeePanel;
+    private AddJobPanel addJobPanel;
     private JPanel mainPanel;
     private EmployeeDetailPanel employeeDetailPanel;
     private UserSelectionPanel userSelectionPanel;
     private AddSurveySatisfactionPanel addSurveryPanel;
     private CardLayout cardLayout;
+    private JobHistoryPanel jobHistoryPanel;
+    private EditJobPanel editJobPanel;
 
     private Employee currentUser;
 
@@ -36,15 +39,21 @@ public class MainApplication extends JFrame{
         //homePanel = new HomePanel(isManagerOrCEO, this);
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
+        addJobPanel = new AddJobPanel(this);
+        editJobPanel = new EditJobPanel(this);
         userSelectionPanel = new UserSelectionPanel(this);
         addSurveryPanel = new AddSurveySatisfactionPanel(this);
+
 
         // Add the HomePanel to the Frame
         mainPanel.add(userSelectionPanel, "UserSelectionPanel");
         //mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
+        mainPanel.add(addJobPanel, "AddJobPanel");
+        mainPanel.add(editJobPanel, "EditJobPanel");
         mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
+
         
 
         //Add the mainPanel to the JFrame
@@ -103,6 +112,37 @@ public class MainApplication extends JFrame{
     {
         employeeDetailPanel.setEmployee(employee);
         employeeDetailPanel.setDetailsButtonStatus(false); //Disable Details button
+        switchToPanel("EmployeeDetailPanel");
+    }
+
+    //This method can only be used when pressing back button on the EditJobPanel & AddJobPanel.
+    //It will disable JobHistory button
+    public void showJobHistoryDetails(Employee employee)
+    {
+        employeeDetailPanel.setEmployee(employee);
+        employeeDetailPanel.setJobHistoryButtonStatus(false); //Disable Job History button
+        switchToPanel("EmployeeDetailPanel");
+    }
+
+    // Passes employeeID to the job panel to display matching jobs.
+    public void switchToAddJobPanel(Employee employee)
+    {
+        addJobPanel.resetFields();
+        addJobPanel.setEmployee(employee);
+        switchToPanel("AddJobPanel");
+    }
+
+    // Passes jobID to edit panel so the panel knows which job to update in the database.
+    public void switchToEditJobPanel(int jobID, Job job, Employee employee)
+    {
+        //editJobPanel.resetFields();
+        editJobPanel.setInformation(jobID, job, employee);
+        switchToPanel("EditJobPanel");
+    }
+    
+    public void switchToJobHistoryPanel()
+    {
+        employeeDetailPanel.refreshJobHistory();
         switchToPanel("EmployeeDetailPanel");
     }
 
