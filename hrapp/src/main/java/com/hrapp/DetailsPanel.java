@@ -1,11 +1,16 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URI;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -13,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 /**
  * A Panel  to display detailed information about an employee.
  */
@@ -24,6 +28,12 @@ public class DetailsPanel extends JPanel
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
+
+    private Label emailLabel;
+    private Label phoneNumberLabel;
+
+    // Get the desktop environment to perform desktop-related actions
+    private Desktop desktop = Desktop.getDesktop();
 
     public DetailsPanel(MainApplication mainApp)
     {
@@ -81,14 +91,117 @@ public class DetailsPanel extends JPanel
         panel.add(new Label(employee.getEmploymentStatus() != null ? employee.getEmploymentStatus() : "N/A"));
 
         panel.add(new Label("Email:"));
-        panel.add(new Label(employee.getEmail()));
+        emailLabel = new Label("<a href =''>" + (employee.getEmail()) + "</a>");
+
+        //Cursor becomes a hand
+        emailLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        //Add mouse click listener to the email label
+        emailLabel.addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                try
+                {
+                    int choice = JOptionPane.showConfirmDialog(mainApp,
+                    "Would you like to email " + employee.getFirstAndLastName() + "?",
+                    "Send Email",
+                    JOptionPane.YES_NO_OPTION);
+
+                    //If yes option is clicked
+                    if(choice == JOptionPane.YES_OPTION)
+                    {
+                        // Create a URI for the mailto action using the employee's email
+                        URI emailURI = new URI("mailto:" + employee.getEmail());
+
+                        // Check if the desktop environment supports the "browse" action
+                        if(desktop.isSupported(Desktop.Action.BROWSE))
+                        {
+                            desktop.browse(emailURI);
+                        }
+                    }
+                    //No code needed for no option since it will automatically close the JOptionPane
+
+                } 
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(mainApp, "Error opening phone application: " + ex.getMessage());
+                }
+            }
+
+        });
+
+        panel.add(emailLabel);
 
         panel.add(new Label("Phone Number:"));
-        panel.add(new Label(employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
+        phoneNumberLabel = new Label("<a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
             employee.getPhoneNumber().substring(0, 3),
             employee.getPhoneNumber().substring(3, 6),
             employee.getPhoneNumber().substring(6, 10))
-        : "N/A")); //This outputs phone number in the format (123)-456-7890
+        : "N/A") + "</a>"); //This outputs phone number in the format (123)-456-7890
+
+        //Cursor becomes a hand
+        phoneNumberLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
+
+        //Add mouse click listener to the phoneNubmerLabel
+        phoneNumberLabel.addMouseListener( new MouseAdapter() 
+        {
+            @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    String[] contactOptions = {"Call", "Message", "Cancel",};
+                    try
+                    {
+                        int choice = JOptionPane.showOptionDialog(mainApp, 
+                        "How would you like to contact " + employee.getFirstAndLastName() + "?", 
+                        "Choose Contact Option",
+                        JOptionPane.DEFAULT_OPTION,   // Option type
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        contactOptions,
+                        contactOptions[0]);
+                        //Desktop desktop = Desktop.getDesktop();
+
+                        switch (choice) 
+                        {
+                            //If call button is clicked, then open Windows Phone Call
+                            case 0:     
+                                // Create a URI for the tel: action using the employee's phonenumber
+                                URI callURI = new URI("tel:" + employee.getPhoneNumber());
+                                
+                                // Check if the desktop environment supports the "browse" action
+                                if(desktop.isSupported(Desktop.Action.BROWSE))
+                                {
+                                    desktop.browse(callURI);
+                                }
+                                break;
+                            
+                            //If Message button is clicked, then open Windows Phone Message
+                            case 1:
+
+                                // Create a URI for the sms: action using the employee's phoneNumber
+                                URI smsURI = new URI("sms:" + employee.getPhoneNumber());
+
+                                // Check if the desktop environment supports the "browse" action
+                                if(desktop.isSupported(Desktop.Action.BROWSE))
+                                {
+                                    desktop.browse(smsURI);
+                                }
+                                break;
+                            
+                            //No need for switch case for Cancel button since it will close the OptionPane anyway 
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(mainApp, "Error opening phone application");
+                    }
+                }       
+        });
+        panel.add(phoneNumberLabel);
 
         panel.add(new Label("Hourly Rate:"));
         panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
@@ -119,6 +232,7 @@ public class DetailsPanel extends JPanel
 
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
         JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));

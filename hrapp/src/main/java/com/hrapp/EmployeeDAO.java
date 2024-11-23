@@ -216,7 +216,6 @@ public class EmployeeDAO //DAO - Data Access Object
             employee.getIsManager(),
             employee.getIsCEO(),
             employeeID);    //employeeID doesn't need employee in the beginning because we pass this value in the method
-
     }
 
      /**

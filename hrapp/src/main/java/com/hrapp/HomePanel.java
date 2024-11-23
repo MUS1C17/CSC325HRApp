@@ -43,12 +43,13 @@ public class HomePanel extends JPanel
 
         // Top Panel containing search bar and buttons
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(new Color(45, 137, 216));
 
         // Add logo in top left
         JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
         topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
         
         //search bar
         JLabel searchLabel = new Label("Search: ", 18, Color.WHITE);
@@ -85,9 +86,9 @@ public class HomePanel extends JPanel
             }
         });
 
-        //TODO: Add Job/Skill button
-        addJobButton = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
-        addJobButton.setMaximumSize(new Dimension(100, 45)); //TODO: Change when placeholder button removed
+        //Add Job Type button
+        addJobButton = new JButton(new ImageIcon("resources\\AddButtons\\Add Job Type button (no hover).png"));
+        addJobButton.setMaximumSize(new Dimension(232, 45));
         addJobButton.setBorderPainted(false);
         addJobButton.setContentAreaFilled(false);
         addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
@@ -113,6 +114,26 @@ public class HomePanel extends JPanel
             }
         });
         //TODO: Event handlers required, particularly when implementing the job/skill add screen/DAO
+
+        addJobButton.addMouseListener(new MouseListener() 
+        {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) 
+            {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add Job Type button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) 
+            {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add Job Type button (no hover).png"));
+            }
+        });
 
 
         add(topPanel, BorderLayout.NORTH);
@@ -233,7 +254,27 @@ public class HomePanel extends JPanel
         editProfileButton.setBorderPainted(false);
         editProfileButton.setContentAreaFilled(false);
         panel.add(editProfileButton);
-        //TODO: Add event handlers to edit page and for hover behavior
+        //TODO: Add event handlers to edit page
+
+        editProfileButton.addMouseListener(new MouseListener() 
+        {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) 
+            {
+                editProfileButton.setIcon(new ImageIcon("resources\\EditButtons\\Edit Profile button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) 
+            {
+                editProfileButton.setIcon(new ImageIcon("resources\\EditButtons\\Edit Profile button (no hover).png"));
+            }
+        });
 
         panel.add(Box.createVerticalStrut(20));
         //Job Satisfection Button
