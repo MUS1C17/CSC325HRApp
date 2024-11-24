@@ -2,6 +2,7 @@ package com.hrapp;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,10 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -91,17 +95,40 @@ public class JobHistoryPanel extends JPanel
         jobTextArea.setAlignmentX(CENTER_ALIGNMENT);
         jobTextArea.setWrapStyleWord(true);
         jobTextArea.setLineWrap(true);
+        jobTextArea.setEditable(false);
 
         jobBox.add(jobTextArea);
 
         // create edit button
-        JButton editButton = new JButton("Edit");
+        JButton editButton = new JButton(new ImageIcon("resources\\EditButtons\\Edit button (no hover).png"));
+        editButton.setBorderPainted(false);
+        editButton.setContentAreaFilled(false);
         editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job, employee));
 
+        // Hover behavior for Edit button
+        editButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                editButton.setIcon(new ImageIcon("resources\\EditButtons\\Edit button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                editButton.setIcon(new ImageIcon("resources\\\\EditButtons\\\\Edit button (no hover).png"));
+            }
+        });
+
         // create delete button
-        JButton deleteJobButton = new JButton("Delete");
+        JButton deleteJobButton = new JButton(new ImageIcon("resources\\\\DeleteButtons\\\\Delete button (no hover).png"));
         deleteJobButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        deleteJobButton.setBorderPainted(false);
+        deleteJobButton.setContentAreaFilled(false);
         deleteJobButton.addActionListener(new ActionListener() 
         {
             @Override
@@ -131,6 +158,24 @@ public class JobHistoryPanel extends JPanel
                         error.getMessage();
                     }
                 }
+            }
+        });
+
+        // Hover behavior for Delete button
+        deleteJobButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                deleteJobButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                deleteJobButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
             }
         });
 
@@ -179,10 +224,31 @@ public class JobHistoryPanel extends JPanel
 
         // Adds button panel to the bottom.
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         // Add job button
-        JButton addJobButton = new JButton("Add New Job");
+        JButton addJobButton = new JButton(new ImageIcon("resources\\AddButtons\\Add New Job button (no hover).png"));
+        addJobButton.setBorderPainted(false);
+        addJobButton.setContentAreaFilled(false);
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPanel(employee));
+
+        // Hover behavior
+        addJobButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add New Job button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add New Job button (no hover).png"));
+            }
+        });
 
         // Adds buttons to button panel.
         buttonPanel.add(addJobButton);
