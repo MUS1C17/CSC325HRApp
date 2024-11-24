@@ -67,7 +67,7 @@ public class SprintEvaluationDAO
         List<SprintEvaluation> sprintEvaluations = new ArrayList<>();
 
         // SQL query to select all SprintEvaluations for the given employeeID
-        String query = "SELECT * FROM SprintEvaluation WHERE EmployeeID = ?";
+        String query = "SELECT * FROM SprintEvaluation WHERE EmployeeID = ? ORDER BY SprintEvaluationID DESC";
 
         // Execute the query and obtain the result set
         try(ResultSet result = executer.getDataFromDatabase(query, employeeID))
