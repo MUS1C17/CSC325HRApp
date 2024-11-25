@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -208,8 +209,9 @@ public class JobHistoryPanel extends JPanel
         }
         else
         {
-            JLabel noJobsLabel = new JLabel("No job history");
+            JLabel noJobsLabel = new Label("No job history");
             noJobsLabel.setAlignmentX(CENTER_ALIGNMENT);
+            noJobsLabel.setHorizontalAlignment(SwingConstants.CENTER);
             noJobsLabel.setAlignmentY(CENTER_ALIGNMENT);
             panel.add(noJobsLabel);
         }
