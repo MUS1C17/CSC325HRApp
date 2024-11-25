@@ -31,7 +31,7 @@ public class JobPositionDAO
         List<JobPosition> jobPositions = new ArrayList<>();
 
         //Query to get all the non deleted jobs
-        String query = "SELECT * FROM JobPosition WHERE isDeleted = 0";
+        String query = "SELECT * FROM JobPosition WHERE isDeleted = 0 ORDER BY JobPositionName ASC";
 
         try(ResultSet result = executer.getDataFromDatabase(query))
         {
