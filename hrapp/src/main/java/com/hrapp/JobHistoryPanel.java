@@ -87,18 +87,30 @@ public class JobHistoryPanel extends JPanel
         jobBox.setMaximumSize(new Dimension(800,150));
         jobBox.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        // String of all the job details, organized neatly to fit in the box.
-        String jobDetails = "Job title: " + job.getJobTitle() + "\nCompany name: " + job.getCompanyName() +
-        "\nCity: " + job.getCity() + " (" + job.getStartDateStringFormat() + " - " + job.getEndDateStringFormat() + ")" +
-        "\n" + job.getJobDescription() + "\nTermination reason: " + job.getQuitReason();
+        // Content for a jobBox, in the order: Title and company; City and time of employment; description; quit reason.
+        JLabel jobTitleLabel = new Label(job.getJobTitle() + " at " + job.getCompanyName(), 18, Color.WHITE);
+        jobTitleLabel.setOpaque(true);
+        jobTitleLabel.setBackground(new Color(17, 59, 95));
+        jobTitleLabel.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(jobTitleLabel);
 
-        JTextArea jobTextArea = new JTextArea(jobDetails, 5, 50);
-        jobTextArea.setAlignmentX(CENTER_ALIGNMENT);
-        jobTextArea.setWrapStyleWord(true);
-        jobTextArea.setLineWrap(true);
-        jobTextArea.setEditable(false);
+        JLabel jobCityAndTimeLabel = new Label(job.getCity() + " | " + job.getStartDateStringFormat() + " to " + job.getEndDateStringFormat(), 14, Color.WHITE);
+        jobCityAndTimeLabel.setOpaque(true);
+        jobCityAndTimeLabel.setBackground(new Color(45, 137, 216));
+        jobCityAndTimeLabel.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(jobCityAndTimeLabel);
 
-        jobBox.add(jobTextArea);
+        JLabel jobDescriptionLabel = new Label(job.getJobDescription(), 14);
+        jobDescriptionLabel.setOpaque(true);
+        jobDescriptionLabel.setBackground(Color.WHITE);
+        jobDescriptionLabel.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(jobDescriptionLabel);
+
+        JLabel terminationHeader = new Label("REASON FOR TERMINATION: " + job.getQuitReason(), 12, Color.RED);
+        terminationHeader.setOpaque(true);
+        terminationHeader.setBackground(Color.WHITE);
+        terminationHeader.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(terminationHeader);
 
         // create edit button
         JButton editButton = new JButton(new ImageIcon("resources\\EditButtons\\Edit button (no hover).png"));
