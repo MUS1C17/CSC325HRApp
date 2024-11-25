@@ -168,9 +168,14 @@ public class MainApplication extends JFrame{
     //This method is used to switch to AddSprintEvaluationPanel
     public void switchToAddSprintEvaluationPanel(Employee employee)
     {
-        switchToPanel("AddSprintEvaluationPanel"); 
+
         //Set employee on the add panel to then get employee's id
         addSprintEvaluationPanel.setEmployee(employee);
+
+        switchToPanel("AddSprintEvaluationPanel"); 
+
+        //Reset all the text fields
+        addSprintEvaluationPanel.resetFields();
     }
 
     public void switchToPanel(String panelName) 

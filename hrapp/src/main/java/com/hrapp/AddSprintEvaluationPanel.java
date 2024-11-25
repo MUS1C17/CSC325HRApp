@@ -11,17 +11,18 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 public class AddSprintEvaluationPanel extends JPanel {
 
     //Properties
-    private TextField feelingsField;
-    private TextField favoriteTaskField;
-    private TextField proficientTaskField;
-    private TextField dreadTaskField;
-    private TextField potentialTaskField;
-    private TextField notesArea;
+    private JTextField feelingsField;
+    private JTextField favoriteTaskField;
+    private JTextField proficientTaskField;
+    private JTextField dreadTaskField;
+    private JTextField potentialTaskField;
+    private JTextField notesArea;
     private SprintEvaluationPanel sprintEvaluationPanel;
     private MainApplication mainApp;
     private SprintEvaluationDAO sprintDAO;
@@ -32,7 +33,8 @@ public class AddSprintEvaluationPanel extends JPanel {
     {
         this.mainApp = mainApp;  // Set parentFrame reference
         setLayout(new BorderLayout());
-        
+        initUI();
+
         try
         {
             sprintDAO = new SprintEvaluationDAO();
@@ -93,6 +95,10 @@ public class AddSprintEvaluationPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleSubmit();
+
+                //Switch back to Sprint Evaluations page
+                mainApp.switchToPanel("EmployeeDetailPanel");
+
                 //Refresh Evaluations
                 mainApp.refreshSprintEvaluations(employee);
             }
@@ -100,10 +106,12 @@ public class AddSprintEvaluationPanel extends JPanel {
 
         // Cancel button to return to SprintEvaluationPanel
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
+        cancelButton.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent e) 
             {
+                //Switch back to the sprint evaluation panel
                 mainApp.switchToPanel("EmployeeDetailPanel");
             }
         });
@@ -119,7 +127,6 @@ public class AddSprintEvaluationPanel extends JPanel {
     public void setEmployee(Employee employee)
     {
         this.employee = employee;
-        initUI();
     }
 
     // Handle form submission
@@ -142,13 +149,22 @@ public class AddSprintEvaluationPanel extends JPanel {
 
             // Confirmation dialog and return to SprintEvaluationPanel
             JOptionPane.showMessageDialog(mainApp, "Sprint Evaluation submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            mainApp.switchToPanel("EmployeeDetailPanel");
-
         } 
         catch (Exception ex) 
         {
             //Show Error if an error happens
             JOptionPane.showMessageDialog(mainApp, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    //Method to make all the text fields empty
+    public void resetFields()
+    {
+        feelingsField.setText("");
+        favoriteTaskField.setText("");
+        proficientTaskField.setText("");
+        dreadTaskField.setText("");
+        potentialTaskField.setText("");
+        notesArea.setText("");
     }
 }
