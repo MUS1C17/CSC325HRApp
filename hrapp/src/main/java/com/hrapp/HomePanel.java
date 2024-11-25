@@ -181,7 +181,7 @@ public class HomePanel extends JPanel
 
         //Open AddEmployeePanel when clicking on Add Employee Button
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
-        addJobButton.addActionListener(e -> mainApp.switchToPanel("AddJobPositionPanel"));
+        addJobButton.addActionListener(e -> mainApp.switchToAddJobPositionPanel());
     }    
 
     //Refresh employee table

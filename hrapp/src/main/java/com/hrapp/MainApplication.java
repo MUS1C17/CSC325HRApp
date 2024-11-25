@@ -134,6 +134,16 @@ public class MainApplication extends JFrame{
         switchToPanel("AddJobPanel");
     }
 
+    //Method to switch to AddJobPositionPanel
+    public void switchToAddJobPositionPanel()
+    {
+        //Reset fields on the panel
+        addJobPositionPanel.resetFields();
+
+        //Show the panel
+        switchToPanel("AddJobPositionPanel");
+    }
+
     // Passes jobID to edit panel so the panel knows which job to update in the database.
     public void switchToEditJobPanel(int jobID, Job job, Employee employee)
     {

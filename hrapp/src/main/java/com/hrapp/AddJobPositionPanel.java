@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.math.BigDecimal;
 import java.awt.GridLayout;
 
 public class AddJobPositionPanel extends JPanel
@@ -61,7 +60,7 @@ public class AddJobPositionPanel extends JPanel
 
         //JobPositionName
         panel.add(new Label("Position Name:"));
-        jobPositionName = new JTextField();
+        jobPositionName = new TextField();
         panel.add(jobPositionName);
 
         //Hard Skill 1
@@ -180,5 +179,15 @@ public class AddJobPositionPanel extends JPanel
         
         //Add Button Panel to the main panel
         add(buttonPanel, BorderLayout.PAGE_END);
+    }
+
+    //Method to reset all the fields back to empty
+    public void resetFields()
+    {
+        jobPositionName.setText("");
+        hardSkillOne.setSelectedIndex(0);
+        hardSkillTwo.setSelectedIndex(0);
+        softSkillOne.setSelectedIndex(0);
+        softSkillTwo.setSelectedIndex(0);
     }
 }
