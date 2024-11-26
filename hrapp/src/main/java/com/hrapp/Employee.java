@@ -26,6 +26,9 @@ public class Employee
     private int isManager;
     private int isCEO; 
 
+    //This method is used when adding a new employee in the database and app in geeneral
+    //This method doesn't take employeeID in it since employeeID is being dynamically created in the database
+    //EmployeeID is a PrimaryKey in the Employee table
     public Employee(String firstName, String lastName, LocalDate dateofBirth, String jobTitle, String department, String workLocation, String employmentStatus, String email, String phoneNumber, BigDecimal hourlyRate, String notes, String hardSkill1, String hardSkill2, String softSkill1, String softSkill2, int isManager, int isCEO)
     {
         this.firstName = firstName;
@@ -45,7 +48,31 @@ public class Employee
         this.softSkill2 = softSkill2;
         this.isManager = isManager;
         this.isCEO = isCEO;
-    }    
+    }   
+    
+    //This method is used when updating information about employee. The difference is that
+    //this method takes also employeeID as a parameters since we know what it is going to be
+    public Employee(int employeeID, String firstName, String lastName, LocalDate dateofBirth, String jobTitle, String department, String workLocation, String employmentStatus, String email, String phoneNumber, BigDecimal hourlyRate, String notes, String hardSkill1, String hardSkill2, String softSkill1, String softSkill2, int isManager, int isCEO)
+    {
+        this.employeeID = employeeID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateofBirth;
+        this.jobTitle = jobTitle;
+        this.department = department;
+        this.workLocation = workLocation;
+        this.employmentStatus = employmentStatus;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.hourlyRate = hourlyRate;
+        this.notes = notes;
+        this.hardSkill1 = hardSkill1;
+        this.hardSkill2 = hardSkill2;
+        this.softSkill1 = softSkill1;
+        this.softSkill2 = softSkill2;
+        this.isManager = isManager;
+        this.isCEO = isCEO;
+    }
 
     //Setters for each property
     public void setEmployeeID(int employeeID)

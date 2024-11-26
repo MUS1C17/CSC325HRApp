@@ -69,6 +69,7 @@ public class EmployeeDetailPanel extends JPanel
         // If JobHistoryPanel and SprintEvaluationPanel need employee data, pass it to them here
         jobHistoryPanel.setEmployeeID(employee.getEmployeeID(), employee);
         //jobHistoryPanel.showJobs(employee.getEmployeeID());
+        sprintEvaluationPanel.setEmployee(employee);
     }
 
     private void initUI() 
@@ -197,7 +198,7 @@ public class EmployeeDetailPanel extends JPanel
         // Initialize sub-panels
         detailsPanel = new DetailsPanel(mainApp);
         jobHistoryPanel = new JobHistoryPanel(mainApp);
-        sprintEvaluationPanel = new SprintEvaluationPanel();
+        sprintEvaluationPanel = new SprintEvaluationPanel(mainApp);
 
         
         // Add sub-panels to content panel
@@ -304,6 +305,17 @@ public class EmployeeDetailPanel extends JPanel
     public void setJobHistoryButtonStatus(boolean status)
     {
         jobHistoryButton.setEnabled(status);
+    }
+
+    public void setSprintEvaluationButton(boolean status)
+    {
+        sprintEvaluationButton.setEnabled(status);
+    }
+
+    //Refresh Sprint Evaluations
+    public void refreshSprintEvaluations()
+    {
+        sprintEvaluationPanel.setEmployee(employee);
     }
 
     // Refresh job history.

@@ -17,10 +17,12 @@ public class MainApplication extends JFrame{
     private UserSelectionPanel userSelectionPanel;
     private AddSurveySatisfactionPanel addSurveryPanel;
     private AddJobPositionPanel addJobPositionPanel;
+    private EditEmployeePanel editEmployeePanel;
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
     private EditJobPanel editJobPanel;
     private EditJobPositionPanel editJobPositionPanel;
+    private AddSprintEvaluationPanel addSprintEvaluationPanel;
 
     private Employee currentUser;
 
@@ -47,6 +49,7 @@ public class MainApplication extends JFrame{
         addSurveryPanel = new AddSurveySatisfactionPanel(this);
         addJobPositionPanel = new AddJobPositionPanel(this);
         editJobPositionPanel = new EditJobPositionPanel(this);
+        addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
 
 
         // Add the HomePanel to the Frame
@@ -59,6 +62,7 @@ public class MainApplication extends JFrame{
         mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
         mainPanel.add(addJobPositionPanel, "AddJobPositionPanel");
         mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
+        mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
         
         //Add the mainPanel to the JFrame
         add(mainPanel);
@@ -95,6 +99,14 @@ public class MainApplication extends JFrame{
         mainPanel.add(homePanel, "HomePanel");
     }
 
+    //This method is used to switch to Edit Employee Panel to edit employee
+    public void switchToEditEmployeePanel(Employee employee)
+    {
+        editEmployeePanel = new EditEmployeePanel(this, employee);
+        mainPanel.add(editEmployeePanel, "EditEmployeePanel");
+        switchToPanel("EditEmployeePanel");
+    }
+
     public void showHomePanel()
     {
         homePanel = new HomePanel(true, this, this.getCurrentUser());
@@ -127,6 +139,22 @@ public class MainApplication extends JFrame{
         employeeDetailPanel.setJobHistoryButtonStatus(false); //Disable Job History button
         switchToPanel("EmployeeDetailPanel");
     }
+
+    //
+    public void showSprintEvaluationDetails(Employee employee)
+    {
+        employeeDetailPanel.setEmployee(employee);
+        employeeDetailPanel.setSprintEvaluationButton(false);
+        switchToPanel("EmployeeDetailPanel");
+    }
+
+    //
+    public void refreshSprintEvaluations(Employee employee)
+    {
+        employeeDetailPanel.setEmployee(employee);
+    }
+
+
 
     // Passes employeeID to the job panel to display matching jobs.
     public void switchToAddJobPanel(Employee employee)
@@ -165,6 +193,19 @@ public class MainApplication extends JFrame{
     {
         employeeDetailPanel.refreshJobHistory();
         switchToPanel("EmployeeDetailPanel");
+    }
+
+    //This method is used to switch to AddSprintEvaluationPanel
+    public void switchToAddSprintEvaluationPanel(Employee employee)
+    {
+
+        //Set employee on the add panel to then get employee's id
+        addSprintEvaluationPanel.setEmployee(employee);
+
+        switchToPanel("AddSprintEvaluationPanel"); 
+
+        //Reset all the text fields
+        addSprintEvaluationPanel.resetFields();
     }
 
     public void switchToPanel(String panelName) 

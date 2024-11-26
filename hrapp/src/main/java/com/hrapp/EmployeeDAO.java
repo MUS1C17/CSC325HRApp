@@ -190,13 +190,14 @@ public class EmployeeDAO //DAO - Data Access Object
      * @param employee The Employee object to add.
      * @throws SQLException If a database access error occurs.
      */
-    public void updateEmployee(Employee employee, int employeeID) throws SQLException
+    public void updateEmployee(Employee employee) throws SQLException
     {
         String query = "UPDATE Employee SET FirstName = ?, LastName = ?, DateOfBirth = ?, JobTitle = ?, Department = ?, WorkLocation = ?, EmploymentStatus = ?, " +
                         "Email = ?, PhoneNumber = ?, HourlyRate = ?, Notes = ?, HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?, IsManager = ?, IsCEO = ? " +
                         "WHERE EmployeeID = ?";
 
-        executer.setDataInDatabase(
+        executer.setDataInDatabase
+        (
             query,
             employee.getFirstName(),
             employee.getLastName(),
@@ -215,7 +216,9 @@ public class EmployeeDAO //DAO - Data Access Object
             employee.getSoftSkill2(),
             employee.getIsManager(),
             employee.getIsCEO(),
-            employeeID);    //employeeID doesn't need employee in the beginning because we pass this value in the method
+            employee.getEmployeeID()
+        );
+
     }
 
      /**

@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -17,7 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JComboBox; 
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,8 +26,6 @@ import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -52,7 +48,7 @@ public class AddEmployeePanel extends JPanel
     //Borders are used to paint JtextFields in different colors depending if they are filled or no
     private Border defaultBorder;
     private Border errorBorder = BorderFactory.createLineBorder(Color.RED, 2);
-    
+    private JTextField[] requiredFields;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField firstName;
@@ -113,7 +109,8 @@ public class AddEmployeePanel extends JPanel
         //First Name label and input text field with limit of 50 characters
         panel.add(new Label("First Name:"));
         firstName = new TextField();
-        firstName.setDocument(new LimitedPlainDocument(50)); 
+        firstName.setName("firstName");
+        firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(50)); 
         panel.add(firstName);
         
         //Get default border for future to use
@@ -122,7 +119,8 @@ public class AddEmployeePanel extends JPanel
         //Last Name
         panel.add(new Label("Last Name:"));
         lastName = new TextField();
-        lastName.setDocument(new LimitedPlainDocument(75));
+        lastName.setName("lastName");
+        lastName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(75));
         panel.add(lastName);
 
         //Date of Birth
@@ -135,7 +133,8 @@ public class AddEmployeePanel extends JPanel
         //JobTitle
         panel.add(new Label("Job Title:"));
         jobTitle = new TextField();
-        firstName.setDocument(new LimitedPlainDocument(100));
+        jobTitle.setName("jobTitle");
+        firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(100));
         panel.add(jobTitle);
 
         String[] dep = new String[]{null,"SLS", "DEV", "MNG", "SPT"};
@@ -164,22 +163,26 @@ public class AddEmployeePanel extends JPanel
         //Email
         panel.add(new Label("Email:"));
         email = new TextField();
-        email.setDocument(new LimitedPlainDocument(255));
+        email.setName("email");
+        email.setDocument(new EmployeeFormValidator.LimitedPlainDocument(255));
         panel.add(email);
 
         //Phone Number
         panel.add(new Label("Phone Number:"));
         phoneNumber = new TextField();
-        phoneNumber.setDocument(new LimitedPlainDocument(10));
+        phoneNumber.setName("phoneNumber");
+        phoneNumber.setDocument(new EmployeeFormValidator.LimitedPlainDocument(10));
         panel.add(phoneNumber);
 
-        // Add FocusListeners to JTextFields
-        addFocusListenerToField(firstName);
-        addFocusListenerToField(lastName);
-        addFocusListenerToField(jobTitle);
-        addFocusListenerToField(email);
-        addFocusListenerToField(phoneNumber);
+        //Add FocusListeners to JTextFields
+        EmployeeFormValidator.addFocusListenerToField(firstName);
+        EmployeeFormValidator.addFocusListenerToField(lastName);
+        EmployeeFormValidator.addFocusListenerToField(jobTitle);
+        EmployeeFormValidator.addFocusListenerToField(email);
+        EmployeeFormValidator.addFocusListenerToField(phoneNumber);
         
+        //Required fields array
+        requiredFields = new JTextField[]{firstName, lastName, jobTitle, email, phoneNumber};
 
         //Hourly Rate
         panel.add(new Label("Hourly Rate:"));
@@ -191,7 +194,7 @@ public class AddEmployeePanel extends JPanel
         //Notes
         panel.add(new Label("Notes:"));
         notes = new TextField();
-        notes.setDocument(new LimitedPlainDocument(350));
+        notes.setDocument(new EmployeeFormValidator.LimitedPlainDocument(350));
         panel.add(notes);
 
         /*
@@ -302,13 +305,12 @@ public class AddEmployeePanel extends JPanel
             }
         };
 
-        //Add the DocumentListener to the TextFields
-            // Note: DatePicker is handled separately
-        firstName.getDocument().addDocumentListener(documentListener);
-        lastName.getDocument().addDocumentListener(documentListener);
-        jobTitle.getDocument().addDocumentListener(documentListener);
-        email.getDocument().addDocumentListener(documentListener);
-        phoneNumber.getDocument().addDocumentListener(documentListener);
+        // Add DocumentListener to required fields
+        for (JTextField field : requiredFields) 
+        {
+            field.getDocument().addDocumentListener(documentListener);
+        }
+
 
         //Save all the information to the database
         addButton.addActionListener(new ActionListener() {
@@ -361,35 +363,14 @@ public class AddEmployeePanel extends JPanel
         //Add Button Panel to the main panel
         add(buttonPanel, BorderLayout.PAGE_END);
 
-    }   
-    
-    //Creates a limit for the input amount on the JTextField
-    public class LimitedPlainDocument extends PlainDocument 
-    {
-        private final int limit;
-    
-        public LimitedPlainDocument(int limit) 
-        {
-            if (limit <= 0) 
-            {
-                throw new IllegalArgumentException("Limit must be positive.");
-            }
-            this.limit = limit;
-        }
-    
-        @Override
-        public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws BadLocationException 
-        {
-            if (str == null)
-                return;
-    
-            if ((getLength() + str.length()) <= limit) 
-            {
-                super.insertString(offset, str, attr);
-            } 
-        }
-    }
+        updateButtonState();
 
+    }  
+    private void updateButtonState() 
+    {
+        EmployeeFormValidator.updateButtonState(addButton, requiredFields, datePicker);
+    }
+ 
     //Resets values in the fields when a new instance of the Panel will be open
     public void resetFields()
     {
@@ -451,45 +432,6 @@ public class AddEmployeePanel extends JPanel
         });
     }
 
-     // Method to update the state of the Add button
-     private void updateButtonState() 
-     {
-        // Retrieve the datePicker value safely
-        java.time.LocalDate selectedDate = null;
-        if (datePicker != null) 
-        {
-            selectedDate = datePicker.getValue();
-        }
-
-        // Check if all required fields are filled
-        boolean allFieldsFilled = !firstName.getText().trim().isEmpty() &&
-                                    !lastName.getText().trim().isEmpty() &&
-                                    (selectedDate != null) &&
-                                    !jobTitle.getText().trim().isEmpty() &&
-                                    !email.getText().trim().isEmpty() &&
-                                    !phoneNumber.getText().trim().isEmpty() &&
-                                    isFieldInteger(phoneNumber)
-                                    && phoneNumber.getText().length() == 10;
-
-        //Add Button becomes enabled if all the required fields are filled in
-        addButton.setEnabled(allFieldsFilled);
-    }
-
-    private static boolean isFieldInteger(JTextField field)
-    {
-        try
-        {
-            Long.valueOf(field.getText());
-            return true;
-        }
-        catch(NumberFormatException e)
-        {
-            e.getMessage();
-            return false;
-        }
-    }
-
-    //Validates date picker and if it is null
     private void validateDatePickerOnFocusLost() 
     {
         Platform.runLater(() -> 
@@ -504,51 +446,4 @@ public class AddEmployeePanel extends JPanel
             }
         });
     }
-
-    // Helper method to add FocusListener to a JTextField
-    private void addFocusListenerToField(JTextField textField) 
-    {
-        textField.addFocusListener(new FocusListener() 
-        {
-            @Override
-            public void focusGained(FocusEvent e) 
-            {
-                //Removes the error border when the user focuses on the field
-                textField.setBorder(defaultBorder);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) 
-            {
-                validateFieldOnFocusLost(textField);
-                updateButtonState();
-            }
-        });
-    }
-
-    // Method to validate a single JTextField when focus is lost
-    private void validateFieldOnFocusLost(JTextField textField) 
-    {
-        if (textField.getText().trim().isEmpty()) 
-        {
-            textField.setBorder(errorBorder);
-        } 
-        else
-        {        
-            textField.setBorder(defaultBorder);
-        }
-    }
 }
-
-/*
- * CLEAN CODE
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-*/
