@@ -16,10 +16,12 @@ public class MainApplication extends JFrame{
     private EmployeeDetailPanel employeeDetailPanel;
     private UserSelectionPanel userSelectionPanel;
     private AddSurveySatisfactionPanel addSurveryPanel;
+    private AddJobPositionPanel addJobPositionPanel;
     private EditEmployeePanel editEmployeePanel;
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
     private EditJobPanel editJobPanel;
+    private EditJobPositionPanel editJobPositionPanel;
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
 
     private Employee currentUser;
@@ -45,6 +47,8 @@ public class MainApplication extends JFrame{
         editJobPanel = new EditJobPanel(this);
         userSelectionPanel = new UserSelectionPanel(this);
         addSurveryPanel = new AddSurveySatisfactionPanel(this);
+        addJobPositionPanel = new AddJobPositionPanel(this);
+        editJobPositionPanel = new EditJobPositionPanel(this);
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
 
 
@@ -56,10 +60,10 @@ public class MainApplication extends JFrame{
         mainPanel.add(addJobPanel, "AddJobPanel");
         mainPanel.add(editJobPanel, "EditJobPanel");
         mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
+        mainPanel.add(addJobPositionPanel, "AddJobPositionPanel");
+        mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
-
         
-
         //Add the mainPanel to the JFrame
         add(mainPanel);
 
@@ -160,11 +164,29 @@ public class MainApplication extends JFrame{
         switchToPanel("AddJobPanel");
     }
 
+    //Method to switch to AddJobPositionPanel
+    public void switchToAddJobPositionPanel()
+    {
+        //Reset fields on the panel
+        addJobPositionPanel.resetFields();
+
+        //Show the panel
+        switchToPanel("AddJobPositionPanel");
+    }
+
+    //Method to switch to EditJobPostionPanel
+    public void switchToEditJobPostionPanel(JobPosition jobPosition)
+    {
+        editJobPositionPanel.setJobPosition(jobPosition);
+        switchToPanel("EditJobPositionPanel");
+    }
+
     // Passes jobID to edit panel so the panel knows which job to update in the database.
     public void switchToEditJobPanel(int jobID, Job job, Employee employee)
     {
         //editJobPanel.resetFields();
         editJobPanel.setInformation(jobID, job, employee);
+        
         switchToPanel("EditJobPanel");
     }
     

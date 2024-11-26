@@ -93,6 +93,26 @@ public class HomePanel extends JPanel
         addJobButton.setContentAreaFilled(false);
         addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addJobButton);
+
+        addJobButton.addMouseListener(new MouseListener() 
+        {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) 
+            {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) 
+            {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+            }
+        });
         //TODO: Event handlers required, particularly when implementing the job/skill add screen/DAO
 
         addJobButton.addMouseListener(new MouseListener() 
@@ -159,14 +179,32 @@ public class HomePanel extends JPanel
             }
         });
 
+
+        //Open EditJobPositionPanel
+        employeeTablePanel.setJobPositionSelectionListener(new EmployeeTablePanel.JobPositionSelectionListener() 
+        {
+            @Override
+            public void jobPositionSelected(JobPosition position)
+            {
+                mainApp.switchToEditJobPostionPanel(position);
+            }
+        });
+
         //Open AddEmployeePanel when clicking on Add Employee Button
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
+        addJobButton.addActionListener(e -> mainApp.switchToAddJobPositionPanel());
     }    
 
     //Refresh employee table
     public void refreshEmployeeTable() throws SQLException 
     {
         employeeTablePanel.loadEmployeeData();
+    }
+
+    //Refresh JobPosition table
+    public void refreshJobPositionTable() throws SQLException
+    {
+        employeeTablePanel.loadJobPositionData();
     }
     
     //Closes resources when the panel is no longer needed
