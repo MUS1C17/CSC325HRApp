@@ -22,11 +22,24 @@ public class JobPosition
         this.softSkill2 = softSkill2;
     }
 
+    //Constructor with ID
+    public JobPosition(int jobPositionID, String jobPostionName, String hardSkill1, String hardSkill2,
+                        String softSkill1, String softSkill2)
+    {
+        this.jobPositionID = jobPositionID;
+        this.jobPositionName = jobPostionName;
+        this.hardSkill1 = hardSkill1;
+        this.hardSkill2 = hardSkill2;
+        this.softSkill1 = softSkill1;
+        this.softSkill2 = softSkill2;
+    }
+
+
     //Setter methods
 
-    public void setJobPositionID(int id)
+    public void setJobPositionID(int jobPositionID)
     {
-        this.jobPositionID = id;
+        this.jobPositionID = jobPositionID;
     }
 
     public void setJobPositionName(String name)

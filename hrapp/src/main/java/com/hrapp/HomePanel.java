@@ -179,6 +179,17 @@ public class HomePanel extends JPanel
             }
         });
 
+
+        //Open EditJobPositionPanel
+        employeeTablePanel.setJobPositionSelectionListener(new EmployeeTablePanel.JobPositionSelectionListener() 
+        {
+            @Override
+            public void jobPositionSelected(JobPosition position)
+            {
+                mainApp.switchToEditJobPostionPanel(position);
+            }
+        });
+
         //Open AddEmployeePanel when clicking on Add Employee Button
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPositionPanel());

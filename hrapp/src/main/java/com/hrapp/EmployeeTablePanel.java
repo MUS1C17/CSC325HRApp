@@ -30,6 +30,7 @@ public class EmployeeTablePanel extends JPanel
     private TableRowSorter<DefaultTableModel> employeeSorter;
     private EmployeeDAO employeeDAO;
     private EmployeeSelectionListener employeeSelectionListener;
+    private JobPositionSelectionListener jobPositionSelectionListener;
 
     // Properties for Job Position Table
     private JTable jobPositionTable;
@@ -38,15 +39,27 @@ public class EmployeeTablePanel extends JPanel
     private JobPositionDAO jobPositionDAO;
 
 
-    
+    //Interface for the EmployeeSelectionListener
     public interface EmployeeSelectionListener
     {
         void employeeSelected(Employee employee);
     }
 
+    //Setter for the EmployeeSelectionListener
     public void setEmployeeSelectionListener(EmployeeSelectionListener listener)
     {
         this.employeeSelectionListener = listener;
+    }
+
+    //Interface for the JobPositionSelectionListener
+    public interface JobPositionSelectionListener
+    {
+        void jobPositionSelected(JobPosition jobPosition);
+    }
+
+    public void setJobPositionSelectionListener(JobPositionSelectionListener listener)
+    {
+        this.jobPositionSelectionListener = listener;
     }
 
     
@@ -245,7 +258,7 @@ public class EmployeeTablePanel extends JPanel
         JPanel panel = new JPanel(new BorderLayout());
 
         // Column Names for Job Position Table
-        String[] columnNames = {"Position Name", "Hard Skill 1", "Hard Skill 2", "Soft Skill 1", "Soft Skill 2"};
+        String[] columnNames = {"Position Name", "Hard Skill 1", "Hard Skill 2", "Soft Skill 1", "Soft Skill 2", "ID"};
 
         // Initialize the table model
         jobPositionTableModel = new DefaultTableModel(columnNames, 0) 
@@ -279,8 +292,12 @@ public class EmployeeTablePanel extends JPanel
         jobPositionTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Hard Skill 2
         jobPositionTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Soft Skill 1
         jobPositionTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Soft Skill 2
+        jobPositionTable.getColumnModel().getColumn(5).setWidth(0); // set ID width to 0
+        jobPositionTable.getColumnModel().getColumn(5).setMinWidth(0); // set minimum ID width to 0
+        jobPositionTable.getColumnModel().getColumn(5).setMaxWidth(0); // set maximum ID width to 0
+        jobPositionTable.getColumnModel().getColumn(5).setResizable(false); //Make not resizable
 
-        // Set preferred viewport size to show 15 rows
+        // Set preferred viewport size to show 10 rows
         jobPositionTable.setPreferredScrollableViewportSize(new Dimension(jobPositionTable.getPreferredSize().width,
             jobPositionTable.getRowHeight() * 10));
 
@@ -301,6 +318,84 @@ public class EmployeeTablePanel extends JPanel
             JOptionPane.showMessageDialog(this, "Error loading job position data: " + e.getMessage(),
                     "Database Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        // **Add MouseListener to the JTable for row clicks**
+        jobPositionTable.addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                // Determine if the click was on a table row, not on the header
+                int row = jobPositionTable.rowAtPoint(e.getPoint());
+  
+                // If the click was on a row
+                if (row != -1)
+                {
+                    // Single-click: just select the row (default behavior)
+                    // Double-click: open the employee details
+                    if (e.getClickCount() == 2 && !e.isConsumed())
+                    {
+                        e.consume(); // Mark the event as consumed
+                        try
+                        {
+                            int modelRow = jobPositionTable.convertRowIndexToModel(row);
+                            int jobPositionID = (Integer) jobPositionTable.getValueAt(modelRow, 5);
+  
+                            String[] contactOptions = {"Delete", "Edit", "Cancel"};
+
+                            int choice = JOptionPane.showOptionDialog(EmployeeTablePanel.this, 
+                                "What would you like to do?", 
+                                "Choose One Option",
+                                JOptionPane.DEFAULT_OPTION,   // Option type
+                                JOptionPane.INFORMATION_MESSAGE,
+                                null,
+                                contactOptions,
+                                contactOptions[0]);
+
+                            //If choice is Delete, then delete job position
+                            if(choice == 0)
+                            {
+                                jobPositionDAO.deleteJobPosition(jobPositionID);
+                                loadJobPositionData();
+                            }
+                            //If choice is Edit, then open Edit Job Position Panel
+                            else if(choice == 1)
+                            {
+                                JobPosition position = jobPositionDAO.getJobPositionDetails(jobPositionID);
+    
+                                if (jobPositionSelectionListener != null)
+                                {
+                                    jobPositionSelectionListener.jobPositionSelected(position);
+                                }
+                            }
+
+                            //For cancel option no code needed since it will close the pop up by default
+                        }
+                        catch (SQLException ex)
+                        {
+                            JOptionPane.showMessageDialog(EmployeeTablePanel.this, "Error retrieving Job Pposition details: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        }); 
+
+        // Add MouseListener to the panel to detect clicks outside the table
+        addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                // Get the component that was clicked
+                Component clickedComponent = SwingUtilities.getDeepestComponentAt(EmployeeTablePanel.this,e.getX(), e.getY());
+
+                // If the clicked component is not the table or a child of the table, clear selection
+                if (!isDescendant(clickedComponent, jobPositionTable)) 
+                {
+                    jobPositionTable.clearSelection();
+                }
+            }
+        });
 
         return panel;
     }
@@ -360,7 +455,8 @@ public class EmployeeTablePanel extends JPanel
                     job.getHardSkill1(),
                     job.getHardSkill2(),
                     job.getSoftSkill1(),
-                    job.getSoftSkill2()
+                    job.getSoftSkill2(),
+                    job.getJobPositionID()
             };
             jobPositionTableModel.addRow(rowData);
         }
@@ -402,6 +498,20 @@ public class EmployeeTablePanel extends JPanel
 
             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
             return emp;
+        }
+        return null;
+    }
+
+    public JobPosition getSelectedJobPostion() throws SQLException
+    {
+        int selectedRow = jobPositionTable.getSelectedRow();
+        if (selectedRow != -1) 
+        {
+            int modelRow = jobPositionTable.convertRowIndexToModel(selectedRow);
+            int jobPostionID = (Integer) jobPositionTable.getValueAt(modelRow, 5);
+
+            JobPosition positon = jobPositionDAO.getJobPositionDetails(jobPostionID);
+            return positon;
         }
         return null;
     }

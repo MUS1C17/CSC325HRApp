@@ -20,6 +20,7 @@ public class MainApplication extends JFrame{
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
     private EditJobPanel editJobPanel;
+    private EditJobPositionPanel editJobPositionPanel;
 
     private Employee currentUser;
 
@@ -45,6 +46,7 @@ public class MainApplication extends JFrame{
         userSelectionPanel = new UserSelectionPanel(this);
         addSurveryPanel = new AddSurveySatisfactionPanel(this);
         addJobPositionPanel = new AddJobPositionPanel(this);
+        editJobPositionPanel = new EditJobPositionPanel(this);
 
 
         // Add the HomePanel to the Frame
@@ -56,7 +58,7 @@ public class MainApplication extends JFrame{
         mainPanel.add(editJobPanel, "EditJobPanel");
         mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
         mainPanel.add(addJobPositionPanel, "AddJobPositionPanel");
-
+        mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         
         //Add the mainPanel to the JFrame
         add(mainPanel);
@@ -142,6 +144,13 @@ public class MainApplication extends JFrame{
 
         //Show the panel
         switchToPanel("AddJobPositionPanel");
+    }
+
+    //Method to switch to EditJobPostionPanel
+    public void switchToEditJobPostionPanel(JobPosition jobPosition)
+    {
+        editJobPositionPanel.setJobPosition(jobPosition);
+        switchToPanel("EditJobPositionPanel");
     }
 
     // Passes jobID to edit panel so the panel knows which job to update in the database.

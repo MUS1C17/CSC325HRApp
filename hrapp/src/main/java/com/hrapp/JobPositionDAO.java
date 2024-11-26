@@ -44,7 +44,7 @@ public class JobPositionDAO
                     result.getString("HardSkill1"),
                     result.getString("HardSkill2"),
                     result.getString("SoftSkill1"),
-                    result.getString("SoftSkill2") 
+                    result.getString("SoftSkill2")
                 );
 
                 jobPosition.setJobPositionID(result.getInt("JobPositionID"));   //Set Postion ID
@@ -90,5 +90,62 @@ public class JobPositionDAO
         String query = "UPDATE JobPosition SET IsDeleted = 1 WHERE JobPositionID = ?";
         //Delete Job Position by using JobPosition ID
         executer.setDataInDatabase(query, jobPositionID);
+    }
+
+    /**
+     * Gets details about Job Postion
+     * 
+     * @param jobPositionID The ID of the Job Position to get information about.
+     * @throws SQLException If a database access error occurs.
+     */
+    public JobPosition getJobPositionDetails(int jobPositionID) throws SQLException
+    {
+        //String to get details about given JobPosition
+        String query = "SELECT * FROM JobPosition WHERE JobPositionID = ?";
+
+        //Create a new instance of JobPosition and return it
+        try(ResultSet result = executer.getDataFromDatabase(query, jobPositionID))
+        {
+            JobPosition jobPosition = new JobPosition(
+                result.getInt("JobPositionID"),
+                result.getString("JobPositionName"),
+                result.getString("HardSkill1"),
+                result.getString("HardSkill2"),
+                result.getString("SoftSkill1"),
+                result.getString("SoftSkill2")
+            );
+
+            return jobPosition;
+        }
+        catch(SQLException e)
+        {
+            e.getMessage();
+            return null;
+        }
+    }
+
+    /**
+     * Updates information about existing Job Position in the database
+     * 
+     * @param jobPostion The JobPosition object to update.
+     * @throws SQLException If a database access error occurs.
+     */
+    public void updateJobPosition(JobPosition jobPosition) throws SQLException
+    {
+        //SQL Query to update JobPostion
+        String query = "UPDATE JobPosition SET JobPositionName = ?, HardSkill1 = ?, HardSkill2 = ?, SoftSkill1 = ?, SoftSkill2 = ?"
+                        + "WHERE JobPositionID = ?";
+
+        //Execute update query for specific JobPositionID
+        executer.setDataInDatabase
+        (
+            query, 
+            jobPosition.getJobPositionName(),
+            jobPosition.getHardSkill1(),
+            jobPosition.getHardSkill2(),
+            jobPosition.getSoftSkill1(),
+            jobPosition.getSoftSkill2(),
+            jobPosition.getJobPositionID()
+        );
     }
 }

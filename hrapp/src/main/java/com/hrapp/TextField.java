@@ -10,4 +10,11 @@ public class TextField extends JTextField
         super();
         super.setFont(new Font("Arial", Font.PLAIN, 16));
     }
+
+    public TextField(String text) 
+    {
+        super();
+        super.setFont(new Font("Arial", Font.PLAIN, 16));
+        super.setText(text);
+    }
 }
