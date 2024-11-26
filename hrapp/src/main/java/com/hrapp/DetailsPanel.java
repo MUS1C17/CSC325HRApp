@@ -1,9 +1,9 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -234,12 +234,6 @@ public class DetailsPanel extends JPanel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(17, 59, 95));
 
-        //Back button
-        JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
-        
         //Delete Employee button
         JButton deleteEmployeeButton = new JButton(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
         deleteEmployeeButton.setBorderPainted(false);
@@ -276,6 +270,15 @@ public class DetailsPanel extends JPanel
            } 
         });
 
+        JButton editEmployeeButton = new JButton("Edit Employee");
+        editEmployeeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+                mainApp.switchToEditEmployeePanel(employee);
+            }
+        });
+
         // Delete button hover behavior
         deleteEmployeeButton.addMouseListener(new MouseListener() {
             @Override
@@ -296,7 +299,7 @@ public class DetailsPanel extends JPanel
 
         //Add button to the button panel
         buttonPanel.add(deleteEmployeeButton);
-
+        buttonPanel.add(editEmployeeButton);
 
 
 

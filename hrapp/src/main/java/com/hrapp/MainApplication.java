@@ -16,6 +16,7 @@ public class MainApplication extends JFrame{
     private EmployeeDetailPanel employeeDetailPanel;
     private UserSelectionPanel userSelectionPanel;
     private AddSurveySatisfactionPanel addSurveryPanel;
+    private EditEmployeePanel editEmployeePanel;
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
     private EditJobPanel editJobPanel;
@@ -92,6 +93,14 @@ public class MainApplication extends JFrame{
     {
         homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
+    }
+
+    //This method is used to switch to Edit Employee Panel to edit employee
+    public void switchToEditEmployeePanel(Employee employee)
+    {
+        editEmployeePanel = new EditEmployeePanel(this, employee);
+        mainPanel.add(editEmployeePanel, "EditEmployeePanel");
+        switchToPanel("EditEmployeePanel");
     }
 
     public void showHomePanel()
