@@ -1,18 +1,23 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URI;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 /**
  * A Panel  to display detailed information about an employee.
  */
@@ -23,6 +28,12 @@ public class DetailsPanel extends JPanel
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
+
+    private Label emailLabel;
+    private Label phoneNumberLabel;
+
+    // Get the desktop environment to perform desktop-related actions
+    private Desktop desktop = Desktop.getDesktop();
 
     public DetailsPanel(MainApplication mainApp)
     {
@@ -55,69 +66,173 @@ public class DetailsPanel extends JPanel
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Populate the panel with employee details
-        panel.add(new JLabel("Employee ID:"));
-        panel.add(new JLabel(String.valueOf(employee.getEmployeeID())));
+        panel.add(new Label("Employee ID:"));
+        panel.add(new Label(String.valueOf(employee.getEmployeeID())));
 
-        panel.add(new JLabel("First Name:"));
-        panel.add(new JLabel(employee.getFirstName()));
+        panel.add(new Label("First Name:"));
+        panel.add(new Label(employee.getFirstName()));
 
-        panel.add(new JLabel("Last Name:"));
-        panel.add(new JLabel(employee.getLastName()));
+        panel.add(new Label("Last Name:"));
+        panel.add(new Label(employee.getLastName()));
 
-        panel.add(new JLabel("Date of Birth:"));
-        panel.add(new JLabel(employee.getDateOfBirth() != null ? employee.getDateOfBirthStringFormat() : "N/A"));
+        panel.add(new Label("Date of Birth:"));
+        panel.add(new Label(employee.getDateOfBirth() != null ? employee.getDateOfBirthStringFormat() : "N/A"));
 
-        panel.add(new JLabel("Job Title:"));
-        panel.add(new JLabel(employee.getJobTitle() != null ? employee.getJobTitle() : "N/A"));
+        panel.add(new Label("Job Title:"));
+        panel.add(new Label(employee.getJobTitle() != null ? employee.getJobTitle() : "N/A"));
 
-        panel.add(new JLabel("Department:"));
-        panel.add(new JLabel(employee.getDepartment() != null ? employee.getDepartment() : "N/A"));
+        panel.add(new Label("Department:"));
+        panel.add(new Label(employee.getDepartment() != null ? employee.getDepartment() : "N/A"));
 
-        panel.add(new JLabel("Work Location:"));
-        panel.add(new JLabel(employee.getWorkLocation() != null ? employee.getWorkLocation() : "N/A"));
+        panel.add(new Label("Work Location:"));
+        panel.add(new Label(employee.getWorkLocation() != null ? employee.getWorkLocation() : "N/A"));
 
-        panel.add(new JLabel("Employment Status:"));
-        panel.add(new JLabel(employee.getEmploymentStatus() != null ? employee.getEmploymentStatus() : "N/A"));
+        panel.add(new Label("Employment Status:"));
+        panel.add(new Label(employee.getEmploymentStatus() != null ? employee.getEmploymentStatus() : "N/A"));
 
-        panel.add(new JLabel("Email:"));
-        panel.add(new JLabel(employee.getEmail()));
+        panel.add(new Label("Email:"));
+        emailLabel = new Label("<a href =''>" + (employee.getEmail()) + "</a>");
 
-        panel.add(new JLabel("Phone Number:"));
-        panel.add(new JLabel(employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
+        //Cursor becomes a hand
+        emailLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        //Add mouse click listener to the email label
+        emailLabel.addMouseListener(new MouseAdapter() 
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                try
+                {
+                    int choice = JOptionPane.showConfirmDialog(mainApp,
+                    "Would you like to email " + employee.getFirstAndLastName() + "?",
+                    "Send Email",
+                    JOptionPane.YES_NO_OPTION);
+
+                    //If yes option is clicked
+                    if(choice == JOptionPane.YES_OPTION)
+                    {
+                        // Create a URI for the mailto action using the employee's email
+                        URI emailURI = new URI("mailto:" + employee.getEmail());
+
+                        // Check if the desktop environment supports the "browse" action
+                        if(desktop.isSupported(Desktop.Action.BROWSE))
+                        {
+                            desktop.browse(emailURI);
+                        }
+                    }
+                    //No code needed for no option since it will automatically close the JOptionPane
+
+                } 
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(mainApp, "Error opening phone application: " + ex.getMessage());
+                }
+            }
+
+        });
+
+        panel.add(emailLabel);
+
+        panel.add(new Label("Phone Number:"));
+        phoneNumberLabel = new Label("<a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
             employee.getPhoneNumber().substring(0, 3),
             employee.getPhoneNumber().substring(3, 6),
             employee.getPhoneNumber().substring(6, 10))
-        : "N/A")); //This outputs phone number in the format (123)-456-7890
+        : "N/A") + "</a>"); //This outputs phone number in the format (123)-456-7890
 
-        panel.add(new JLabel("Hourly Rate:"));
-        panel.add(new JLabel(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
+        //Cursor becomes a hand
+        phoneNumberLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
 
-        panel.add(new JLabel("Notes:"));
-        panel.add(new JLabel(employee.getNotes() != null ? employee.getNotes() : "N/A"));
+        //Add mouse click listener to the phoneNubmerLabel
+        phoneNumberLabel.addMouseListener( new MouseAdapter() 
+        {
+            @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    String[] contactOptions = {"Call", "Message", "Cancel",};
+                    try
+                    {
+                        int choice = JOptionPane.showOptionDialog(mainApp, 
+                        "How would you like to contact " + employee.getFirstAndLastName() + "?", 
+                        "Choose Contact Option",
+                        JOptionPane.DEFAULT_OPTION,   // Option type
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        contactOptions,
+                        contactOptions[0]);
+                        //Desktop desktop = Desktop.getDesktop();
 
-        panel.add(new JLabel("Hard Skill 1:"));
-        panel.add(new JLabel(employee.getHardSkill1() != null ? employee.getHardSkill1() : "N/A"));
+                        switch (choice) 
+                        {
+                            //If call button is clicked, then open Windows Phone Call
+                            case 0:     
+                                // Create a URI for the tel: action using the employee's phonenumber
+                                URI callURI = new URI("tel:" + employee.getPhoneNumber());
+                                
+                                // Check if the desktop environment supports the "browse" action
+                                if(desktop.isSupported(Desktop.Action.BROWSE))
+                                {
+                                    desktop.browse(callURI);
+                                }
+                                break;
+                            
+                            //If Message button is clicked, then open Windows Phone Message
+                            case 1:
 
-        panel.add(new JLabel("Hard Skill 2:"));
-        panel.add(new JLabel(employee.getHardSkill2() != null ? employee.getHardSkill2() : "N/A"));
+                                // Create a URI for the sms: action using the employee's phoneNumber
+                                URI smsURI = new URI("sms:" + employee.getPhoneNumber());
 
-        panel.add(new JLabel("Soft Skill 1:"));
-        panel.add(new JLabel(employee.getSoftSkill1() != null ? employee.getSoftSkill1() : "N/A"));
+                                // Check if the desktop environment supports the "browse" action
+                                if(desktop.isSupported(Desktop.Action.BROWSE))
+                                {
+                                    desktop.browse(smsURI);
+                                }
+                                break;
+                            
+                            //No need for switch case for Cancel button since it will close the OptionPane anyway 
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(mainApp, "Error opening phone application");
+                    }
+                }       
+        });
+        panel.add(phoneNumberLabel);
 
-        panel.add(new JLabel("Soft Skill 2:"));
-        panel.add(new JLabel(employee.getSoftSkill2() != null ? employee.getSoftSkill2() : "N/A"));
+        panel.add(new Label("Hourly Rate:"));
+        panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
 
-        panel.add(new JLabel("Is Manager:"));
-        panel.add(new JLabel(employee.getIsManager() == 1 ? "Yes" : "No"));
+        panel.add(new Label("Notes:"));
+        panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A"));
 
-        panel.add(new JLabel("Is CEO:"));
-        panel.add(new JLabel(employee.getIsCEO() == 1 ? "Yes" : "No"));
+        panel.add(new Label("Hard Skill 1:"));
+        panel.add(new Label(employee.getHardSkill1() != null ? employee.getHardSkill1() : "N/A"));
+
+        panel.add(new Label("Hard Skill 2:"));
+        panel.add(new Label(employee.getHardSkill2() != null ? employee.getHardSkill2() : "N/A"));
+
+        panel.add(new Label("Soft Skill 1:"));
+        panel.add(new Label(employee.getSoftSkill1() != null ? employee.getSoftSkill1() : "N/A"));
+
+        panel.add(new Label("Soft Skill 2:"));
+        panel.add(new Label(employee.getSoftSkill2() != null ? employee.getSoftSkill2() : "N/A"));
+
+        panel.add(new Label("Is Manager:"));
+        panel.add(new Label(employee.getIsManager() == 1 ? "Yes" : "No"));
+
+        panel.add(new Label("Is CEO:"));
+        panel.add(new Label(employee.getIsCEO() == 1 ? "Yes" : "No"));
     
         // Add the panel to the center
         add(panel, BorderLayout.CENTER);
 
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Delete Employee button
         JButton deleteEmployeeButton = new JButton(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
@@ -155,7 +270,6 @@ public class DetailsPanel extends JPanel
            } 
         });
 
-
         JButton editEmployeeButton = new JButton("Edit Employee");
         editEmployeeButton.addActionListener(new ActionListener() {
             @Override
@@ -165,6 +279,23 @@ public class DetailsPanel extends JPanel
             }
         });
 
+        // Delete button hover behavior
+        deleteEmployeeButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                deleteEmployeeButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                deleteEmployeeButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
+            }
+        });
 
         //Add button to the button panel
         buttonPanel.add(deleteEmployeeButton);

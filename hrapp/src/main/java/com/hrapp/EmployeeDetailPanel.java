@@ -2,9 +2,13 @@ package com.hrapp;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -12,10 +16,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-
 
 public class EmployeeDetailPanel extends JPanel 
 {
@@ -63,16 +67,32 @@ public class EmployeeDetailPanel extends JPanel
         this.employee = employee;
         detailsPanel.setEmployee(employee);
         // If JobHistoryPanel and SprintEvaluationPanel need employee data, pass it to them here
+        jobHistoryPanel.setEmployeeID(employee.getEmployeeID(), employee);
+        //jobHistoryPanel.showJobs(employee.getEmployeeID());
+        sprintEvaluationPanel.setEmployee(employee);
     }
 
     private void initUI() 
     {
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("Employee Info", 32, Color.WHITE)); // TODO: Replace with logic to get name of employee
+
         // Left navigation panel
         navigationPanel = new JPanel();
 
         // Use BoxLayout with vertical alignment
         navigationPanel.setLayout(new BoxLayout(navigationPanel, BoxLayout.Y_AXIS));
         navigationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Optional padding
+        navigationPanel.setBackground(new Color(17, 59, 95));
         
         //Initialize buttons
         detailsButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
@@ -85,6 +105,55 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
         sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
 
+        //Set hover behavior for each button
+        detailsButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                detailsButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (hover) (1).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                detailsButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
+            }
+        });
+        jobHistoryButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                jobHistoryButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (hover) (1).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                jobHistoryButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png"));
+            }
+        });
+        sprintEvaluationButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                sprintEvaluationButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (hover) (1).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                sprintEvaluationButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png"));
+            }
+        });
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -128,8 +197,8 @@ public class EmployeeDetailPanel extends JPanel
 
         // Initialize sub-panels
         detailsPanel = new DetailsPanel(mainApp);
-        jobHistoryPanel = new JobHistoryPanel();
-        sprintEvaluationPanel = new SprintEvaluationPanel();
+        jobHistoryPanel = new JobHistoryPanel(mainApp);
+        sprintEvaluationPanel = new SprintEvaluationPanel(mainApp);
 
         
         // Add sub-panels to content panel
@@ -198,8 +267,26 @@ public class EmployeeDetailPanel extends JPanel
                 sprintEvaluationButton.setEnabled(true);
             }
         });
+        //Hover behavior for Back button
+        backButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\\\BackButtons\\\\Back button (no hover).png"));
+            }
+        });
     
         // Add components to EmployeeDetailPanel
+        add(topPanel, BorderLayout.NORTH);
         add(leftPanelContainer, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
 
@@ -214,4 +301,27 @@ public class EmployeeDetailPanel extends JPanel
     {
         detailsButton.setEnabled(status);
     }
+
+    public void setJobHistoryButtonStatus(boolean status)
+    {
+        jobHistoryButton.setEnabled(status);
+    }
+
+    public void setSprintEvaluationButton(boolean status)
+    {
+        sprintEvaluationButton.setEnabled(status);
+    }
+
+    //Refresh Sprint Evaluations
+    public void refreshSprintEvaluations()
+    {
+        sprintEvaluationPanel.setEmployee(employee);
+    }
+
+    // Refresh job history.
+    public void refreshJobHistory()
+    {
+        jobHistoryPanel.setEmployeeID(employee.getEmployeeID(), employee);
+    }
+
 }

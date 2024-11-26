@@ -1,10 +1,14 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,6 +16,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -19,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 /*
  * This panel is the first panel to show up in the app. 
@@ -100,17 +106,58 @@ public class UserSelectionPanel extends JPanel
         // Add the JList to a JScrollPane to allow for scrolling
         JScrollPane leftScrollPane = new JScrollPane(userList);
 
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("Welcome! Please sign in.", 32, Color.WHITE));
+
+        // Create a JPanel within the UserSelectionPanel to house the center components
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BorderLayout());
+
+        // Create a title text for the list
+        Label label = new Label("Select from the list of users below.", 24);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        centerPanel.add(label, BorderLayout.NORTH);
+
         // To center the JList vertically, use a BoxLayout with vertical glue
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        JPanel listPanel = new JPanel();
+        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
 
         // Add vertical glue before the list to push it to the center
-        leftPanel.add(Box.createVerticalGlue());
-        leftPanel.add(leftScrollPane);
-        leftPanel.add(Box.createVerticalGlue());
+        listPanel.add(Box.createVerticalGlue());
+        listPanel.add(leftScrollPane);
+        listPanel.add(Box.createVerticalGlue());
 
         //Create login button
-        loginButton = new JButton("Log in");
+        loginButton = new JButton(new ImageIcon("resources\\LoginButtons\\Login button (no hover).png"));
+        loginButton.setBorderPainted(false);
+        loginButton.setContentAreaFilled(false);
+
+        // Set hover actions
+        loginButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                loginButton.setIcon(new ImageIcon("resources\\LoginButtons\\Login button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                loginButton.setIcon(new ImageIcon("resources\\\\LoginButtons\\\\Login button (no hover).png"));
+            }
+        });
 
         //Open HomePanel after login button is clicked
         loginButton.addActionListener(new ActionListener(){
@@ -143,6 +190,7 @@ public class UserSelectionPanel extends JPanel
         
         //Button panel to hold login button at the bottom of the screen
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
         buttonPanel.add(loginButton);
         
         //Right panel that will have password field
@@ -150,17 +198,17 @@ public class UserSelectionPanel extends JPanel
         passwordField = new JPasswordField(15);
         
         //Label to indicate current password
-        JLabel passwordLabel = new JLabel("Password is: 12345");
+        JLabel passwordLabel = new Label("Password is: 12345");
 
         //Add password to the login Information Panel
         loginInformationPanel.add(passwordLabel);
         loginInformationPanel.add(passwordField);
 
 
-        add(leftPanel, BorderLayout.WEST);
+        add(topPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
-        add(loginInformationPanel, BorderLayout.CENTER);
+        centerPanel.add(listPanel, BorderLayout.CENTER);
+        centerPanel.add(loginInformationPanel, BorderLayout.SOUTH);
+        add(centerPanel, BorderLayout.CENTER);
     }
-
-
 }
