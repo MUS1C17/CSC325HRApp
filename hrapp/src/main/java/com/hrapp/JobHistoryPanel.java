@@ -106,7 +106,7 @@ public class JobHistoryPanel extends JPanel
         jobDescriptionLabel.setAlignmentX(CENTER_ALIGNMENT);
         jobBox.add(jobDescriptionLabel);
 
-        JLabel terminationHeader = new Label("REASON FOR TERMINATION: " + job.getQuitReason(), 12, Color.RED);
+        JLabel terminationHeader = new Label("REASON FOR TERMINATION: " + job.getQuitReason(), 12, Color.BLACK);
         terminationHeader.setOpaque(true);
         terminationHeader.setBackground(Color.WHITE);
         terminationHeader.setAlignmentX(CENTER_ALIGNMENT);
