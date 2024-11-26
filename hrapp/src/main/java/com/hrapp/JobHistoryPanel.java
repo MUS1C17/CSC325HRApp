@@ -2,6 +2,7 @@ package com.hrapp;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,12 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -82,26 +87,61 @@ public class JobHistoryPanel extends JPanel
         jobBox.setMaximumSize(new Dimension(800,150));
         jobBox.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        // String of all the job details, organized neatly to fit in the box.
-        String jobDetails = "Job title: " + job.getJobTitle() + "\nCompany name: " + job.getCompanyName() +
-        "\nCity: " + job.getCity() + " (" + job.getStartDateStringFormat() + " - " + job.getEndDateStringFormat() + ")" +
-        "\n" + job.getJobDescription() + "\nTermination reason: " + job.getQuitReason();
+        // Content for a jobBox, in the order: Title and company; City and time of employment; description; quit reason.
+        JLabel jobTitleLabel = new Label(job.getJobTitle() + " at " + job.getCompanyName(), 18, Color.WHITE);
+        jobTitleLabel.setOpaque(true);
+        jobTitleLabel.setBackground(new Color(17, 59, 95));
+        jobTitleLabel.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(jobTitleLabel);
 
-        JTextArea jobTextArea = new JTextArea(jobDetails, 5, 50);
-        jobTextArea.setAlignmentX(CENTER_ALIGNMENT);
-        jobTextArea.setWrapStyleWord(true);
-        jobTextArea.setLineWrap(true);
+        JLabel jobCityAndTimeLabel = new Label(job.getCity() + " | " + job.getStartDateStringFormat() + " to " + job.getEndDateStringFormat(), 14, Color.WHITE);
+        jobCityAndTimeLabel.setOpaque(true);
+        jobCityAndTimeLabel.setBackground(new Color(45, 137, 216));
+        jobCityAndTimeLabel.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(jobCityAndTimeLabel);
 
-        jobBox.add(jobTextArea);
+        JLabel jobDescriptionLabel = new Label(job.getJobDescription(), 14);
+        jobDescriptionLabel.setOpaque(true);
+        jobDescriptionLabel.setBackground(Color.WHITE);
+        jobDescriptionLabel.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(jobDescriptionLabel);
+
+        JLabel terminationHeader = new Label("REASON FOR TERMINATION: " + job.getQuitReason(), 12, Color.BLACK);
+        terminationHeader.setOpaque(true);
+        terminationHeader.setBackground(Color.WHITE);
+        terminationHeader.setAlignmentX(CENTER_ALIGNMENT);
+        jobBox.add(terminationHeader);
 
         // create edit button
-        JButton editButton = new JButton("Edit");
+        JButton editButton = new JButton(new ImageIcon("resources\\EditButtons\\Edit button (no hover).png"));
+        editButton.setBorderPainted(false);
+        editButton.setContentAreaFilled(false);
         editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job, employee));
 
+        // Hover behavior for Edit button
+        editButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                editButton.setIcon(new ImageIcon("resources\\EditButtons\\Edit button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                editButton.setIcon(new ImageIcon("resources\\\\EditButtons\\\\Edit button (no hover).png"));
+            }
+        });
+
         // create delete button
-        JButton deleteJobButton = new JButton("Delete");
+        JButton deleteJobButton = new JButton(new ImageIcon("resources\\\\DeleteButtons\\\\Delete button (no hover).png"));
         deleteJobButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        deleteJobButton.setBorderPainted(false);
+        deleteJobButton.setContentAreaFilled(false);
         deleteJobButton.addActionListener(new ActionListener() 
         {
             @Override
@@ -134,6 +174,24 @@ public class JobHistoryPanel extends JPanel
             }
         });
 
+        // Hover behavior for Delete button
+        deleteJobButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                deleteJobButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                deleteJobButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
+            }
+        });
+
         // button panel for buttons.
 
         JPanel buttonPanel = new JPanel();
@@ -163,8 +221,9 @@ public class JobHistoryPanel extends JPanel
         }
         else
         {
-            JLabel noJobsLabel = new JLabel("No job history");
+            JLabel noJobsLabel = new Label("No job history");
             noJobsLabel.setAlignmentX(CENTER_ALIGNMENT);
+            noJobsLabel.setHorizontalAlignment(SwingConstants.CENTER);
             noJobsLabel.setAlignmentY(CENTER_ALIGNMENT);
             panel.add(noJobsLabel);
         }
@@ -179,10 +238,31 @@ public class JobHistoryPanel extends JPanel
 
         // Adds button panel to the bottom.
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         // Add job button
-        JButton addJobButton = new JButton("Add New Job");
+        JButton addJobButton = new JButton(new ImageIcon("resources\\AddButtons\\Add New Job button (no hover).png"));
+        addJobButton.setBorderPainted(false);
+        addJobButton.setContentAreaFilled(false);
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPanel(employee));
+
+        // Hover behavior
+        addJobButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add New Job button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add New Job button (no hover).png"));
+            }
+        });
 
         // Adds buttons to button panel.
         buttonPanel.add(addJobButton);

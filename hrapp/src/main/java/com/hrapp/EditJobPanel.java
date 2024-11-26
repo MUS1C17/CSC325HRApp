@@ -1,13 +1,19 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -74,28 +80,42 @@ public class EditJobPanel extends JPanel
 
     public void initUI()
     {
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("Edit Job", 32, Color.WHITE));
+
+        add(topPanel, BorderLayout.NORTH);
+        
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //Fill the Panel with labels and TextFields
 
         // Job title
-        panel.add(new JLabel("Job Title:"));
-        jobTitle = new JTextField(job.getJobTitle());
+        panel.add(new Label("Job Title:"));
+        jobTitle = new TextField(job.getJobTitle());
         panel.add(jobTitle);
 
         // Company name
-        panel.add(new JLabel("Company Name:"));
-        companyName = new JTextField(job.getCompanyName());
+        panel.add(new Label("Company Name:"));
+        companyName = new TextField(job.getCompanyName());
         panel.add(companyName);
 
         // Start date
-        panel.add(new JLabel("Start Date:"));
+        panel.add(new Label("Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
 
         // End date
-        panel.add(new JLabel("End Date:"));
+        panel.add(new Label("End Date:"));
         panelForEndDate = new JFXPanel();
         panel.add(panelForEndDate);
         
@@ -103,18 +123,18 @@ public class EditJobPanel extends JPanel
         Platform.runLater(this::initFX);
 
         // city
-        panel.add(new JLabel("City:"));
-        city = new JTextField(job.getCity());
+        panel.add(new Label("City:"));
+        city = new TextField(job.getCity());
         panel.add(city);
 
         // Job description
-        panel.add(new JLabel("Job Description:"));
-        description = new JTextField(job.getJobDescription());
+        panel.add(new Label("Job Description:"));
+        description = new TextField(job.getJobDescription());
         panel.add(description);
 
         // Quit reason
-        panel.add(new JLabel("Reason for termination:"));
-        quitReason = new JTextField(job.getQuitReason());
+        panel.add(new Label("Reason for termination:"));
+        quitReason = new TextField(job.getQuitReason());
         panel.add(quitReason);
 
         //Add panel to the AddJobPanel.
@@ -122,14 +142,55 @@ public class EditJobPanel extends JPanel
 
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> mainApp.showJobHistoryDetails(employee));
 
+        backButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backButton.setIcon(new ImageIcon("resources\\\\BackButtons\\\\Back button (no hover).png"));
+            }
+        });
+
         //Update job button.
-        JButton update = new JButton("Update");
+        JButton update = new JButton(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
+        update.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
+        update.setDisabledIcon(new ImageIcon("resources\\SaveButtons\\Save button (disabled).png"));
+        update.setBorderPainted(false);
+        update.setContentAreaFilled(false);
         update.setEnabled(false);
+
+        update.addMouseListener(new MouseListener() {
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                update.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (hover).png"));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                update.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
+            }
+        });
 
         //Document listener to update state of the Add button
         DocumentListener documentListener = new DocumentListener()
