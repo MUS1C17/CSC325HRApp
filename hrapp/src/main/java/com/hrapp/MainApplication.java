@@ -186,6 +186,7 @@ public class MainApplication extends JFrame{
     {
         //editJobPanel.resetFields();
         editJobPanel.setInformation(jobID, job, employee);
+        
         switchToPanel("EditJobPanel");
     }
     
