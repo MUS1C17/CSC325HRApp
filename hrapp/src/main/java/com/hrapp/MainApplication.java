@@ -19,6 +19,7 @@ public class MainApplication extends JFrame{
     private CardLayout cardLayout;
     private JobHistoryPanel jobHistoryPanel;
     private EditJobPanel editJobPanel;
+    private AddSprintEvaluationPanel addSprintEvaluationPanel;
 
     private Employee currentUser;
 
@@ -43,6 +44,7 @@ public class MainApplication extends JFrame{
         editJobPanel = new EditJobPanel(this);
         userSelectionPanel = new UserSelectionPanel(this);
         addSurveryPanel = new AddSurveySatisfactionPanel(this);
+        addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
 
 
         // Add the HomePanel to the Frame
@@ -53,6 +55,7 @@ public class MainApplication extends JFrame{
         mainPanel.add(addJobPanel, "AddJobPanel");
         mainPanel.add(editJobPanel, "EditJobPanel");
         mainPanel.add(addSurveryPanel, "AddSurveySatisfactionPanel");
+        mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
 
         
 
@@ -124,6 +127,22 @@ public class MainApplication extends JFrame{
         switchToPanel("EmployeeDetailPanel");
     }
 
+    //
+    public void showSprintEvaluationDetails(Employee employee)
+    {
+        employeeDetailPanel.setEmployee(employee);
+        employeeDetailPanel.setSprintEvaluationButton(false);
+        switchToPanel("EmployeeDetailPanel");
+    }
+
+    //
+    public void refreshSprintEvaluations(Employee employee)
+    {
+        employeeDetailPanel.setEmployee(employee);
+    }
+
+
+
     // Passes employeeID to the job panel to display matching jobs.
     public void switchToAddJobPanel(Employee employee)
     {
@@ -144,6 +163,19 @@ public class MainApplication extends JFrame{
     {
         employeeDetailPanel.refreshJobHistory();
         switchToPanel("EmployeeDetailPanel");
+    }
+
+    //This method is used to switch to AddSprintEvaluationPanel
+    public void switchToAddSprintEvaluationPanel(Employee employee)
+    {
+
+        //Set employee on the add panel to then get employee's id
+        addSprintEvaluationPanel.setEmployee(employee);
+
+        switchToPanel("AddSprintEvaluationPanel"); 
+
+        //Reset all the text fields
+        addSprintEvaluationPanel.resetFields();
     }
 
     public void switchToPanel(String panelName) 
