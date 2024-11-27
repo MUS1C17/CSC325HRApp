@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -116,50 +114,12 @@ public class AddSurveySatisfactionPanel extends JPanel
         buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
-        JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
+        JButton backButton = new Button("resources\\BackButtons\\Back button (no hover).png", "resources\\BackButtons\\Back button (hover).png");
         backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
 
-        backButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                backButton.setIcon(new ImageIcon("resources\\\\BackButtons\\\\Back button (no hover).png"));
-            }
-        });
-
         //Add Button
-        saveButton = new JButton(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
-        saveButton.setBorderPainted(false);
-        saveButton.setContentAreaFilled(false);
+        saveButton = new Button("resources\\SaveButtons\\Save button (no hover).png", "resources\\SaveButtons\\Save button (hover).png");
         saveButton.setEnabled(true);
-
-        saveButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                saveButton.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                saveButton.setIcon(new ImageIcon("resources\\SaveButtons\\Save button (no hover).png"));
-            }
-        });
 
         //Save information into database when Save button is clicked
         saveButton.addActionListener(new ActionListener(){

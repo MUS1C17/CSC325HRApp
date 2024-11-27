@@ -1,6 +1,8 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +10,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -48,32 +53,46 @@ public class AddSprintEvaluationPanel extends JPanel {
     //Method to initialize all the UI elements
     public void initUI()
     {
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("New Sprint Evaluation", 32, Color.WHITE));
+
+        add(topPanel, BorderLayout.NORTH);
+
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         // Create labels and text fields for each question
 
         //Feelings
-        panel.add(new Label("Over the last two weeks, did you notice any feelings of positivity or negativity while performing specific job tasks and if so, how would you describe those feelings?"));
+        panel.add(new Label("Over the last two weeks, did you notice any feelings of positivity or negativity while performing specific job tasks, and if so, how would you describe those feelings?"));
         feelingsField = new TextField();
         panel.add(feelingsField);
 
         //Favorite Task
-        panel.add(new Label("If you could do one task at work all day which task would you choose and why?"));
+        panel.add(new Label("If you could do one task at work all day, which task would you choose, and why?"));
         favoriteTaskField = new TextField();
         panel.add(favoriteTaskField);
 
          //Proficient Task
-        panel.add(new Label("Are there any tasks you perform in your job that you feel you are really good at and if so, what are they?"));
+        panel.add(new Label("Are there any tasks you perform in your job that you feel you are really good at, and if so, what are they?"));
         proficientTaskField = new TextField();
         panel.add(proficientTaskField);
 
         //Dread Task
-        panel.add(new Label("Are there any tasks in your job you dread having to do and if so, what are they and what about them makes you dread them?"));
+        panel.add(new Label("Are there any tasks in your job you dread having to do, and if so, what are they and what about them makes you dread them?"));
         dreadTaskField = new TextField();
         panel.add(dreadTaskField);
 
         //Potential Task
-        panel.add(new Label("Are there any tasks in your job you look forward to doing and if so, what are they and why do you look forward to them?"));
+        panel.add(new Label("Are there any tasks in your job you look forward to doing, and if so, what are they and why do you look forward to them?"));
         potentialTaskField = new TextField();
         panel.add(potentialTaskField);
 
@@ -87,9 +106,10 @@ public class AddSprintEvaluationPanel extends JPanel {
 
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         // Submit button
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new Button("resources\\SaveButtons\\Save button (no hover).png", "resources\\SaveButtons\\Save button (hover).png");
         submitButton.addActionListener(new ActionListener() 
         {
             @Override
@@ -105,7 +125,7 @@ public class AddSprintEvaluationPanel extends JPanel {
         });
 
         // Cancel button to return to SprintEvaluationPanel
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new Button("resources\\CancelButtons\\Cancel button (no hover).png", "resources\\CancelButtons\\Cancel button (hover).png");
         cancelButton.addActionListener(new ActionListener() 
         {
             @Override
@@ -116,8 +136,8 @@ public class AddSprintEvaluationPanel extends JPanel {
             }
         });
 
-        buttonPanel.add(submitButton);
         buttonPanel.add(cancelButton);
+        buttonPanel.add(submitButton);
 
         //Add Button Panel to the main panel
         add(buttonPanel, BorderLayout.PAGE_END);

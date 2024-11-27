@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.concurrent.CountDownLatch;
@@ -139,52 +137,14 @@ public class AddJobPanel extends JPanel
         buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
-        JButton backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
+        JButton backButton = new Button("resources\\BackButtons\\Back button (no hover).png", "resources\\BackButtons\\Back button (hover).png");
         backButton.addActionListener(e -> mainApp.showJobHistoryDetails(employee));
 
-        backButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                backButton.setIcon(new ImageIcon("resources\\\\BackButtons\\\\Back button (no hover).png"));
-            }
-        });
-
         //Add job button
-        JButton add = new JButton(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
+        JButton add = new Button("resources\\AddButtons\\Add button (no hover).png", "resources\\AddButtons\\Add button (hover).png");
         add.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
         add.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
-        add.setBorderPainted(false);
-        add.setContentAreaFilled(false);
         add.setEnabled(false);
-
-        add.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                add.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                add.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
-            }
-        });
 
         //Document listener to update state of the Add button
         DocumentListener documentListener = new DocumentListener()

@@ -1,6 +1,7 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -101,17 +102,18 @@ public class SprintEvaluationPanel extends JPanel {
         }
 
          // Create a button to add a new sprint evaluation
-        JButton addButton = new JButton("Add Sprint Evaluation");
+        JButton addButton = new Button("resources\\StartNewEvaluationButtons\\Start New Evaluation button (no hover).png", "resources\\StartNewEvaluationButtons\\Start New Evaluation button (hover).png");
 
         //Switch to AddSprintEvaluationPanel
         addButton.addActionListener(e -> mainApp.switchToAddSprintEvaluationPanel(employee));
 
         // Adding button to the bottom of the panel
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
         buttonPanel.add(addButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Refresh the panel and dispay updates
+        // Refresh the panel and display updates
         revalidate();
         repaint();
     }
@@ -145,13 +147,13 @@ public class SprintEvaluationPanel extends JPanel {
         // Add components to the panel
         panel.add(new Label("Feelings:"));
         panel.add(feelingsField);
-        panel.add(new Label("Favorite Task:"));
+        panel.add(new Label("Favorite Task(s):"));
         panel.add(favoriteTaskField);
-        panel.add(new Label("Proficient Task:"));
+        panel.add(new Label("Proficient Task(s):"));
         panel.add(proficientTaskField);
-        panel.add(new Label("Dread Task:"));
+        panel.add(new Label("Dreaded Task(s):"));
         panel.add(dreadTaskField);
-        panel.add(new Label("Potential Task:"));
+        panel.add(new Label("Potential Task(s):"));
         panel.add(potentialTaskField);
         panel.add(new Label("Notes:"));
         panel.add(notesArea);
