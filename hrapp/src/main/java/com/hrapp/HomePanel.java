@@ -38,7 +38,7 @@ public class HomePanel extends JPanel
     {
         this.mainApp = mainApp;
         this.currentUser = currentUser;
-
+        //removeAll();
         setLayout(new BorderLayout());
 
         // Top Panel containing search bar and buttons
@@ -193,7 +193,15 @@ public class HomePanel extends JPanel
         //Open AddEmployeePanel when clicking on Add Employee Button
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPositionPanel());
-    }    
+
+        //revalidate();
+        //repaint();
+    }
+    
+    public void setCurrentUser(Employee currentUser)
+    {
+        this.currentUser = currentUser;
+    }
 
     //Refresh employee table
     public void refreshEmployeeTable() throws SQLException 
@@ -264,8 +272,10 @@ public class HomePanel extends JPanel
         editProfileButton.setMaximumSize(new Dimension(166, 45));
         editProfileButton.setBorderPainted(false);
         editProfileButton.setContentAreaFilled(false);
+
+        editProfileButton.addActionListener(e -> mainApp.switchToEditEmployeePanel(currentUser));
+
         panel.add(editProfileButton);
-        //TODO: Add event handlers to edit page
 
         editProfileButton.addMouseListener(new MouseListener() 
         {
@@ -325,7 +335,6 @@ public class HomePanel extends JPanel
                 jobSatisfactionButton.setIcon(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png"));
             }
         });
-
 
         return panel;
     }

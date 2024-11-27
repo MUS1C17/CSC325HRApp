@@ -77,7 +77,7 @@ public class MainApplication extends JFrame{
      * Dummy method to simulate role checking.
      * Replace this with actual authentication logic.
      */
-    private boolean checkUserRole() 
+    public boolean checkUserRole() 
     {
         // For demonstration, return true
         return true;
@@ -186,7 +186,7 @@ public class MainApplication extends JFrame{
     {
         //editJobPanel.resetFields();
         editJobPanel.setInformation(jobID, job, employee);
-        
+
         switchToPanel("EditJobPanel");
     }
     
