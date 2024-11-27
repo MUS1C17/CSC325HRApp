@@ -99,13 +99,6 @@ public class MainApplication extends JFrame{
         mainPanel.add(homePanel, "HomePanel");
     }
 
-    //Method to repaint a new Home Panel so Curent user information can be updated
-    public void createHomePanel(boolean isManagerOrCEO, Employee currentUser)
-    {
-        homePanel = new HomePanel(isManagerOrCEO, this, currentUser);
-        mainPanel.add(homePanel, "HomePanel");
-    }
-
     //This method is used to switch to Edit Employee Panel to edit employee
     public void switchToEditEmployeePanel(Employee employee)
     {

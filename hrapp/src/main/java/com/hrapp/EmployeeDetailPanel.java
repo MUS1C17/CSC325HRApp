@@ -72,12 +72,6 @@ public class EmployeeDetailPanel extends JPanel
         sprintEvaluationPanel.setEmployee(employee);
     }
 
-    //Method to get employee to then pass current employee in homepanel to update leftcurrentUser panel
-    public Employee getEmployee()
-    {
-        return this.employee;
-    }
-
     private void initUI() 
     {
         // Top Panel containing logo and page title

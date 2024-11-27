@@ -38,7 +38,7 @@ public class HomePanel extends JPanel
     {
         this.mainApp = mainApp;
         this.currentUser = currentUser;
-        removeAll();
+        //removeAll();
         setLayout(new BorderLayout());
 
         // Top Panel containing search bar and buttons
@@ -194,8 +194,8 @@ public class HomePanel extends JPanel
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPositionPanel());
 
-        revalidate();
-        repaint();
+        //revalidate();
+        //repaint();
     }
     
     public void setCurrentUser(Employee currentUser)
