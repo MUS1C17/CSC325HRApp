@@ -36,7 +36,7 @@ public class HomePanel extends JPanel
     {
         this.mainApp = mainApp;
         this.currentUser = currentUser;
-
+        //removeAll();
         setLayout(new BorderLayout());
 
         // Top Panel containing search bar and buttons
@@ -67,7 +67,6 @@ public class HomePanel extends JPanel
         addJobButton.setMaximumSize(new Dimension(232, 45));
         addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addJobButton);
-        //TODO: Event handlers required, particularly when implementing the job/skill add screen/DAO
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -112,14 +111,40 @@ public class HomePanel extends JPanel
             }
         });
 
+
+        //Open EditJobPositionPanel
+        employeeTablePanel.setJobPositionSelectionListener(new EmployeeTablePanel.JobPositionSelectionListener() 
+        {
+            @Override
+            public void jobPositionSelected(JobPosition position)
+            {
+                mainApp.switchToEditJobPostionPanel(position);
+            }
+        });
+
         //Open AddEmployeePanel when clicking on Add Employee Button
         addEmployeeButton.addActionListener(e -> mainApp.switchToAddEmployeePanel("AddEmployeePanel"));
-    }    
+        addJobButton.addActionListener(e -> mainApp.switchToAddJobPositionPanel());
+
+        //revalidate();
+        //repaint();
+    }
+    
+    public void setCurrentUser(Employee currentUser)
+    {
+        this.currentUser = currentUser;
+    }
 
     //Refresh employee table
     public void refreshEmployeeTable() throws SQLException 
     {
         employeeTablePanel.loadEmployeeData();
+    }
+
+    //Refresh JobPosition table
+    public void refreshJobPositionTable() throws SQLException
+    {
+        employeeTablePanel.loadJobPositionData();
     }
     
     //Closes resources when the panel is no longer needed
@@ -177,8 +202,9 @@ public class HomePanel extends JPanel
         // Edit Profile Button
         editProfileButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
         editProfileButton.setMaximumSize(new Dimension(166, 45));
+
+        editProfileButton.addActionListener(e -> mainApp.switchToEditEmployeePanel(currentUser));
         panel.add(editProfileButton);
-        //TODO: Add event handlers to edit page
 
         panel.add(Box.createVerticalStrut(20));
         //Job Satisfaction Button

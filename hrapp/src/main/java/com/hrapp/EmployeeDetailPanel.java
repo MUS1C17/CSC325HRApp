@@ -191,18 +191,31 @@ public class EmployeeDetailPanel extends JPanel
 
         //Action of the Back button:
             //Swith to detail panel to force opening details panel in future
-            //Switch to HomePanel
             //Enable Details, Job History, Sprint Evaluations buttons
             //Enable buttons to prevent bugs with disabled buttons when constantly switching between panels
+            //Check if current user that is logged in is the same as the user details are opened for
+            //If yes, then create a new HomePanel to update currentUser infomation on the left side panel
+            //(this is done in case information got changed).
+            //Switch back to HomePanel
         backButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 contentCardLayout.show(contentPanel, "DetailsPanel");
-                mainApp.switchToPanel("HomePanel");
                 detailsButton.setEnabled(true);
                 jobHistoryButton.setEnabled(true);
                 sprintEvaluationButton.setEnabled(true);
+
+                //If CurrentUser that is logged into the app is the same as the user the details page is open for 
+                //Then refresh homepanel and pass the current employee in case it was updated
+                if(mainApp.getCurrentUserID() == employee.getEmployeeID())
+                {
+                    mainApp.setCurrentUser(employee);
+                    mainApp.createHomePanel(mainApp.checkUserRole());
+                }
+
+                //Switch back to home panel
+                mainApp.switchToPanel("HomePanel");
             }
         });
     
