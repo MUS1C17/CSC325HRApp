@@ -77,7 +77,7 @@ public class MainApplication extends JFrame{
      * Dummy method to simulate role checking.
      * Replace this with actual authentication logic.
      */
-    private boolean checkUserRole() 
+    public boolean checkUserRole() 
     {
         // For demonstration, return true
         return true;
@@ -96,6 +96,13 @@ public class MainApplication extends JFrame{
     public void createHomePanel(boolean isManagerOrCEO)
     {
         homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
+        mainPanel.add(homePanel, "HomePanel");
+    }
+
+    //Method to repaint a new Home Panel so Curent user information can be updated
+    public void createHomePanel(boolean isManagerOrCEO, Employee currentUser)
+    {
+        homePanel = new HomePanel(isManagerOrCEO, this, currentUser);
         mainPanel.add(homePanel, "HomePanel");
     }
 
@@ -186,7 +193,7 @@ public class MainApplication extends JFrame{
     {
         //editJobPanel.resetFields();
         editJobPanel.setInformation(jobID, job, employee);
-        
+
         switchToPanel("EditJobPanel");
     }
     

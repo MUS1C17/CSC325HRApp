@@ -11,7 +11,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -94,37 +93,37 @@ public class EditEmployeePanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         //EmployeeID but make it not editable
-        panel.add(new JLabel("Employee ID"));
-        employeeID = new JTextField(Integer.toString(employee.getEmployeeID()));
+        panel.add(new Label("Employee ID"));
+        employeeID = new TextField(Integer.toString(employee.getEmployeeID()));
         employeeID.setEditable(false);  //Set this field to not editable since it is a primary key in database
         panel.add(employeeID);
 
         //First Name label and input text field with limit of 50 characters
-        panel.add(new JLabel("First Name:"));
-        firstName = new JTextField();
+        panel.add(new Label("First Name:"));
+        firstName = new TextField();
         firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(50));
         firstName.setName("firstName");
         firstName.setText(employee.getFirstName());
         panel.add(firstName);
 
          //Last Name
-        panel.add(new JLabel("Last Name:"));
-        lastName = new JTextField();
+        panel.add(new Label("Last Name:"));
+        lastName = new TextField();
         lastName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(75));
         lastName.setName("lastName");
         lastName.setText(employee.getLastName());
         panel.add(lastName);
 
         //Date of Birth
-        panel.add(new JLabel("Date of Birth:"));
+        panel.add(new Label("Date of Birth:"));
         panelForDate = new JFXPanel();
         panel.add(panelForDate);
         //Shows the calendar
         Platform.runLater(this::initFX);
 
         //JobTitle
-        panel.add(new JLabel("Job Title:"));
-        jobTitle = new JTextField();
+        panel.add(new Label("Job Title:"));
+        jobTitle = new TextField();
         jobTitle.setDocument(new EmployeeFormValidator.LimitedPlainDocument(100));
         jobTitle.setName("jobTitle");
         jobTitle.setText(employee.getJobTitle());
@@ -148,34 +147,34 @@ public class EditEmployeePanel extends JPanel
 
 
         //Department
-        panel.add(new JLabel("Department:"));
+        panel.add(new Label("Department:"));
         department = new JComboBox(dep);
         department.setSelectedItem(employee.getDepartment());
         panel.add(department);
 
         //Work Location
-        panel.add(new JLabel("Work Location:"));
+        panel.add(new Label("Work Location:"));
         workLocation = new JComboBox(workLoc);
         workLocation.setSelectedItem(employee.getWorkLocation());
         panel.add(workLocation);
 
         //Employment Status
-        panel.add(new JLabel("Employment Status:"));
+        panel.add(new Label("Employment Status:"));
         employmentStatus = new JComboBox(status);
         employmentStatus.setSelectedItem(employee.getEmploymentStatus());
         panel.add(employmentStatus);
 
         //Email
-        panel.add(new JLabel("Email:"));
-        email = new JTextField();
+        panel.add(new Label("Email:"));
+        email = new TextField();
         email.setDocument(new EmployeeFormValidator.LimitedPlainDocument(255));
         email.setName("email");
         email.setText(employee.getEmail());
         panel.add(email);
 
         //Phone Number
-        panel.add(new JLabel("Phone Number:"));
-        phoneNumber = new JTextField();
+        panel.add(new Label("Phone Number:"));
+        phoneNumber = new TextField();
         phoneNumber.setDocument(new EmployeeFormValidator.LimitedPlainDocument(10));
         phoneNumber.setName("phoneNumber");
         phoneNumber.setText(employee.getPhoneNumber());
@@ -192,15 +191,15 @@ public class EditEmployeePanel extends JPanel
         requiredFields = new JTextField[]{firstName, lastName, jobTitle, email, phoneNumber};
 
         //Hourly Rate
-        panel.add(new JLabel("Hourly Rate:"));
+        panel.add(new Label("Hourly Rate:"));
         hourlyRate = new JFormattedTextField();
         ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
         hourlyRate.setText(employee.getHourlyrate().toString());
         panel.add(hourlyRate);
 
         //Notes
-        panel.add(new JLabel("Notes:"));
-        notes = new JTextField(employee.getNotes());
+        panel.add(new Label("Notes:"));
+        notes = new TextField(employee.getNotes());
         panel.add(notes);
 
         /*
@@ -208,37 +207,37 @@ public class EditEmployeePanel extends JPanel
          */
 
         //Hard Skill 1
-        panel.add(new JLabel("Main Hard Skill:"));
+        panel.add(new Label("Main Hard Skill:"));
         hardSkillOne = new JComboBox(hardSkills);
         hardSkillOne.setSelectedItem(employee.getHardSkill1());
         panel.add(hardSkillOne);
 
         //Hard Skill 2
-        panel.add(new JLabel("Secondary Hard Skill:"));
+        panel.add(new Label("Secondary Hard Skill:"));
         hardSkillTwo = new JComboBox(hardSkills);
         hardSkillTwo.setSelectedItem(employee.getHardSkill2());
         panel.add(hardSkillTwo);
 
         //Soft Skill 1
-        panel.add(new JLabel("Main Soft Skill:"));
+        panel.add(new Label("Main Soft Skill:"));
         softSkillOne = new JComboBox(softSkills);
         softSkillOne.setSelectedItem(employee.getSoftSkill1());
         panel.add(softSkillOne);
 
         //Soft Skill 2
-        panel.add(new JLabel("Secondary Soft Skill:"));
+        panel.add(new Label("Secondary Soft Skill:"));
         softSkillTwo = new JComboBox(softSkills);
         softSkillTwo.setSelectedItem(employee.getSoftSkill2());
         panel.add(softSkillTwo);
 
         //isManager
-        panel.add(new JLabel("Manager:"));
+        panel.add(new Label("Manager:"));
         isManager = new JComboBox(yesOrNo);
         isManager.setSelectedItem(employee.getIsManager());
         panel.add(isManager);
 
         //isCEO
-        panel.add(new JLabel("CEO:"));
+        panel.add(new Label("CEO:"));
         isCEO = new JComboBox(yesOrNo);
         isCEO.setSelectedItem(employee.getIsCEO());
         panel.add(isCEO);
