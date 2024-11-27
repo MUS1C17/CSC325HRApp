@@ -1,6 +1,8 @@
 package com.hrapp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,9 +10,12 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -29,15 +34,15 @@ import javafx.scene.layout.StackPane;
  * This is the panel for editing employees. It performs actions such as:
  * -being able to update an employee's information in the database
  * -displaying employee information and allowing that to be edited
- * -allowing changes to be saved only when the correct information is inputed
+ * -allowing changes to be saved only when the correct information is input
  */
 
 public class EditEmployeePanel extends JPanel
 {
     //Properties
     private MainApplication mainApp;
-    private Employee employee;          //Employee ojbect that is to be edited
-    private Employee updatedEmployee;   //Employee object after it was edited
+    private Employee employee;          //Employee object to be edited
+    private Employee updatedEmployee;   //Employee object after editing
     private EmployeeDAO employeeDAO;
 
     //UI components for date selection
@@ -87,6 +92,20 @@ public class EditEmployeePanel extends JPanel
 
     public void initUI()
     {
+        // Top Panel containing logo and page title
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(45, 137, 216));
+
+        // Add logo and page title
+        JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
+        topPanel.add(logo);
+        topPanel.add(Box.createHorizontalStrut(50));
+
+        topPanel.add(new Label("Edit Employee", 32, Color.WHITE));
+
+        add(topPanel, BorderLayout.NORTH);
+
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -247,9 +266,10 @@ public class EditEmployeePanel extends JPanel
 
         //Button Panel at the bottom
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Back button
-        JButton backButton = new JButton("Back");
+        JButton backButton = new Button("resources\\BackButtons\\Back button (no hover).png", "resources\\BackButtons\\Back button (hover).png");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -259,7 +279,7 @@ public class EditEmployeePanel extends JPanel
         });
 
         //save information button
-        updateButton = new JButton("Update");
+        updateButton = new Button("resources\\SaveButtons\\Save button (no hover).png", "resources\\SaveButtons\\Save button (hover).png");
 
         //Document listener to update state of the Add button depending if the field has expected values
         DocumentListener documentListener = new DocumentListener()
@@ -389,7 +409,4 @@ public class EditEmployeePanel extends JPanel
             }
         });
     }
-
-
-
 }

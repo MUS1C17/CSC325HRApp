@@ -9,12 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.net.URI;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -235,9 +233,7 @@ public class DetailsPanel extends JPanel
         buttonPanel.setBackground(new Color(17, 59, 95));
 
         //Delete Employee button
-        JButton deleteEmployeeButton = new JButton(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
-        deleteEmployeeButton.setBorderPainted(false);
-        deleteEmployeeButton.setContentAreaFilled(false);
+        JButton deleteEmployeeButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
         deleteEmployeeButton.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent event)
@@ -270,7 +266,7 @@ public class DetailsPanel extends JPanel
            } 
         });
 
-        JButton editEmployeeButton = new JButton("Edit Employee");
+        JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
         editEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event)
@@ -279,28 +275,9 @@ public class DetailsPanel extends JPanel
             }
         });
 
-        // Delete button hover behavior
-        deleteEmployeeButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                deleteEmployeeButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                deleteEmployeeButton.setIcon(new ImageIcon("resources\\DeleteButtons\\Delete button (no hover).png"));
-            }
-        });
-
         //Add button to the button panel
-        buttonPanel.add(deleteEmployeeButton);
         buttonPanel.add(editEmployeeButton);
-
+        buttonPanel.add(deleteEmployeeButton);
 
 
         add(buttonPanel, BorderLayout.PAGE_END);

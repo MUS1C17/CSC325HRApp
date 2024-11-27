@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,7 +27,7 @@ import javax.swing.SwingConstants;
 /*
  * This panel is the first panel to show up in the app. 
  * Here you can chooose employee that you want to view the app from.
- * Depending on if employee is manager or ceo some buttons will be disabled/enabled for employee
+ * Depending on if employee is manager or CEO some buttons will be disabled/enabled for employee
  */
 
 public class UserSelectionPanel extends JPanel
@@ -137,27 +135,7 @@ public class UserSelectionPanel extends JPanel
         listPanel.add(Box.createVerticalGlue());
 
         //Create login button
-        loginButton = new JButton(new ImageIcon("resources\\LoginButtons\\Login button (no hover).png"));
-        loginButton.setBorderPainted(false);
-        loginButton.setContentAreaFilled(false);
-
-        // Set hover actions
-        loginButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                loginButton.setIcon(new ImageIcon("resources\\LoginButtons\\Login button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                loginButton.setIcon(new ImageIcon("resources\\\\LoginButtons\\\\Login button (no hover).png"));
-            }
-        });
+        loginButton = new Button("resources\\LoginButtons\\Login button (no hover).png", "resources\\LoginButtons\\Login button (hover).png");
 
         //Open HomePanel after login button is clicked
         loginButton.addActionListener(new ActionListener(){

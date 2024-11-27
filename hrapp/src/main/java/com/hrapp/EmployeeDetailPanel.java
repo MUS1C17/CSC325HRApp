@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -94,66 +92,16 @@ public class EmployeeDetailPanel extends JPanel
         navigationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Optional padding
         navigationPanel.setBackground(new Color(17, 59, 95));
         
-        //Initialize buttons
-        detailsButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
-        jobHistoryButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png"));
-        sprintEvaluationButton = new JButton(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png"));
-        backButton = new JButton(new ImageIcon("resources\\BackButtons\\Back button (no hover).png"));
+        // Initialize buttons
+        detailsButton = new Button("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png", "resources\\DescriptionToggles\\DetailsButtons\\Details button (hover) (1).png");
+        jobHistoryButton = new Button("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png", "resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (hover) (1).png");
+        sprintEvaluationButton = new Button("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png", "resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (hover) (1).png");
+        backButton = new Button("resources\\BackButtons\\Back button (no hover).png", "resources\\BackButtons\\Back button (hover).png");
 
         //Set toggled look for each button
         detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled) (1).png"));
         jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
         sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
-
-        //Set hover behavior for each button
-        detailsButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                detailsButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (hover) (1).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                detailsButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (no hover) (1).png"));
-            }
-        });
-        jobHistoryButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                jobHistoryButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (hover) (1).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                jobHistoryButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (no hover) (1).png"));
-            }
-        });
-        sprintEvaluationButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                sprintEvaluationButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (hover) (1).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                sprintEvaluationButton.setIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (no hover) (1).png"));
-            }
-        });
 
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
@@ -169,16 +117,6 @@ public class EmployeeDetailPanel extends JPanel
         detailsButton.setMaximumSize(buttonSize);
         jobHistoryButton.setMaximumSize(buttonSize);
         sprintEvaluationButton.setMaximumSize(buttonSize);
-
-        //No border or background on the buttons
-        detailsButton.setBorderPainted(false);
-        detailsButton.setContentAreaFilled(false);
-        jobHistoryButton.setBorderPainted(false);
-        jobHistoryButton.setContentAreaFilled(false);
-        sprintEvaluationButton.setBorderPainted(false);
-        sprintEvaluationButton.setContentAreaFilled(false);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
 
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);
@@ -278,23 +216,6 @@ public class EmployeeDetailPanel extends JPanel
 
                 //Switch back to home panel
                 mainApp.switchToPanel("HomePanel");
-            }
-        });
-        //Hover behavior for Back button
-        backButton.addMouseListener(new MouseListener() {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                backButton.setIcon(new ImageIcon("resources\\BackButtons\\Back button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                backButton.setIcon(new ImageIcon("resources\\\\BackButtons\\\\Back button (no hover).png"));
             }
         });
     

@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class MainApplication extends JFrame{
+public class MainApplication extends JFrame {
     //Properties
     private HomePanel homePanel;
     private AddEmployeePanel addEmployeePanel;

@@ -9,8 +9,6 @@ import java.awt.Font;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -59,82 +57,16 @@ public class HomePanel extends JPanel
         topPanel.add(searchField);
 
         //Add Employee button
-        addEmployeeButton = new JButton(new ImageIcon("resources\\AddButtons\\Add Employee button (no hover).png"));
+        addEmployeeButton = new Button("resources\\AddButtons\\Add Employee button (no hover).png", "resources\\AddButtons\\Add Employee button (hover).png");
         addEmployeeButton.setMaximumSize(new Dimension(232, 45));
-        addEmployeeButton.setBorderPainted(false);
-        addEmployeeButton.setContentAreaFilled(false);
         addEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addEmployeeButton);
 
-        addEmployeeButton.addMouseListener(new MouseListener() 
-        {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) 
-            {
-                addEmployeeButton.setIcon(new ImageIcon("resources\\AddButtons\\Add Employee button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) 
-            {
-                addEmployeeButton.setIcon(new ImageIcon("resources\\AddButtons\\Add Employee button (no hover).png"));
-            }
-        });
-
         //Add Job Type button
-        addJobButton = new JButton(new ImageIcon("resources\\AddButtons\\Add Job Type button (no hover).png"));
+        addJobButton = new Button("resources\\AddButtons\\Add Job Type button (no hover).png", "resources\\AddButtons\\Add Job Type button (hover).png");
         addJobButton.setMaximumSize(new Dimension(232, 45));
-        addJobButton.setBorderPainted(false);
-        addJobButton.setContentAreaFilled(false);
         addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
         topPanel.add(addJobButton);
-
-        addJobButton.addMouseListener(new MouseListener() 
-        {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) 
-            {
-                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) 
-            {
-                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
-            }
-        });
-        //TODO: Event handlers required, particularly when implementing the job/skill add screen/DAO
-
-        addJobButton.addMouseListener(new MouseListener() 
-        {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) 
-            {
-                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add Job Type button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) 
-            {
-                addJobButton.setIcon(new ImageIcon("resources\\AddButtons\\Add Job Type button (no hover).png"));
-            }
-        });
-
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -268,40 +200,15 @@ public class HomePanel extends JPanel
 
         panel.add(Box.createVerticalStrut(50));
         // Edit Profile Button
-        editProfileButton = new JButton(new ImageIcon("resources\\EditButtons\\Edit Profile button (no hover).png"));
+        editProfileButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
         editProfileButton.setMaximumSize(new Dimension(166, 45));
-        editProfileButton.setBorderPainted(false);
-        editProfileButton.setContentAreaFilled(false);
 
         editProfileButton.addActionListener(e -> mainApp.switchToEditEmployeePanel(currentUser));
-
         panel.add(editProfileButton);
 
-        editProfileButton.addMouseListener(new MouseListener() 
-        {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) 
-            {
-                editProfileButton.setIcon(new ImageIcon("resources\\EditButtons\\Edit Profile button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) 
-            {
-                editProfileButton.setIcon(new ImageIcon("resources\\EditButtons\\Edit Profile button (no hover).png"));
-            }
-        });
-
         panel.add(Box.createVerticalStrut(20));
-        //Job Satisfection Button
-        jobSatisfactionButton = new JButton(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png"));
-        jobSatisfactionButton.setBorderPainted(false);
-        jobSatisfactionButton.setContentAreaFilled(false);
+        //Job Satisfaction Button
+        jobSatisfactionButton = new Button("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png", "resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (hover).png");
 
         panel.add(Box.createVerticalStrut(100));
         panel.add(jobSatisfactionButton);
@@ -312,27 +219,6 @@ public class HomePanel extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 mainApp.switchToPanel("AddSurveySatisfactionPanel");
-            }
-        });
-
-        // Hover behavior for the jobSatisfactionButton
-        jobSatisfactionButton.addMouseListener(new MouseListener() 
-        {
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) 
-            {
-                jobSatisfactionButton.setIcon(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (hover).png"));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) 
-            {
-                jobSatisfactionButton.setIcon(new ImageIcon("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png"));
             }
         });
 
