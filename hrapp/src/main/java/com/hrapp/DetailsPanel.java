@@ -234,6 +234,7 @@ public class DetailsPanel extends JPanel
 
         //Delete Employee button
         JButton deleteEmployeeButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
+        deleteEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         deleteEmployeeButton.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent event)
@@ -267,6 +268,7 @@ public class DetailsPanel extends JPanel
         });
 
         JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
+        editEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         editEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event)

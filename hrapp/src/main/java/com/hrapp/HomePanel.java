@@ -59,13 +59,13 @@ public class HomePanel extends JPanel
         //Add Employee button
         addEmployeeButton = new Button("resources\\AddButtons\\Add Employee button (no hover).png", "resources\\AddButtons\\Add Employee button (hover).png");
         addEmployeeButton.setMaximumSize(new Dimension(232, 45));
-        addEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
+        addEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager()); //Only visible for Managers/CEO
         topPanel.add(addEmployeeButton);
 
         //Add Job Type button
         addJobButton = new Button("resources\\AddButtons\\Add Job Type button (no hover).png", "resources\\AddButtons\\Add Job Type button (hover).png");
         addJobButton.setMaximumSize(new Dimension(232, 45));
-        addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
+        addJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager()); //Only visible for Managers/CEO
         topPanel.add(addJobButton);
 
         add(topPanel, BorderLayout.NORTH);

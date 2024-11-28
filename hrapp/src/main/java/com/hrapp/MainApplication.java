@@ -37,7 +37,7 @@ public class MainApplication extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        boolean isManagerOrCEO = checkUserRole();
+        //boolean isManagerOrCEO = checkUserRole();
 
         //Create an instance of HomePanel
         //homePanel = new HomePanel(isManagerOrCEO, this);
@@ -71,16 +71,6 @@ public class MainApplication extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1250, 800);
         setLocationRelativeTo(null); //Center the window
-    }
-
-    /**
-     * Dummy method to simulate role checking.
-     * Replace this with actual authentication logic.
-     */
-    public boolean checkUserRole() 
-    {
-        // For demonstration, return true
-        return true;
     }
 
     /**
@@ -233,6 +223,33 @@ public class MainApplication extends JFrame {
     public int getCurrentUserID()
     {
         return currentUser.getEmployeeID();
+    }
+
+    /*
+     * Check if the current user that is logged in is a manager
+     * If yes, return true, otherwise return false
+     */
+    public boolean isCurrentUserManager() 
+    {
+        if(currentUser.getIsManager() == 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * Check if the current user that is logged in is CEO
+     * If yes, return true, otherwise return false
+     */
+    public boolean isCurrentUserCEO()
+    {
+        if(currentUser.getIsCEO() == 1)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public static void main(String[] args) 
