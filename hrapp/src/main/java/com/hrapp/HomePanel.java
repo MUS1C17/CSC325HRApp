@@ -72,7 +72,13 @@ public class HomePanel extends JPanel
 
         // Initialize and add the user info panel
         userInfoPanel = createUserInfoPanel();
-        add(userInfoPanel, BorderLayout.WEST);        
+        add(userInfoPanel, BorderLayout.WEST);
+
+        // Panel at the bottom giving user instructions on how to interact with each table
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(17, 59, 95));
+        buttonPanel.add(new Label("Double-click on an employee or job above for more options.", 16, Color.WHITE));
+        add(buttonPanel, BorderLayout.SOUTH);
 
         //Employee Table Panel
         employeeTablePanel = new EmployeeTablePanel();
