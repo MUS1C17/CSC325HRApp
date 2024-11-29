@@ -37,6 +37,7 @@ public class EmployeeTablePanel extends JPanel
     private DefaultTableModel jobPositionTableModel;
     private TableRowSorter<DefaultTableModel> jobPositionSorter;
     private JobPositionDAO jobPositionDAO;
+    private MainApplication mainApp;
 
 
     //Interface for the EmployeeSelectionListener
@@ -61,10 +62,10 @@ public class EmployeeTablePanel extends JPanel
     {
         this.jobPositionSelectionListener = listener;
     }
-
     
-    public EmployeeTablePanel()
+    public EmployeeTablePanel(MainApplication mainApp)
     {
+        this.mainApp = mainApp;
         setLayout(new BorderLayout());
 
         // Initialize DAOs
@@ -355,17 +356,34 @@ public class EmployeeTablePanel extends JPanel
                             //If choice is Delete, then delete job position
                             if(choice == 0)
                             {
-                                jobPositionDAO.deleteJobPosition(jobPositionID);
-                                loadJobPositionData();
+
+                                //Only let managers/CEO delete Job Postion
+                                if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager())
+                                {
+                                    jobPositionDAO.deleteJobPosition(jobPositionID);
+                                    loadJobPositionData();
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(EmployeeTablePanel.this, "You don't have rights to delete a job Position", "Permission Issue", JOptionPane.WARNING_MESSAGE);
+                                }
                             }
                             //If choice is Edit, then open Edit Job Position Panel
                             else if(choice == 1)
                             {
-                                JobPosition position = jobPositionDAO.getJobPositionDetails(jobPositionID);
-    
-                                if (jobPositionSelectionListener != null)
+                                //Only let managers/CEO edit jbo postion
+                                if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager())
                                 {
-                                    jobPositionSelectionListener.jobPositionSelected(position);
+                                    JobPosition position = jobPositionDAO.getJobPositionDetails(jobPositionID);
+        
+                                    if (jobPositionSelectionListener != null)
+                                    {
+                                        jobPositionSelectionListener.jobPositionSelected(position);
+                                    }
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(EmployeeTablePanel.this, "You don't have rights to edit a job Position", "Permission Issue", JOptionPane.WARNING_MESSAGE);
                                 }
                             }
 

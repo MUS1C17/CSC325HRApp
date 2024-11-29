@@ -23,6 +23,7 @@ public class MainApplication extends JFrame {
     private EditJobPanel editJobPanel;
     private EditJobPositionPanel editJobPositionPanel;
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
+    private EmployeeTablePanel employeeTablePanel;
 
     private Employee currentUser;
 
@@ -50,6 +51,7 @@ public class MainApplication extends JFrame {
         addJobPositionPanel = new AddJobPositionPanel(this);
         editJobPositionPanel = new EditJobPositionPanel(this);
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
+        employeeTablePanel = new EmployeeTablePanel(this);
 
 
         // Add the HomePanel to the Frame
@@ -64,6 +66,7 @@ public class MainApplication extends JFrame {
         mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
         
+
         //Add the mainPanel to the JFrame
         add(mainPanel);
 
@@ -83,10 +86,11 @@ public class MainApplication extends JFrame {
         super.dispose();
     }
 
-    public void createHomePanel(boolean isManagerOrCEO)
+    public void createHomePanel()
     {
-        homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
+        homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
+
     }
 
     //This method is used to switch to Edit Employee Panel to edit employee
@@ -99,7 +103,7 @@ public class MainApplication extends JFrame {
 
     public void showHomePanel()
     {
-        homePanel = new HomePanel(true, this, this.getCurrentUser());
+        homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
         switchToPanel("HomePanel");
     }
@@ -212,7 +216,7 @@ public class MainApplication extends JFrame {
 
     public void setCurrentUser(Employee user)
     {
-        currentUser = user;
+        this.currentUser = user;
     }
 
     public Employee getCurrentUser()
@@ -231,7 +235,8 @@ public class MainApplication extends JFrame {
      */
     public boolean isCurrentUserManager() 
     {
-        if(currentUser.getIsManager() == 1)
+        //Check for null at first to prevent NullPointerException
+        if(currentUser != null && currentUser.getIsManager() == 1)
         {
             return true;
         }
@@ -244,7 +249,8 @@ public class MainApplication extends JFrame {
      */
     public boolean isCurrentUserCEO()
     {
-        if(currentUser.getIsCEO() == 1)
+        //Check for null at first to prevent NullPointerException
+        if(currentUser != null && currentUser.getIsCEO() == 1)
         {
             return true;
         }

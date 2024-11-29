@@ -32,7 +32,7 @@ public class HomePanel extends JPanel
     private JButton jobSatisfactionButton;
     private JButton editProfileButton;
 
-    public HomePanel(boolean isManagerOrCEO, MainApplication mainApp, Employee currentUser)
+    public HomePanel(MainApplication mainApp, Employee currentUser)
     {
         this.mainApp = mainApp;
         this.currentUser = currentUser;
@@ -75,7 +75,7 @@ public class HomePanel extends JPanel
         add(userInfoPanel, BorderLayout.WEST);        
 
         //Employee Table Panel
-        employeeTablePanel = new EmployeeTablePanel();
+        employeeTablePanel = new EmployeeTablePanel(mainApp);
         add(employeeTablePanel, BorderLayout.CENTER);
         
         //Add Action Listener for search functionality

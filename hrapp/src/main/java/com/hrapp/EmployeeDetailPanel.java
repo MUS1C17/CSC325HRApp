@@ -118,6 +118,9 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryButton.setMaximumSize(buttonSize);
         sprintEvaluationButton.setMaximumSize(buttonSize);
 
+        //Make SprintEvaluation Button visible only to Managers/CEO
+        sprintEvaluationButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);
         navigationPanel.add(sprintEvaluationButton);
@@ -211,7 +214,7 @@ public class EmployeeDetailPanel extends JPanel
                 if(mainApp.getCurrentUserID() == employee.getEmployeeID())
                 {
                     mainApp.setCurrentUser(employee);
-                    mainApp.createHomePanel(mainApp.checkUserRole());
+                    mainApp.createHomePanel();
                 }
 
                 //Switch back to home panel

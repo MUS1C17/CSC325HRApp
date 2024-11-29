@@ -201,11 +201,13 @@ public class DetailsPanel extends JPanel
         });
         panel.add(phoneNumberLabel);
 
-        panel.add(new Label("Hourly Rate:"));
-        panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
+        //Hourly rate: Set visible only for Managers/CEO
+        panel.add(new Label("Hourly Rate:")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
 
-        panel.add(new Label("Notes:"));
-        panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A"));
+        //Notes: set visible only for managers/CEO
+        panel.add(new Label("Notes:")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
 
         panel.add(new Label("Hard Skill 1:"));
         panel.add(new Label(employee.getHardSkill1() != null ? employee.getHardSkill1() : "N/A"));
