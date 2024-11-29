@@ -68,6 +68,18 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryPanel.setEmployeeID(employee.getEmployeeID(), employee);
         //jobHistoryPanel.showJobs(employee.getEmployeeID());
         sprintEvaluationPanel.setEmployee(employee);
+
+        //Show sprint evaluation button only to Manager/CEO/employee themself
+        //If current user is NOT CEO/MANAGER/EMPLOYEE, make button not visible
+        //Else, button is visible
+        if(!(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee)))
+        {
+            sprintEvaluationButton.setVisible(false);
+        }
+        else
+        {
+            sprintEvaluationButton.setVisible(true);
+        }
     }
 
     private void initUI() 
@@ -121,7 +133,6 @@ public class EmployeeDetailPanel extends JPanel
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);
         navigationPanel.add(sprintEvaluationButton);
-
 
         // Add vertical glue to push the backButton to the bottom
         navigationPanel.add(Box.createVerticalGlue());
