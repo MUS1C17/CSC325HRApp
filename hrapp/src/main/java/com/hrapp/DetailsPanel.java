@@ -201,13 +201,17 @@ public class DetailsPanel extends JPanel
         });
         panel.add(phoneNumberLabel);
 
-        //Hourly rate: Set visible only for Managers/CEO
-        panel.add(new Label("Hourly Rate:")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
-        panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        //If manager/ceo/same employee show hourly rate and notes
+        if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() ||mainApp.isCurrentUserAndSelectedEmployeeSame(employee))
+        {
+            //Hourly rate: Set visible only for Managers/CEO
+            panel.add(new Label("Hourly Rate:"));
+            panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
 
-        //Notes: set visible only for managers/CEO
-        panel.add(new Label("Notes:")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
-        panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A")).setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+            //Notes: set visible only for managers/CEO
+            panel.add(new Label("Notes:"));
+            panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A"));
+        }
 
         panel.add(new Label("Hard Skill 1:"));
         panel.add(new Label(employee.getHardSkill1() != null ? employee.getHardSkill1() : "N/A"));
@@ -270,7 +274,7 @@ public class DetailsPanel extends JPanel
         });
 
         JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
-        editEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        editEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
         editEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event)

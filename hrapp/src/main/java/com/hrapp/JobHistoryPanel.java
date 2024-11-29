@@ -106,19 +106,19 @@ public class JobHistoryPanel extends JPanel
         terminationHeader.setOpaque(true);
         terminationHeader.setBackground(Color.WHITE);
         terminationHeader.setAlignmentX(CENTER_ALIGNMENT);
-        setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        terminationHeader.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
         jobBox.add(terminationHeader);
 
         // create edit button and make it visible only ofr Manager/CEO
         JButton editButton = new Button("resources\\EditButtons\\Edit button (no hover).png", "resources\\EditButtons\\Edit button (hover).png");
         editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job, employee));
-        editButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        editButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
 
         // create delete button and make it visible only for Manager/CEO
         JButton deleteJobButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
         deleteJobButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        deleteJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        deleteJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
         deleteJobButton.addActionListener(new ActionListener() 
         {
             @Override
@@ -202,7 +202,7 @@ public class JobHistoryPanel extends JPanel
         // Add job button and make it visible only for CEO/Manager
         JButton addJobButton = new Button("resources\\AddButtons\\Add New Job button (no hover).png", "resources\\AddButtons\\Add New Job button (hover).png");
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPanel(employee));
-        addJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        addJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
 
         // Adds buttons to button panel.
         buttonPanel.add(addJobButton);

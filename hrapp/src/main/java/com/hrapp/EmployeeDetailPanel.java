@@ -102,7 +102,7 @@ public class EmployeeDetailPanel extends JPanel
         detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled) (1).png"));
         jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
         sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
-
+        
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
         separator.setPreferredSize(new Dimension(1, 0)); // 1 pixel wide, height adjusts automatically
@@ -117,9 +117,6 @@ public class EmployeeDetailPanel extends JPanel
         detailsButton.setMaximumSize(buttonSize);
         jobHistoryButton.setMaximumSize(buttonSize);
         sprintEvaluationButton.setMaximumSize(buttonSize);
-
-        //Make SprintEvaluation Button visible only to Managers/CEO
-        sprintEvaluationButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
 
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);

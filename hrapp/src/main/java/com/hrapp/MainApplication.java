@@ -23,7 +23,7 @@ public class MainApplication extends JFrame {
     private EditJobPanel editJobPanel;
     private EditJobPositionPanel editJobPositionPanel;
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
-    private EmployeeTablePanel employeeTablePanel;
+    //private EmployeeTablePanel employeeTablePanel;
 
     private Employee currentUser;
 
@@ -51,7 +51,7 @@ public class MainApplication extends JFrame {
         addJobPositionPanel = new AddJobPositionPanel(this);
         editJobPositionPanel = new EditJobPositionPanel(this);
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
-        employeeTablePanel = new EmployeeTablePanel(this);
+        //employeeTablePanel = new EmployeeTablePanel(this);
 
 
         // Add the HomePanel to the Frame
@@ -255,6 +255,16 @@ public class MainApplication extends JFrame {
             return true;
         }
 
+        return false;
+    }
+
+    public boolean isCurrentUserAndSelectedEmployeeSame(Employee selectedEmployee)
+    {
+        if(currentUser != null && currentUser.getEmployeeID() == selectedEmployee.getEmployeeID())
+        {
+            return true;
+        }
+        //If no return false
         return false;
     }
 

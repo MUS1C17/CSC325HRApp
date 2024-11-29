@@ -214,11 +214,13 @@ public class EditEmployeePanel extends JPanel
         hourlyRate = new JFormattedTextField();
         ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
         hourlyRate.setText(employee.getHourlyrate().toString());
+        hourlyRate.setEditable(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         panel.add(hourlyRate);
 
         //Notes
         panel.add(new Label("Notes:"));
         notes = new TextField(employee.getNotes());
+        notes.setEditable(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         panel.add(notes);
 
         /*
