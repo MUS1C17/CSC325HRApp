@@ -241,36 +241,51 @@ public class DetailsPanel extends JPanel
         //Delete Employee button
         JButton deleteEmployeeButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
         deleteEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
-        deleteEmployeeButton.addActionListener(new ActionListener() {
+        deleteEmployeeButton.addActionListener(new ActionListener() 
+        {
            @Override
            public void actionPerformed(ActionEvent event)
            {
-        
-            int confirm = JOptionPane.showConfirmDialog(DetailsPanel.this,
-                    "Are you sure you want to delete employee ID " + employee.getEmployeeID() + "?",
-                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-            if(confirm == JOptionPane.YES_OPTION)
+             /*
+                 *  if currentUser.isCEO OR (currentUser.department == employee.department AND currentUser.isManager AND employee.notCEO) 
+                 *      can delete employee
+                 *  else
+                 *       show message indicating permission issue
+                 */
+                if(mainApp.isCurrentUserCEO() ||
+                    (mainApp.getCurrentUser().getDepartment().equals(employee.getDepartment()) && mainApp.isCurrentUserManager() && employee.getIsCEO() == 0))
                 {
-                    try
+                    int confirm = JOptionPane.showConfirmDialog(DetailsPanel.this,
+                            "Are you sure you want to delete employee ID " + employee.getEmployeeID() + "?",
+                            "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+                    if(confirm == JOptionPane.YES_OPTION)
                     {
-                        employeeDAO.deleteEmployee(employee.getEmployeeID()); // Delete employee in database
-        
-                        // Refresh the employee table in HomePanel
-                        mainApp.getHomePanel().refreshEmployeeTable();
-        
-                        // Switch back to HomePanel
-                        mainApp.switchToPanel("HomePanel");
+                        try
+                        {
+                            employeeDAO.deleteEmployee(employee.getEmployeeID()); // Delete employee in database
+            
+                            // Refresh the employee table in HomePanel
+                            mainApp.getHomePanel().refreshEmployeeTable();
+                
+                            // Switch back to HomePanel                                mainApp.switchToPanel("HomePanel");
+                        }
+                        catch(Exception error)
+                        {
+                            JOptionPane.showMessageDialog(DetailsPanel.this, 
+                            "Error deleting employee: " + error.getMessage(), 
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                            error.printStackTrace();                            
+                        }    
                     }
-                    catch(Exception error)
-                    {
-                        JOptionPane.showMessageDialog(DetailsPanel.this, 
-                        "Error deleting employee: " + error.getMessage(), 
-                        "Database Error", JOptionPane.ERROR_MESSAGE);
-                        error.printStackTrace();
-                    }    
                 }
-           } 
+                else
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You don't have rights to edit information for " + employee.getFirstAndLastName() + ".",
+                                            "Permission Issue", JOptionPane.WARNING_MESSAGE);
+                }
+            } 
         });
 
         JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
