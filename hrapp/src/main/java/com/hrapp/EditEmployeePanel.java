@@ -210,27 +210,67 @@ public class EditEmployeePanel extends JPanel
         requiredFields = new JTextField[]{firstName, lastName, jobTitle, email, phoneNumber};
 
         //Hourly Rate
-        /*if currentUser.isCEO OR NOT(currentUser.isEmployee AND currentUser.isManager)
-        *   hourly rate cannot be edited
-        * else
-        *   hourl rate can be edited
-        */
         panel.add(new Label("Hourly Rate:"));
         hourlyRate = new JFormattedTextField();
         ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
         hourlyRate.setText(employee.getHourlyrate().toString());
-        hourlyRate.setEditable(mainApp.isCurrentUserCEO() || !(mainApp.isCurrentUserManager() && mainApp.isCurrentUserAndSelectedEmployeeSame(employee)));
+
+        //If Current user is CEO then make hourly rate enalbed
+        if(mainApp.isCurrentUserCEO())
+        {
+            hourlyRate.setEnabled(true);
+        }
+        else if(mainApp.isCurrentUserManager())
+        {
+            //Else if Current user is Manager and is the same as selected employee 
+            //then hourly rate is disabled
+            if(mainApp.isCurrentUserAndSelectedEmployeeSame(employee))
+            {
+                hourlyRate.setEnabled(false);
+            }
+             //Else if Current user is Manager and is NOT the same as selected employee 
+            //then hourly rate is enabled
+            else
+            {
+                hourlyRate.setEnabled(true);
+            }
+        }
+        //Else if not Manager or CEO make hourly rate disabled
+        else
+        {
+            hourlyRate.setEnabled(false);
+        }
         panel.add(hourlyRate);
 
         //Notes
-        /*if currentUser.isCEO OR NOT(currentUser.isEmployee AND currentUser.isManager)
-        *   notes cannot be edited
-        * else
-        *   notes can be edited
-        */
         panel.add(new Label("Notes:"));
         notes = new TextField(employee.getNotes());
-        notes.setEditable(mainApp.isCurrentUserCEO() || !(mainApp.isCurrentUserManager() && mainApp.isCurrentUserAndSelectedEmployeeSame(employee)));
+
+        //If Current user is CEO then make notes enalbed
+        if(mainApp.isCurrentUserCEO())
+        {
+            notes.setEnabled(true);
+        }
+        else if(mainApp.isCurrentUserManager())
+        {
+            //Else if Current user is Manager and is the same as selected employee 
+            //then notes are disabled
+            if(mainApp.isCurrentUserAndSelectedEmployeeSame(employee))
+            {
+                notes.setEnabled(false);
+            }
+             //Else if Current user is Manager and is NOT the same as selected employee 
+            //then notes are enabled
+            else
+            {
+                notes.setEnabled(true);
+            }
+        }
+        //Else if not Manager or CEO make notes disabled
+        else
+        {
+            notes.setEnabled(false);
+        }
         panel.add(notes);
 
         /*
