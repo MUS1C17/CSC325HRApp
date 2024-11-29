@@ -210,17 +210,27 @@ public class EditEmployeePanel extends JPanel
         requiredFields = new JTextField[]{firstName, lastName, jobTitle, email, phoneNumber};
 
         //Hourly Rate
+        /*if currentUser.isCEO OR NOT(currentUser.isEmployee AND currentUser.isManager)
+        *   hourly rate cannot be edited
+        * else
+        *   hourl rate can be edited
+        */
         panel.add(new Label("Hourly Rate:"));
         hourlyRate = new JFormattedTextField();
         ((AbstractDocument) hourlyRate.getDocument()).setDocumentFilter(new NumberDocumentFilter());
         hourlyRate.setText(employee.getHourlyrate().toString());
-        hourlyRate.setEditable(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        hourlyRate.setEditable(mainApp.isCurrentUserCEO() || !(mainApp.isCurrentUserManager() && mainApp.isCurrentUserAndSelectedEmployeeSame(employee)));
         panel.add(hourlyRate);
 
         //Notes
+        /*if currentUser.isCEO OR NOT(currentUser.isEmployee AND currentUser.isManager)
+        *   notes cannot be edited
+        * else
+        *   notes can be edited
+        */
         panel.add(new Label("Notes:"));
         notes = new TextField(employee.getNotes());
-        notes.setEditable(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        notes.setEditable(mainApp.isCurrentUserCEO() || !(mainApp.isCurrentUserManager() && mainApp.isCurrentUserAndSelectedEmployeeSame(employee)));
         panel.add(notes);
 
         /*
@@ -252,15 +262,19 @@ public class EditEmployeePanel extends JPanel
         panel.add(softSkillTwo);
 
         //isManager
+        //Can only be edited by Manager/CEO
         panel.add(new Label("Manager:"));
         isManager = new JComboBox(yesOrNo);
         isManager.setSelectedItem(employee.getIsManager());
+        isManager.setEnabled(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         panel.add(isManager);
 
         //isCEO
+        //Can only be edited by the CEO
         panel.add(new Label("CEO:"));
         isCEO = new JComboBox(yesOrNo);
         isCEO.setSelectedItem(employee.getIsCEO());
+        isCEO.setEnabled(mainApp.isCurrentUserCEO());
         panel.add(isCEO);
 
         //Add panel to the EditEmployeePanel

@@ -279,7 +279,23 @@ public class DetailsPanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                mainApp.switchToEditEmployeePanel(employee);
+                /*
+                 *  if currentUser.isCEO OR currentUser.isEmployee OR (currentUser.department == employee.department AND currentUser.isManager AND employee.notCEO) 
+                 *      can edit employee info
+                 *  else
+                 *       show message indicating departments are different so employee cannot
+                 *       editied
+                 */
+                if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee) ||
+                    (mainApp.getCurrentUser().getDepartment().equals(employee.getDepartment()) && mainApp.isCurrentUserManager() && employee.getIsCEO() == 0))
+                    {
+                        mainApp.switchToEditEmployeePanel(employee);
+                    }
+                else
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You don't have rights to edit information for " + employee.getFirstAndLastName() + ".",
+                                            "Permission Issue", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
