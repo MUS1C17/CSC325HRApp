@@ -32,21 +32,28 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.layout.StackPane;
 
 
-
+/**
+ * This is the panel where you add employees into the database:
+ * -Add employee information such as name, birth date, email, etc
+ * -features an interactive calendar for easy date selection
+ * -features drop down boxes for certain fields
+ * -input validation in case wrong information is entered
+ * -
+ */
 
 public class AddEmployeePanel extends JPanel
 {
     //Properties
-    private MainApplication mainApp;
-    private EmployeeDAO employeeDAO;
+    private MainApplication mainApp; 
+    private EmployeeDAO employeeDAO; 
     private JFXPanel panelForDate;
     private DatePicker datePicker;
-    private JButton addButton;
+    private JButton addButton; //Button to add employees
 
     //Borders are used to paint JtextFields in different colors depending if they are filled or no
     private Border defaultBorder;
     private Border errorBorder = BorderFactory.createLineBorder(Color.RED, 2);
-    private JTextField[] requiredFields;
+    private JTextField[] requiredFields; //Array of fields that are required for validation
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField firstName;
@@ -71,11 +78,11 @@ public class AddEmployeePanel extends JPanel
     {
         this.mainApp = mainApp;
         setLayout(new BorderLayout());
-        initUI();
+        initUI(); //Initialize the UI
 
         try
         {
-            employeeDAO = new EmployeeDAO();
+            employeeDAO = new EmployeeDAO(); //Initialize DAO
         }
         catch(SQLException e)
         {
@@ -83,6 +90,7 @@ public class AddEmployeePanel extends JPanel
         }
     }
 
+    //Initialize the UI components
     public void initUI()
     {
         // Top Panel containing logo and page title
@@ -98,7 +106,8 @@ public class AddEmployeePanel extends JPanel
         topPanel.add(new Label("Add an Employee", 32, Color.WHITE));
 
         add(topPanel, BorderLayout.NORTH);
-
+        
+        //Center Panel: Employee form
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -123,7 +132,7 @@ public class AddEmployeePanel extends JPanel
 
         //Date of Birth
         panel.add(new Label("Date of Birth:"));
-        panelForDate = new JFXPanel();
+        panelForDate = new JFXPanel(); //Container for JavaFX DatePicker
         panel.add(panelForDate);
         //Shows the calendar
         Platform.runLater(this::initFX);
@@ -142,7 +151,7 @@ public class AddEmployeePanel extends JPanel
         String[] hardSkills = new String[]{null, "Java", "Python", "C#"};
         String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Time Management"};
 
-
+        //JComboBox is used for dropdown fields. This includes Department, Work Location, and Employment Status.
         //Department
         panel.add(new Label("Department:"));
         department = new JComboBox(dep);
