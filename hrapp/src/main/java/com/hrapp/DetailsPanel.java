@@ -253,7 +253,7 @@ public class DetailsPanel extends JPanel
                 //THEN show pop up message indicating it is impossible
                 if(mainApp.isCurrentUserCEO() && mainApp.getCurrentUser().getEmployeeID() == employee.getEmployeeID())
                 {
-                    JOptionPane.showMessageDialog(mainApp, "You can not delete yourself from the app since you are the owner of the company.",
+                    JOptionPane.showMessageDialog(mainApp, "You cannot delete yourself from the company since you are the CEO of the company.",
                                             "Validation Issue", JOptionPane.WARNING_MESSAGE);
                 }
 
@@ -261,7 +261,7 @@ public class DetailsPanel extends JPanel
                 //THEN show pop up message indicating they can't delete themself
                 else if(mainApp.isCurrentUserManager() && mainApp.getCurrentUser().getEmployeeID() == employee.getEmployeeID())
                 {
-                    JOptionPane.showMessageDialog(mainApp, "You can not delete yourself from the app",
+                    JOptionPane.showMessageDialog(mainApp, "You cannot delete yourself from the company",
                                             "Validation Issue", JOptionPane.WARNING_MESSAGE);
                 }
 
