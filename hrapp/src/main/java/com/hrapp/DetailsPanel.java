@@ -240,6 +240,8 @@ public class DetailsPanel extends JPanel
 
         //Delete Employee button
         JButton deleteEmployeeButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
+
+        //Set visible to CEO or Manager unless manager is viewing his own details
         deleteEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         deleteEmployeeButton.addActionListener(new ActionListener() 
         {
@@ -247,13 +249,30 @@ public class DetailsPanel extends JPanel
            public void actionPerformed(ActionEvent event)
            {
 
-             /*
+                //If current user is CEO AND is trying to delete themself
+                //THEN show pop up message indicating it is impossible
+                if(mainApp.isCurrentUserCEO() && mainApp.getCurrentUser().getEmployeeID() == employee.getEmployeeID())
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You can not delete yourself from the app since you are the owner of the company.",
+                                            "Validation Issue", JOptionPane.WARNING_MESSAGE);
+                }
+
+                //If current user is manager AND is trying to delete themself
+                //THEN show pop up message indicating they can't delete themself
+                else if(mainApp.isCurrentUserManager() && mainApp.getCurrentUser().getEmployeeID() == employee.getEmployeeID())
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You can not delete yourself from the app",
+                                            "Validation Issue", JOptionPane.WARNING_MESSAGE);
+                }
+
+                 /*
                  *  if currentUser.isCEO OR (currentUser.department == employee.department AND currentUser.isManager AND employee.notCEO) 
                  *      can delete employee
                  *  else
                  *       show message indicating permission issue
                  */
-                if(mainApp.isCurrentUserCEO() ||
+
+                else if(mainApp.isCurrentUserCEO() ||
                     (mainApp.getCurrentUser().getDepartment().equals(employee.getDepartment()) && mainApp.isCurrentUserManager() && employee.getIsCEO() == 0))
                 {
                     int confirm = JOptionPane.showConfirmDialog(DetailsPanel.this,
@@ -269,7 +288,8 @@ public class DetailsPanel extends JPanel
                             // Refresh the employee table in HomePanel
                             mainApp.getHomePanel().refreshEmployeeTable();
                 
-                            // Switch back to HomePanel                                mainApp.switchToPanel("HomePanel");
+                            // Switch back to HomePanel                                .
+                            mainApp.switchToPanel("HomePanel");
                         }
                         catch(Exception error)
                         {
@@ -282,7 +302,7 @@ public class DetailsPanel extends JPanel
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(mainApp, "You don't have rights to edit information for " + employee.getFirstAndLastName() + ".",
+                    JOptionPane.showMessageDialog(mainApp, "You don't have rights to delete " + employee.getFirstAndLastName() + ".",
                                             "Permission Issue", JOptionPane.WARNING_MESSAGE);
                 }
             } 
