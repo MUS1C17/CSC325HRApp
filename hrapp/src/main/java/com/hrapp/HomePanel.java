@@ -31,6 +31,7 @@ public class HomePanel extends JPanel
     private Employee currentUser;
     private JButton jobSatisfactionButton;
     private JButton editProfileButton;
+    private JButton signOutButton;
 
     public HomePanel(MainApplication mainApp, Employee currentUser)
     {
@@ -215,9 +216,11 @@ public class HomePanel extends JPanel
         panel.add(Box.createVerticalStrut(20));
         //Job Satisfaction Button
         jobSatisfactionButton = new Button("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png", "resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (hover).png");
+        signOutButton = new JButton("Sign Out");
 
         panel.add(Box.createVerticalStrut(100));
         panel.add(jobSatisfactionButton);
+        panel.add(signOutButton);
 
         jobSatisfactionButton.addActionListener(new ActionListener()
         {
@@ -225,6 +228,15 @@ public class HomePanel extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 mainApp.switchToPanel("AddSurveySatisfactionPanel");
+            }
+        });
+
+        signOutButton.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                mainApp.switchToPanel("UserSelectionPanel");
             }
         });
 

@@ -156,6 +156,8 @@ public class UserSelectionPanel extends JPanel
                     mainApp.setCurrentUser(selectedEmployee);
                     mainApp.createHomePanel(); //Creates home panel based on what user was chosen
                     mainApp.switchToPanel("HomePanel");
+                    passwordField.setText("");
+                    userList.clearSelection();
                 }
                 else
                 {
