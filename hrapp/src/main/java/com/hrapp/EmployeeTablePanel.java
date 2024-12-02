@@ -89,10 +89,12 @@ public class EmployeeTablePanel extends JPanel
         tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.Y_AXIS));
 
         // Add employee table panel
+        tablesPanel.add(new Label("Employees", 32));
         tablesPanel.add(employeeTablePanel);
         // Add spacing between tables
         tablesPanel.add(Box.createVerticalStrut(20));
         // Add job position table panel
+        tablesPanel.add(new Label("Positions", 32));
         tablesPanel.add(jobPositionTablePanel);
 
         
