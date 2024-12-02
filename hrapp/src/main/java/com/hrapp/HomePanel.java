@@ -182,6 +182,16 @@ public class HomePanel extends JPanel
         JLabel welcomeLabel = new Label("Welcome, " + currentUser.getFirstName() + "!", 20, Color.WHITE);
         welcomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(welcomeLabel);
+
+        //Position tags
+        JLabel managerLabel = new JLabel(new ImageIcon("resources\\Tags\\Manager tag.png"));
+        managerLabel.setVisible(mainApp.isCurrentUserManager());
+        panel.add(managerLabel);
+
+        JLabel ceoLabel = new JLabel(new ImageIcon("resources\\Tags\\CEO tag.png"));
+        ceoLabel.setVisible(mainApp.isCurrentUserCEO());
+        panel.add(ceoLabel);
+
         panel.add(Box.createVerticalStrut(20)); //Spacer
         
         //First and Last name
@@ -216,7 +226,7 @@ public class HomePanel extends JPanel
         panel.add(Box.createVerticalStrut(20));
         //Job Satisfaction Button
         jobSatisfactionButton = new Button("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png", "resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (hover).png");
-        signOutButton = new JButton("Sign Out");
+        signOutButton = new Button("resources\\SignOutButtons\\Sign Out button (no hover).png", "resources\\SignOutButtons\\Sign Out button (hover).png");
 
         panel.add(Box.createVerticalStrut(100));
         panel.add(jobSatisfactionButton);
