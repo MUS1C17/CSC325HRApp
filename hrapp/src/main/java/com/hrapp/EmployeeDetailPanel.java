@@ -68,6 +68,18 @@ public class EmployeeDetailPanel extends JPanel
         jobHistoryPanel.setEmployeeID(employee.getEmployeeID(), employee);
         //jobHistoryPanel.showJobs(employee.getEmployeeID());
         sprintEvaluationPanel.setEmployee(employee);
+
+        //Show sprint evaluation button only to Manager/CEO/employee themself
+        //If current user is NOT CEO/MANAGER/EMPLOYEE, make button not visible
+        //Else, button is visible
+        if(!(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee)))
+        {
+            sprintEvaluationButton.setVisible(false);
+        }
+        else
+        {
+            sprintEvaluationButton.setVisible(true);
+        }
     }
 
     private void initUI() 
@@ -102,7 +114,7 @@ public class EmployeeDetailPanel extends JPanel
         detailsButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\DetailsButtons\\Details button (toggled) (1).png"));
         jobHistoryButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\JobHistoryButtons\\Job History button (toggled) (1).png"));
         sprintEvaluationButton.setDisabledIcon(new ImageIcon("resources\\DescriptionToggles\\SprintEvaluationButtons\\Sprint Evaluations button (toggled) (1).png"));
-
+        
         // Create a vertical separator
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
         separator.setPreferredSize(new Dimension(1, 0)); // 1 pixel wide, height adjusts automatically
@@ -121,7 +133,6 @@ public class EmployeeDetailPanel extends JPanel
         navigationPanel.add(detailsButton);
         navigationPanel.add(jobHistoryButton);
         navigationPanel.add(sprintEvaluationButton);
-
 
         // Add vertical glue to push the backButton to the bottom
         navigationPanel.add(Box.createVerticalGlue());
@@ -211,7 +222,7 @@ public class EmployeeDetailPanel extends JPanel
                 if(mainApp.getCurrentUserID() == employee.getEmployeeID())
                 {
                     mainApp.setCurrentUser(employee);
-                    mainApp.createHomePanel(mainApp.checkUserRole());
+                    mainApp.createHomePanel();
                 }
 
                 //Switch back to home panel

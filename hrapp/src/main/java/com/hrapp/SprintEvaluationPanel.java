@@ -103,6 +103,7 @@ public class SprintEvaluationPanel extends JPanel {
 
          // Create a button to add a new sprint evaluation
         JButton addButton = new Button("resources\\StartNewEvaluationButtons\\Start New Evaluation button (no hover).png", "resources\\StartNewEvaluationButtons\\Start New Evaluation button (hover).png");
+        addButton.setVisible(mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
 
         //Switch to AddSprintEvaluationPanel
         addButton.addActionListener(e -> mainApp.switchToAddSprintEvaluationPanel(employee));

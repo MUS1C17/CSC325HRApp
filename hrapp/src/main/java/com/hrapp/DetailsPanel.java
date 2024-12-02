@@ -201,11 +201,17 @@ public class DetailsPanel extends JPanel
         });
         panel.add(phoneNumberLabel);
 
-        panel.add(new Label("Hourly Rate:"));
-        panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
+        //If manager/ceo/same employee show hourly rate and notes
+        if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() ||mainApp.isCurrentUserAndSelectedEmployeeSame(employee))
+        {
+            //Hourly rate: Set visible only for Managers/CEO
+            panel.add(new Label("Hourly Rate:"));
+            panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
 
-        panel.add(new Label("Notes:"));
-        panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A"));
+            //Notes: set visible only for managers/CEO
+            panel.add(new Label("Notes:"));
+            panel.add(new Label(employee.getNotes() != null ? employee.getNotes() : "N/A"));
+        }
 
         panel.add(new Label("Hard Skill 1:"));
         panel.add(new Label(employee.getHardSkill1() != null ? employee.getHardSkill1() : "N/A"));
@@ -234,44 +240,97 @@ public class DetailsPanel extends JPanel
 
         //Delete Employee button
         JButton deleteEmployeeButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
-        deleteEmployeeButton.addActionListener(new ActionListener() {
+
+        //Set visible to CEO or Manager unless manager is viewing his own details
+        deleteEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
+        deleteEmployeeButton.addActionListener(new ActionListener() 
+        {
            @Override
            public void actionPerformed(ActionEvent event)
            {
-        
-            int confirm = JOptionPane.showConfirmDialog(DetailsPanel.this,
-                    "Are you sure you want to delete employee ID " + employee.getEmployeeID() + "?",
-                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-            if(confirm == JOptionPane.YES_OPTION)
+                //If current user is CEO AND is trying to delete themself
+                //THEN show pop up message indicating it is impossible
+                if(mainApp.isCurrentUserCEO() && mainApp.getCurrentUser().getEmployeeID() == employee.getEmployeeID())
                 {
-                    try
-                    {
-                        employeeDAO.deleteEmployee(employee.getEmployeeID()); // Delete employee in database
-        
-                        // Refresh the employee table in HomePanel
-                        mainApp.getHomePanel().refreshEmployeeTable();
-        
-                        // Switch back to HomePanel
-                        mainApp.switchToPanel("HomePanel");
-                    }
-                    catch(Exception error)
-                    {
-                        JOptionPane.showMessageDialog(DetailsPanel.this, 
-                        "Error deleting employee: " + error.getMessage(), 
-                        "Database Error", JOptionPane.ERROR_MESSAGE);
-                        error.printStackTrace();
-                    }    
+                    JOptionPane.showMessageDialog(mainApp, "You cannot delete yourself from the company since you are the CEO of the company.",
+                                            "Validation Issue", JOptionPane.WARNING_MESSAGE);
                 }
-           } 
+
+                //If current user is manager AND is trying to delete themself
+                //THEN show pop up message indicating they can't delete themself
+                else if(mainApp.isCurrentUserManager() && mainApp.getCurrentUser().getEmployeeID() == employee.getEmployeeID())
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You cannot delete yourself from the company",
+                                            "Validation Issue", JOptionPane.WARNING_MESSAGE);
+                }
+
+                 /*
+                 *  if currentUser.isCEO OR (currentUser.department == employee.department AND currentUser.isManager AND employee.notCEO) 
+                 *      can delete employee
+                 *  else
+                 *       show message indicating permission issue
+                 */
+
+                else if(mainApp.isCurrentUserCEO() ||
+                    (mainApp.getCurrentUser().getDepartment().equals(employee.getDepartment()) && mainApp.isCurrentUserManager() && employee.getIsCEO() == 0))
+                {
+                    int confirm = JOptionPane.showConfirmDialog(DetailsPanel.this,
+                            "Are you sure you want to delete employee ID " + employee.getEmployeeID() + "?",
+                            "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+                    if(confirm == JOptionPane.YES_OPTION)
+                    {
+                        try
+                        {
+                            employeeDAO.deleteEmployee(employee.getEmployeeID()); // Delete employee in database
+            
+                            // Refresh the employee table in HomePanel
+                            mainApp.getHomePanel().refreshEmployeeTable();
+                
+                            // Switch back to HomePanel                                .
+                            mainApp.switchToPanel("HomePanel");
+                        }
+                        catch(Exception error)
+                        {
+                            JOptionPane.showMessageDialog(DetailsPanel.this, 
+                            "Error deleting employee: " + error.getMessage(), 
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                            error.printStackTrace();                            
+                        }    
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You don't have rights to delete " + employee.getFirstAndLastName() + ".",
+                                            "Permission Issue", JOptionPane.WARNING_MESSAGE);
+                }
+            } 
         });
 
         JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
+        editEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
         editEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                mainApp.switchToEditEmployeePanel(employee);
+                /*
+                 *  if currentUser.isCEO OR currentUser.isEmployee OR (currentUser.department == employee.department AND currentUser.isManager AND employee.notCEO) 
+                 *      can edit employee info
+                 *  else
+                 *       show message indicating departments are different so employee cannot
+                 *       editied
+                 */
+                if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee) ||
+                    (mainApp.getCurrentUser().getDepartment().equals(employee.getDepartment()) && mainApp.isCurrentUserManager() && employee.getIsCEO() == 0))
+                    {
+                        mainApp.switchToEditEmployeePanel(employee);
+                    }
+                else
+                {
+                    JOptionPane.showMessageDialog(mainApp, "You don't have rights to edit information for " + employee.getFirstAndLastName() + ".",
+                                            "Permission Issue", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 

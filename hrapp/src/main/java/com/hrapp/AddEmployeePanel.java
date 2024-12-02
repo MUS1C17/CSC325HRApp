@@ -225,6 +225,7 @@ public class AddEmployeePanel extends JPanel
         panel.add(isManager);
 
         //isCEO
+        //only CEO can change this option
         panel.add(new Label("CEO:"));
         isCEO = new JComboBox(yesOrNo);
         panel.add(isCEO);
@@ -350,6 +351,9 @@ public class AddEmployeePanel extends JPanel
         softSkillTwo.setSelectedIndex(0); //Set drop box to the empty option
         isManager.setSelectedIndex(0);    //Set drop box to the No option
         isCEO.setSelectedIndex(0);        //Set drop box to the No option 
+        
+        //If current user is not CEO then make dropdown not editable
+        isCEO.setEnabled(mainApp.isCurrentUserCEO());
 
         //Set Borders of the required JTextFields to default color
         SwingUtilities.invokeLater(() -> 
@@ -360,6 +364,7 @@ public class AddEmployeePanel extends JPanel
             email.setBorder(defaultBorder);
             phoneNumber.setBorder(defaultBorder);
         });
+
     }
 
     // Method to initialize the JavaFX content

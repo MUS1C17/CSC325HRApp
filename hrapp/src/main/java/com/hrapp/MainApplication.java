@@ -23,6 +23,7 @@ public class MainApplication extends JFrame {
     private EditJobPanel editJobPanel;
     private EditJobPositionPanel editJobPositionPanel;
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
+    //private EmployeeTablePanel employeeTablePanel;
 
     private Employee currentUser;
 
@@ -37,7 +38,7 @@ public class MainApplication extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        boolean isManagerOrCEO = checkUserRole();
+        //boolean isManagerOrCEO = checkUserRole();
 
         //Create an instance of HomePanel
         //homePanel = new HomePanel(isManagerOrCEO, this);
@@ -50,6 +51,7 @@ public class MainApplication extends JFrame {
         addJobPositionPanel = new AddJobPositionPanel(this);
         editJobPositionPanel = new EditJobPositionPanel(this);
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
+        //employeeTablePanel = new EmployeeTablePanel(this);
 
 
         // Add the HomePanel to the Frame
@@ -64,6 +66,7 @@ public class MainApplication extends JFrame {
         mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
         
+
         //Add the mainPanel to the JFrame
         add(mainPanel);
 
@@ -71,16 +74,6 @@ public class MainApplication extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1250, 800);
         setLocationRelativeTo(null); //Center the window
-    }
-
-    /**
-     * Dummy method to simulate role checking.
-     * Replace this with actual authentication logic.
-     */
-    public boolean checkUserRole() 
-    {
-        // For demonstration, return true
-        return true;
     }
 
     /**
@@ -93,10 +86,11 @@ public class MainApplication extends JFrame {
         super.dispose();
     }
 
-    public void createHomePanel(boolean isManagerOrCEO)
+    public void createHomePanel()
     {
-        homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
+        homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
+
     }
 
     //This method is used to switch to Edit Employee Panel to edit employee
@@ -109,7 +103,7 @@ public class MainApplication extends JFrame {
 
     public void showHomePanel()
     {
-        homePanel = new HomePanel(true, this, this.getCurrentUser());
+        homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
         switchToPanel("HomePanel");
     }
@@ -222,7 +216,7 @@ public class MainApplication extends JFrame {
 
     public void setCurrentUser(Employee user)
     {
-        currentUser = user;
+        this.currentUser = user;
     }
 
     public Employee getCurrentUser()
@@ -233,6 +227,45 @@ public class MainApplication extends JFrame {
     public int getCurrentUserID()
     {
         return currentUser.getEmployeeID();
+    }
+
+    /*
+     * Check if the current user that is logged in is a manager
+     * If yes, return true, otherwise return false
+     */
+    public boolean isCurrentUserManager() 
+    {
+        //Check for null at first to prevent NullPointerException
+        if(currentUser != null && currentUser.getIsManager() == 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * Check if the current user that is logged in is CEO
+     * If yes, return true, otherwise return false
+     */
+    public boolean isCurrentUserCEO()
+    {
+        //Check for null at first to prevent NullPointerException
+        if(currentUser != null && currentUser.getIsCEO() == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isCurrentUserAndSelectedEmployeeSame(Employee selectedEmployee)
+    {
+        if(currentUser != null && currentUser.getEmployeeID() == selectedEmployee.getEmployeeID())
+        {
+            return true;
+        }
+        //If no return false
+        return false;
     }
 
     public static void main(String[] args) 

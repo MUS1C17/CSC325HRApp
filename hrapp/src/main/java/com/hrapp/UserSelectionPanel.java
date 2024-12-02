@@ -154,7 +154,7 @@ public class UserSelectionPanel extends JPanel
                 if(enteredPassword.equals("12345"))
                 {
                     mainApp.setCurrentUser(selectedEmployee);
-                    mainApp.createHomePanel(true); //Creates home panel based on what user was chosen
+                    mainApp.createHomePanel(); //Creates home panel based on what user was chosen
                     mainApp.switchToPanel("HomePanel");
                 }
                 else
