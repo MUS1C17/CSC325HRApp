@@ -185,7 +185,7 @@ public class HomePanel extends JPanel
 
         //Position tags
         JLabel managerLabel = new JLabel(new ImageIcon("resources\\Tags\\Manager tag.png"));
-        managerLabel.setVisible(mainApp.isCurrentUserManager());
+        managerLabel.setVisible(mainApp.isCurrentUserManager() && !(mainApp.isCurrentUserCEO()));
         panel.add(managerLabel);
 
         JLabel ceoLabel = new JLabel(new ImageIcon("resources\\Tags\\CEO tag.png"));
