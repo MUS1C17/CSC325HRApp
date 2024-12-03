@@ -90,7 +90,7 @@ public class JobHistoryPanel extends JPanel
         jobTitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         jobBox.add(jobTitleLabel);
 
-        if (job.getEndDateStringFormat().equals("01/01/0001"))
+        if (job.getEndDateStringFormat().equals("01/01/0001")) // If end date is 1/1/0001, set the end date to present.
         {
             endDate = "present";
         }

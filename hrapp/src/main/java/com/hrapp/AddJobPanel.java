@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,11 +34,13 @@ public class AddJobPanel extends JPanel
     private MainApplication mainApp;
     private JobDAO jobDAO;
     private JFXPanel panelForStartDate;
+    private JCheckBox checkBox;
     private JFXPanel panelForEndDate;
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     private int employeeID;
     private Employee employee;
+    private LocalDate endDate;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField jobTitle;
@@ -105,6 +108,11 @@ public class AddJobPanel extends JPanel
         panel.add(new Label("Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
+
+        // Present checkbox
+        panel.add(new Label("")); // Empty label to keep formatting consistent.
+        checkBox = new JCheckBox("Ongoing job?");
+        panel.add(checkBox);
 
         // End date
         panel.add(new Label("End Date:"));
@@ -198,19 +206,36 @@ public class AddJobPanel extends JPanel
                     Platform.runLater(() -> 
                     {
                         dates[0] = startDatePicker.getValue();
-                        dates[1] = endDatePicker.getValue();
+                        if (!checkBox.isSelected())
+                        {
+                            dates[1] = endDatePicker.getValue();
+                        }
+                        else
+                        {
+                            dates[1] = LocalDate.of(0001, 01, 01);
+                        }
                         latch.countDown(); // Signal that dates are retrieved
                     });
                     
                     // Wait for the latch to reach zero
                     latch.await();
                     
+
+                    // Checks if current checkbox is selected.
+                    if (!checkBox.isSelected())
+                    {
+                        endDate = endDatePicker.getValue();
+                    }
+                    else
+                    {
+                        endDate = LocalDate.of(0001, 01, 01);
+                    }
                     
                     jobDAO.addJob(new Job(
                         jobTitle.getText(),
                         companyName.getText(),
                         startDatePicker.getValue(),
-                        endDatePicker.getValue(),
+                        endDate,
                         city.getText(),
                         description.getText(),
                         quitReason.getText(),
@@ -247,6 +272,7 @@ public class AddJobPanel extends JPanel
         jobTitle.setText("");
         companyName.setText("");
         startDatePicker.setValue(null);
+        checkBox.setSelected(false);
         endDatePicker.setValue(null);
         city.setText("");
         description.setText("");
