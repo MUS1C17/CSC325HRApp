@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,6 +40,8 @@ public class EditJobPanel extends JPanel
     private int jobID;
     private Job job;
     private Employee employee;
+    private LocalDate endDate;
+    private JCheckBox checkBox;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField jobTitle;
@@ -111,6 +114,18 @@ public class EditJobPanel extends JPanel
         panel.add(new Label("Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
+
+        // Ongoing checkbox
+        panel.add(new Label("")); // Blank label to keep formatting consistent.
+        if (job.getEndDate().equals(LocalDate.of(0001, 01, 01))) // Sets box to checked if date is already ongoing.
+        {
+            checkBox = new JCheckBox("Ongoing job?", true);
+        }
+        else
+        {
+            checkBox = new JCheckBox("Ongoing job?");
+        }
+        panel.add(checkBox);
 
         // End date
         panel.add(new Label("End Date:"));
@@ -199,7 +214,16 @@ public class EditJobPanel extends JPanel
                     try 
                     {
                         LocalDate startDate = startDatePicker.getValue();
-                        LocalDate endDate = endDatePicker.getValue();
+
+                        // Check if current checkbox is selected.
+                        if (!checkBox.isSelected())
+                        {
+                            endDate = endDatePicker.getValue();
+                        }
+                        else
+                        {
+                            endDate = LocalDate.of(0001, 01, 01);
+                        }
             
                         // Update the job in the database
                         jobDAO.updateJob(new Job(
