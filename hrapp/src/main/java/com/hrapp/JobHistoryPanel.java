@@ -31,6 +31,7 @@ public class JobHistoryPanel extends JPanel
     private int employeeID;
     private Job job;
     private Employee employee;
+    private String endDate;
 
     public JobHistoryPanel(MainApplication mainApp)
     {
@@ -89,7 +90,15 @@ public class JobHistoryPanel extends JPanel
         jobTitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         jobBox.add(jobTitleLabel);
 
-        JLabel jobCityAndTimeLabel = new Label(job.getCity() + " | " + job.getStartDateStringFormat() + " to " + job.getEndDateStringFormat(), 14, Color.WHITE);
+        if (job.getEndDateStringFormat().equals("01/01/0001"))
+        {
+            endDate = "present";
+        }
+        else
+        {
+            endDate = job.getEndDateStringFormat();
+        }
+        JLabel jobCityAndTimeLabel = new Label(job.getCity() + " | " + job.getStartDateStringFormat() + " to " + endDate, 14, Color.WHITE);
         jobCityAndTimeLabel.setOpaque(true);
         jobCityAndTimeLabel.setBackground(new Color(45, 137, 216));
         jobCityAndTimeLabel.setAlignmentX(CENTER_ALIGNMENT);
