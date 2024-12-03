@@ -98,12 +98,12 @@ public class EditJobPanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         // Job title
-        panel.add(new Label("Job Title:"));
+        panel.add(new Label("Job Title*:"));
         jobTitle = new TextField(job.getJobTitle());
         panel.add(jobTitle);
 
         // Company name
-        panel.add(new Label("Company Name:"));
+        panel.add(new Label("Company Name*:"));
         companyName = new TextField(job.getCompanyName());
         panel.add(companyName);
 
@@ -121,12 +121,12 @@ public class EditJobPanel extends JPanel
         Platform.runLater(this::initFX);
 
         // city
-        panel.add(new Label("City:"));
+        panel.add(new Label("City*:"));
         city = new TextField(job.getCity());
         panel.add(city);
 
         // Job description
-        panel.add(new Label("Job Description:"));
+        panel.add(new Label("Job Description*:"));
         description = new TextField(job.getJobDescription());
         panel.add(description);
 
@@ -228,6 +228,9 @@ public class EditJobPanel extends JPanel
             });
             }
         });
+
+        // Required Fields indicator
+        buttonPanel.add(new Label("* = Required", 16, Color.WHITE));
 
         //Add buttons to the button panel
         buttonPanel.add(backButton);

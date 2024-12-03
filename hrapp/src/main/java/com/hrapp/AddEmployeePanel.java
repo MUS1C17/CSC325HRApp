@@ -105,7 +105,7 @@ public class AddEmployeePanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         //First Name label and input text field with limit of 50 characters
-        panel.add(new Label("First Name:"));
+        panel.add(new Label("First Name*:"));
         firstName = new TextField();
         firstName.setName("firstName");
         firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(50)); 
@@ -115,21 +115,21 @@ public class AddEmployeePanel extends JPanel
         defaultBorder = firstName.getBorder();
 
         //Last Name
-        panel.add(new Label("Last Name:"));
+        panel.add(new Label("Last Name*:"));
         lastName = new TextField();
         lastName.setName("lastName");
         lastName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(75));
         panel.add(lastName);
 
         //Date of Birth
-        panel.add(new Label("Date of Birth:"));
+        panel.add(new Label("Date of Birth*:"));
         panelForDate = new JFXPanel();
         panel.add(panelForDate);
         //Shows the calendar
         Platform.runLater(this::initFX);
 
         //JobTitle
-        panel.add(new Label("Job Title:"));
+        panel.add(new Label("Job Title*:"));
         jobTitle = new TextField();
         jobTitle.setName("jobTitle");
         firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(100));
@@ -159,14 +159,14 @@ public class AddEmployeePanel extends JPanel
         panel.add(employmentStatus);
 
         //Email
-        panel.add(new Label("Email:"));
+        panel.add(new Label("Email*:"));
         email = new TextField();
         email.setName("email");
         email.setDocument(new EmployeeFormValidator.LimitedPlainDocument(255));
         panel.add(email);
 
         //Phone Number
-        panel.add(new Label("Phone Number:"));
+        panel.add(new Label("Phone Number*:"));
         phoneNumber = new TextField();
         phoneNumber.setName("phoneNumber");
         phoneNumber.setDocument(new EmployeeFormValidator.LimitedPlainDocument(10));
@@ -246,6 +246,9 @@ public class AddEmployeePanel extends JPanel
         addButton.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
         addButton.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
         addButton.setEnabled(false);
+
+        // Required Fields indicator
+        buttonPanel.add(new Label("* = Required", 16, Color.WHITE));
 
         //Document listener to update state of the Add button depending if the field has expected values
         DocumentListener documentListener = new DocumentListener()

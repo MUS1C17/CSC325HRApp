@@ -112,13 +112,13 @@ public class EditEmployeePanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         //EmployeeID but make it not editable
-        panel.add(new Label("Employee ID"));
+        panel.add(new Label("Employee ID:"));
         employeeID = new TextField(Integer.toString(employee.getEmployeeID()));
         employeeID.setEditable(false);  //Set this field to not editable since it is a primary key in database
         panel.add(employeeID);
 
         //First Name label and input text field with limit of 50 characters
-        panel.add(new Label("First Name:"));
+        panel.add(new Label("First Name*:"));
         firstName = new TextField();
         firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(50));
         firstName.setName("firstName");
@@ -126,7 +126,7 @@ public class EditEmployeePanel extends JPanel
         panel.add(firstName);
 
          //Last Name
-        panel.add(new Label("Last Name:"));
+        panel.add(new Label("Last Name*:"));
         lastName = new TextField();
         lastName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(75));
         lastName.setName("lastName");
@@ -134,14 +134,14 @@ public class EditEmployeePanel extends JPanel
         panel.add(lastName);
 
         //Date of Birth
-        panel.add(new Label("Date of Birth:"));
+        panel.add(new Label("Date of Birth*:"));
         panelForDate = new JFXPanel();
         panel.add(panelForDate);
         //Shows the calendar
         Platform.runLater(this::initFX);
 
         //JobTitle
-        panel.add(new Label("Job Title:"));
+        panel.add(new Label("Job Title*:"));
         jobTitle = new TextField();
         jobTitle.setDocument(new EmployeeFormValidator.LimitedPlainDocument(100));
         jobTitle.setName("jobTitle");
@@ -184,7 +184,7 @@ public class EditEmployeePanel extends JPanel
         panel.add(employmentStatus);
 
         //Email
-        panel.add(new Label("Email:"));
+        panel.add(new Label("Email*:"));
         email = new TextField();
         email.setDocument(new EmployeeFormValidator.LimitedPlainDocument(255));
         email.setName("email");
@@ -192,7 +192,7 @@ public class EditEmployeePanel extends JPanel
         panel.add(email);
 
         //Phone Number
-        panel.add(new Label("Phone Number:"));
+        panel.add(new Label("Phone Number*:"));
         phoneNumber = new TextField();
         phoneNumber.setDocument(new EmployeeFormValidator.LimitedPlainDocument(10));
         phoneNumber.setName("phoneNumber");
@@ -408,6 +408,9 @@ public class EditEmployeePanel extends JPanel
                 }
             }
         });
+
+        // Required Fields indicator
+        buttonPanel.add(new Label("* = Required", 16, Color.WHITE));
         
         //Add buttons to the button panel
         buttonPanel.add(backButton);

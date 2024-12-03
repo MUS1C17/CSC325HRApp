@@ -5,6 +5,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -141,6 +146,19 @@ public class EmployeeTablePanel extends JPanel
 
         //Create the Jtable with the model
         employeeTable = new JTable(employeeTableModel);
+
+        // Set font of items in JTable
+        try 
+        {
+            Font montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("resources\\fonts\\Montserrat\\static\\Montserrat-Bold.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(montserrat);
+            employeeTable.setFont(montserrat.deriveFont(Font.PLAIN, 14));
+        } 
+        catch(IOException | FontFormatException e) 
+        {
+            e.printStackTrace();
+        }
 
         // Set Selection Mode to Single Selection
         employeeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -283,6 +301,19 @@ public class EmployeeTablePanel extends JPanel
 
         // Create the JTable
         jobPositionTable = new JTable(jobPositionTableModel);
+
+        // Set font of items in JTable
+        try 
+        {
+            Font montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("resources\\fonts\\Montserrat\\static\\Montserrat-Bold.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(montserrat);
+            jobPositionTable.setFont(montserrat.deriveFont(Font.PLAIN, 14));
+        } 
+        catch(IOException | FontFormatException e) 
+        {
+            e.printStackTrace();
+        }
 
         // Enable sorting
         jobPositionSorter = new TableRowSorter<>(jobPositionTableModel);
