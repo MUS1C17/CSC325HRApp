@@ -53,6 +53,8 @@ public class AddJobPanel extends JPanel
     private JTextField description;
     private JTextField quitReason;
 
+    private JButton add;
+
 
     //Constructor
     public AddJobPanel(MainApplication mainApp)
@@ -188,7 +190,7 @@ public class AddJobPanel extends JPanel
         backButton.addActionListener(e -> mainApp.showJobHistoryDetails(employee));
 
         //Add job button
-        JButton add = new Button("resources\\AddButtons\\Add button (no hover).png", "resources\\AddButtons\\Add button (hover).png");
+        add = new Button("resources\\AddButtons\\Add button (no hover).png", "resources\\AddButtons\\Add button (hover).png");
         add.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
         add.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
         add.setEnabled(false);
@@ -207,19 +209,6 @@ public class AddJobPanel extends JPanel
             public void insertUpdate(DocumentEvent e) 
             {
                 updateButtonState();
-            }
-
-            private void updateButtonState() 
-            {
-                // Check if all text fields contain text
-                boolean allFieldsFilled = !jobTitle.getText().trim().isEmpty() &&
-                                          !companyName.getText().trim().isEmpty() &&
-                                          !city.getText().trim().isEmpty() &&
-                                          endDatePicker.getValue() != null
-                                          && startDatePicker.getValue() != null &&
-                                          (!description.getText().trim().isEmpty() ||
-                                          !quitReason.getText().trim().isEmpty());
-                add.setEnabled(allFieldsFilled);
             }
         };
 
