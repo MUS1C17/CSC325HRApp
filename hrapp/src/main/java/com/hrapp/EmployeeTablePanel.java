@@ -252,7 +252,7 @@ public class EmployeeTablePanel extends JPanel
                         try
                         {
                             int modelRow = employeeTable.convertRowIndexToModel(row);
-                            int employeeID = (Integer) employeeTable.getValueAt(modelRow, 0);
+                            int employeeID = (Integer) employeeTableModel.getValueAt(modelRow, 0);
 
                             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
 
@@ -375,7 +375,7 @@ public class EmployeeTablePanel extends JPanel
                         try
                         {
                             int modelRow = jobPositionTable.convertRowIndexToModel(row);
-                            int jobPositionID = (Integer) jobPositionTable.getValueAt(modelRow, 5);
+                            int jobPositionID = (Integer) jobPositionTableModel.getValueAt(modelRow, 5);
   
                             String[] contactOptions = {"Delete", "Edit", "Cancel"};
 
