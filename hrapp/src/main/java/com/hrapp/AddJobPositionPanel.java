@@ -19,6 +19,11 @@ import java.awt.event.ActionListener;
 
 import java.awt.GridLayout;
 
+/*
+ * This is the panel where you add job positions:
+ * -name of position and soft/hard skills required for position
+ * -button to reset fields if desired
+ */
 public class AddJobPositionPanel extends JPanel
 {
     //Properties
