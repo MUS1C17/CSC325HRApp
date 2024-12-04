@@ -253,17 +253,6 @@ public class AddJobPanel extends JPanel
                     // Wait for the latch to reach zero
                     latch.await();
                     
-
-                    /*// Checks if current checkbox is selected.
-                    if (!presentDateCheckBox.isSelected())
-                    {
-                        endDate = endDatePicker.getValue();
-                    }
-                    else
-                    {
-                        endDate = LocalDate.of(0001, 01, 01);
-                    }*/
-                    
                     jobDAO.addJob(new Job(
                         jobTitle.getText(),
                         companyName.getText(),
@@ -368,14 +357,5 @@ public class AddJobPanel extends JPanel
                                   (!description.getText().trim().isEmpty() ||
                                   !quitReason.getText().trim().isEmpty());
         add.setEnabled(allFieldsFilled);
-    }
-
-    private void validateDatePickerOnFocusLost() 
-    {
-        Platform.runLater(() -> 
-        {
-
-
-        });
     }
 }
