@@ -79,8 +79,9 @@ public class EditJobPositionPanel extends JPanel
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //Arrays to use for ComboBoxes
-        String[] hardSkills = new String[]{null, "Java", "Python", "C#"};
-        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Time Management"};
+        String[] hardSkills = new String[]{null, "Java", "Python", "C#", "C++", "JavaScript", "OOP", "TypeScript", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "Machine Learning", "GIT"};
+        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Emotional Intelligence", "Organization", "Flexibility", "Communication", "Self-motivation", "Problem-solving", "Openness to learning", "Integrity", "Self-confidence", "Public speaking", "Open-mindedness", "Professionalism", "Positive attitude"};
+
 
         //Fill the Panel with labels and TextFields
 

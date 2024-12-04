@@ -135,12 +135,12 @@ public class AddEmployeePanel extends JPanel
         firstName.setDocument(new EmployeeFormValidator.LimitedPlainDocument(100));
         panel.add(jobTitle);
 
-        String[] dep = new String[]{null,"SLS", "DEV", "MNG", "SPT"};
+        String[] dep = new String[]{null,"Sales", "Development", "Management", "Support"};
         String[] workLoc = new String[]{null,"MSU", "Office", "Remote"};
         String[] status = new String[]{null, "Intern", "Full-time", "Part-time", "Contractor"};
         String [] yesOrNo = new String[]{"No", "Yes"};
-        String[] hardSkills = new String[]{null, "Java", "Python", "C#"};
-        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Time Management"};
+        String[] hardSkills = new String[]{null, "Java", "Python", "C#", "C++", "JavaScript", "OOP", "TypeScript", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "Machine Learning", "GIT"};
+        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Emotional Intelligence", "Organization", "Flexibility", "Communication", "Self-motivation", "Problem-solving", "Openness to learning", "Integrity", "Self-confidence", "Public speaking", "Open-mindedness", "Professionalism", "Positive attitude"};
 
 
         //Department

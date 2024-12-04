@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -106,6 +107,23 @@ public class MainApplication extends JFrame {
         homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
         switchToPanel("HomePanel");
+    }
+
+    public void switchToUserSelectionPanel()
+    {
+        try
+        {
+            userSelectionPanel.removeAll();
+            userSelectionPanel.initUI();
+            userSelectionPanel.repaint();
+            userSelectionPanel.revalidate();
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, "Error Occured: " + 
+             e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+        switchToPanel("UserSelectionPanel");
     }
 
     //This method is used to switch to the specified panel in the CardLayout 
