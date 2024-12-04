@@ -14,10 +14,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -33,11 +35,16 @@ public class AddJobPanel extends JPanel
     private MainApplication mainApp;
     private JobDAO jobDAO;
     private JFXPanel panelForStartDate;
+    private JCheckBox presentDateCheckBox;
     private JFXPanel panelForEndDate;
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
     private int employeeID;
     private Employee employee;
+    private LocalDate endDate;
+     // Variables to hold date picker values
+     private LocalDate startDateValue = null;
+     private LocalDate endDateValue = null;
 
     //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
     private JTextField jobTitle;
@@ -45,6 +52,8 @@ public class AddJobPanel extends JPanel
     private JTextField city;
     private JTextField description;
     private JTextField quitReason;
+
+    private JButton add;
 
 
     //Constructor
@@ -106,6 +115,46 @@ public class AddJobPanel extends JPanel
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
 
+        // Present checkbox
+        panel.add(new Label("")); // Empty label to keep formatting consistent.
+        presentDateCheckBox = new JCheckBox("Ongoing job?");
+
+        //Added action listener to the checkbox to disable end date datepicker and set it's value to null
+        //if the box is checked, if unchecked then enable the endDatePicker
+        presentDateCheckBox.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //If checkbox is checked, make endDatePickerDisabled and remove the value
+                if(presentDateCheckBox.isSelected())
+                {
+                    endDatePicker.setDisable(true);
+                    endDatePicker.setValue(null);
+                    endDateValue = null;
+                    SwingUtilities.invokeLater(() -> 
+                    {
+                        updateButtonState();
+                    });
+                }
+                else
+                {
+                    //If unchecked enable the endDatePicker
+                    endDatePicker.setDisable(false);
+                    Platform.runLater(() -> 
+                    {
+                        endDateValue = endDatePicker.getValue();
+                        SwingUtilities.invokeLater(() -> 
+                        {
+                            updateButtonState();
+                        });
+                    });
+                }
+            }    
+        });
+
+        panel.add(presentDateCheckBox);
+
         // End date
         panel.add(new Label("<html><span style='color:red;'>*</span>End Date:"));
         panelForEndDate = new JFXPanel();
@@ -141,7 +190,7 @@ public class AddJobPanel extends JPanel
         backButton.addActionListener(e -> mainApp.showJobHistoryDetails(employee));
 
         //Add job button
-        JButton add = new Button("resources\\AddButtons\\Add button (no hover).png", "resources\\AddButtons\\Add button (hover).png");
+        add = new Button("resources\\AddButtons\\Add button (no hover).png", "resources\\AddButtons\\Add button (hover).png");
         add.setIcon(new ImageIcon("resources\\AddButtons\\Add button (no hover).png"));
         add.setDisabledIcon(new ImageIcon("resources\\AddButtons\\Add button (disabled).png"));
         add.setEnabled(false);
@@ -161,18 +210,10 @@ public class AddJobPanel extends JPanel
             {
                 updateButtonState();
             }
-
-            private void updateButtonState() 
-            {
-                // Check if all text fields contain text
-                boolean allFieldsFilled = !jobTitle.getText().trim().isEmpty() &&
-                                          !companyName.getText().trim().isEmpty() &&
-                                          !city.getText().trim().isEmpty() &&
-                                          (!description.getText().trim().isEmpty() ||
-                                          !quitReason.getText().trim().isEmpty());
-                add.setEnabled(allFieldsFilled);
-            }
         };
+
+        
+        
 
         //Add the DocumentListener to the TextFields
         jobTitle.getDocument().addDocumentListener(documentListener);
@@ -198,19 +239,25 @@ public class AddJobPanel extends JPanel
                     Platform.runLater(() -> 
                     {
                         dates[0] = startDatePicker.getValue();
-                        dates[1] = endDatePicker.getValue();
+                        if (!presentDateCheckBox.isSelected())
+                        {
+                            dates[1] = endDatePicker.getValue();
+                        }
+                        else
+                        {
+                            dates[1] = LocalDate.of(0001, 01, 01);
+                        }
                         latch.countDown(); // Signal that dates are retrieved
                     });
                     
                     // Wait for the latch to reach zero
                     latch.await();
                     
-                    
                     jobDAO.addJob(new Job(
                         jobTitle.getText(),
                         companyName.getText(),
                         startDatePicker.getValue(),
-                        endDatePicker.getValue(),
+                        dates[1],
                         city.getText(),
                         description.getText(),
                         quitReason.getText(),
@@ -250,7 +297,9 @@ public class AddJobPanel extends JPanel
         jobTitle.setText("");
         companyName.setText("");
         startDatePicker.setValue(null);
+        presentDateCheckBox.setSelected(false);
         endDatePicker.setValue(null);
+        endDatePicker.setDisable(false); //Force enable endDatePicker
         city.setText("");
         description.setText("");
         quitReason.setText("");
@@ -279,6 +328,37 @@ public class AddJobPanel extends JPanel
             // Create a separate scene for the end date panel and set it on the JFXPanel
             Scene sceneForEndDate = new Scene(rootForEndDate, 300, 200);
             panelForEndDate.setScene(sceneForEndDate);
+
+              // Add listener to startDatePicker
+            startDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> 
+            {
+                startDateValue = newValue;
+                SwingUtilities.invokeLater(() -> 
+                {
+                    updateButtonState();
+                });
+            });
+
+            // Add listener to endDatePicker
+            endDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> 
+            {
+                endDateValue = newValue;
+                SwingUtilities.invokeLater(() -> 
+                {
+                    updateButtonState();
+                });
+            });
         });   
+    }
+
+    private void updateButtonState() {
+        boolean allFieldsFilled = !jobTitle.getText().trim().isEmpty() &&
+                                  !companyName.getText().trim().isEmpty() &&
+                                  !city.getText().trim().isEmpty() &&
+                                  startDateValue != null &&
+                                  (presentDateCheckBox.isSelected() || endDateValue != null) &&
+                                  (!description.getText().trim().isEmpty() ||
+                                  !quitReason.getText().trim().isEmpty());
+        add.setEnabled(allFieldsFilled);
     }
 }
