@@ -101,17 +101,17 @@ public class AddJobPanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         // Job title
-        panel.add(new Label("Job Title:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Job Title:"));
         jobTitle = new TextField();
         panel.add(jobTitle);
 
         // Company name
-        panel.add(new Label("Company Name:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Company Name:"));
         companyName = new TextField();
         panel.add(companyName);
 
         // Start date
-        panel.add(new Label("Start Date:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
 
@@ -156,7 +156,7 @@ public class AddJobPanel extends JPanel
         panel.add(presentDateCheckBox);
 
         // End date
-        panel.add(new Label("End Date:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>End Date:"));
         panelForEndDate = new JFXPanel();
         panel.add(panelForEndDate);
         
@@ -164,12 +164,12 @@ public class AddJobPanel extends JPanel
         Platform.runLater(this::initFX);
 
         // city
-        panel.add(new Label("City:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>City:"));
         city = new TextField();
         panel.add(city);
 
         // Job description
-        panel.add(new Label("Job Description:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Job Description:"));
         description = new TextField();
         panel.add(description);
 
@@ -278,6 +278,9 @@ public class AddJobPanel extends JPanel
                 }
             }
         });
+
+        // Required Fields indicator
+        buttonPanel.add(new Label("Required fields marked with <html><span style='color:red;'>*</span></html>", 16, Color.WHITE));
 
         //Add buttons to the button panel
         buttonPanel.add(backButton);

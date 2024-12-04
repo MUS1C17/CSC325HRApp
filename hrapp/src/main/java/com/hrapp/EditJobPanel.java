@@ -106,17 +106,17 @@ public class EditJobPanel extends JPanel
         //Fill the Panel with labels and TextFields
 
         // Job title
-        panel.add(new Label("Job Title:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Job Title:"));
         jobTitle = new TextField(job.getJobTitle());
         panel.add(jobTitle);
 
         // Company name
-        panel.add(new Label("Company Name:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Company Name:"));
         companyName = new TextField(job.getCompanyName());
         panel.add(companyName);
 
         // Start date
-        panel.add(new Label("Start Date:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Start Date:"));
         panelForStartDate = new JFXPanel();
         panel.add(panelForStartDate);
 
@@ -158,7 +158,7 @@ public class EditJobPanel extends JPanel
         panel.add(presentDateCheckBox);
 
         // End date
-        panel.add(new Label("End Date:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>End Date:"));
         panelForEndDate = new JFXPanel();
         panel.add(panelForEndDate);
         
@@ -166,12 +166,12 @@ public class EditJobPanel extends JPanel
         Platform.runLater(this::initFX);
 
         // city
-        panel.add(new Label("City:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>City:"));
         city = new TextField(job.getCity());
         panel.add(city);
 
         // Job description
-        panel.add(new Label("Job Description:"));
+        panel.add(new Label("<html><span style='color:red;'>*</span>Job Description:"));
         description = new TextField(job.getJobDescription());
         panel.add(description);
 
@@ -259,17 +259,20 @@ public class EditJobPanel extends JPanel
                         // Switch back to JobHistoryPanel on the EDT
                         SwingUtilities.invokeLater(() -> mainApp.switchToJobHistoryPanel());
                     
-                }
-                catch(Exception error)
-                {
-                    JOptionPane.showMessageDialog(EditJobPanel.this, 
-                        "Error editing job: " + error.getMessage(), 
-                        "Database Error", JOptionPane.ERROR_MESSAGE);
-                        error.printStackTrace();
-                }
-            });
+                    }
+                    catch(Exception error)
+                    {
+                        JOptionPane.showMessageDialog(EditJobPanel.this, 
+                            "Error editing job: " + error.getMessage(), 
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                            error.printStackTrace();
+                    }
+                });
             }
         });
+
+        // Required Fields indicator
+        buttonPanel.add(new Label("Required fields marked with <html><span style='color:red;'>*</span></html>", 16, Color.WHITE));
 
         //Add buttons to the button panel
         buttonPanel.add(backButton);
