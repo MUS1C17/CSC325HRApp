@@ -1,14 +1,17 @@
 package com.hrapp;
 
 import java.awt.CardLayout;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * MainApplication class serves as the entry point and main frame for the HR application.
+ * It manages different panels and uses a CardLayout for seamless navigation between them.
+ */
 public class MainApplication extends JFrame {
-    //Properties
+    // Properties to hold various application panels
     private HomePanel homePanel;
     private AddEmployeePanel addEmployeePanel;
     private AddJobPanel addJobPanel;
@@ -24,23 +27,24 @@ public class MainApplication extends JFrame {
     private EditJobPositionPanel editJobPositionPanel;
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
 
-    private Employee currentUser;
+    private Employee currentUser; // Current user of the application
 
-
-
-    public MainApplication() 
-    {
+    /**
+     * Constructor to initialize the main application window.
+     */
+    public MainApplication() {
+        // Set application title and icon
         setTitle("FRONTLINE HR App");
         setIconImage(new ImageIcon("resources\\FRONTLINE HR App Badge (Large).png").getImage());
 
-        //Set up the CardLayout
+        // Initialize CardLayout and main panel
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
+        // Dummy user role check
         boolean isManagerOrCEO = checkUserRole();
 
-        //Create an instance of HomePanel
-        //homePanel = new HomePanel(isManagerOrCEO, this);
+        // Initialize various panels
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
         addJobPanel = new AddJobPanel(this);
@@ -51,10 +55,8 @@ public class MainApplication extends JFrame {
         editJobPositionPanel = new EditJobPositionPanel(this);
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
 
-
-        // Add the HomePanel to the Frame
+        // Add panels to the CardLayout
         mainPanel.add(userSelectionPanel, "UserSelectionPanel");
-        //mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
         mainPanel.add(addJobPanel, "AddJobPanel");
@@ -63,185 +65,165 @@ public class MainApplication extends JFrame {
         mainPanel.add(addJobPositionPanel, "AddJobPositionPanel");
         mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
-        
-        //Add the mainPanel to the JFrame
+
+        // Add the main panel to the frame
         add(mainPanel);
 
-        // Frame settings 
+        // Frame settings
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1250, 800);
-        setLocationRelativeTo(null); //Center the window
+        setLocationRelativeTo(null); // Center the window
     }
 
     /**
-     * Dummy method to simulate role checking.
-     * Replace this with actual authentication logic.
+     * Dummy method to simulate user role checking. Replace with actual authentication logic.
+     *
+     * @return true if the user is a manager or CEO, false otherwise.
      */
-    public boolean checkUserRole() 
-    {
-        // For demonstration, return true
-        return true;
+    public boolean checkUserRole() {
+        return true; // For demonstration purposes, always return true
     }
 
     /**
-     * Closes resources when the application is closing.
+     * Override dispose to close resources when the application is shutting down.
      */
     @Override
-    public void dispose() 
-    {
+    public void dispose() {
         homePanel.closeResources();
         super.dispose();
     }
 
-    public void createHomePanel(boolean isManagerOrCEO)
-    {
+    /**
+     * Creates the HomePanel dynamically.
+     *
+     * @param isManagerOrCEO Indicates if the current user is a manager or CEO.
+     */
+    public void createHomePanel(boolean isManagerOrCEO) {
         homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
     }
 
-    //This method is used to switch to Edit Employee Panel to edit employee
-    public void switchToEditEmployeePanel(Employee employee)
-    {
+    /**
+     * Switch to EditEmployeePanel with a specific employee to edit.
+     *
+     * @param employee The employee to edit.
+     */
+    public void switchToEditEmployeePanel(Employee employee) {
         editEmployeePanel = new EditEmployeePanel(this, employee);
         mainPanel.add(editEmployeePanel, "EditEmployeePanel");
         switchToPanel("EditEmployeePanel");
     }
 
-    public void showHomePanel()
-    {
+    /**
+     * Shows the HomePanel.
+     */
+    public void showHomePanel() {
         homePanel = new HomePanel(true, this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
         switchToPanel("HomePanel");
     }
 
-    //This method is used to switch to the specified panel in the CardLayout 
-    //using the name of the panel
-    public void switchToAddEmployeePanel(String panelName)
-    {
-        //Clears all the previous content and opens the panel
+    /**
+     * Switch to AddEmployeePanel and reset its fields.
+     */
+    public void switchToAddEmployeePanel(String panelName) {
         addEmployeePanel.resetFields();
-        switchToPanel("AddEmployeePanel"); 
+        switchToPanel("AddEmployeePanel");
     }
 
-    //Passes the selected Employee to the detail panel and then switches to it
-    public void showEmployeeDetails(Employee employee) 
-    {
+    /**
+     * Displays the details of a specific employee in EmployeeDetailPanel.
+     *
+     * @param employee The employee to display.
+     */
+    public void showEmployeeDetails(Employee employee) {
         employeeDetailPanel.setEmployee(employee);
-        employeeDetailPanel.setDetailsButtonStatus(false); //Disable Details button
+        employeeDetailPanel.setDetailsButtonStatus(false); // Disable Details button
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //This method can only be used when pressing back button on the EditJobPanel & AddJobPanel.
-    //It will disable JobHistory button
-    public void showJobHistoryDetails(Employee employee)
-    {
+    // More methods to switch between panels and update specific panels
+    public void showJobHistoryDetails(Employee employee) {
         employeeDetailPanel.setEmployee(employee);
-        employeeDetailPanel.setJobHistoryButtonStatus(false); //Disable Job History button
+        employeeDetailPanel.setJobHistoryButtonStatus(false);
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //
-    public void showSprintEvaluationDetails(Employee employee)
-    {
+    public void showSprintEvaluationDetails(Employee employee) {
         employeeDetailPanel.setEmployee(employee);
         employeeDetailPanel.setSprintEvaluationButton(false);
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //
-    public void refreshSprintEvaluations(Employee employee)
-    {
+    public void refreshSprintEvaluations(Employee employee) {
         employeeDetailPanel.setEmployee(employee);
     }
 
-
-
-    // Passes employeeID to the job panel to display matching jobs.
-    public void switchToAddJobPanel(Employee employee)
-    {
+    public void switchToAddJobPanel(Employee employee) {
         addJobPanel.resetFields();
         addJobPanel.setEmployee(employee);
         switchToPanel("AddJobPanel");
     }
 
-    //Method to switch to AddJobPositionPanel
-    public void switchToAddJobPositionPanel()
-    {
-        //Reset fields on the panel
+    public void switchToAddJobPositionPanel() {
         addJobPositionPanel.resetFields();
-
-        //Show the panel
         switchToPanel("AddJobPositionPanel");
     }
 
-    //Method to switch to EditJobPostionPanel
-    public void switchToEditJobPostionPanel(JobPosition jobPosition)
-    {
+    public void switchToEditJobPostionPanel(JobPosition jobPosition) {
         editJobPositionPanel.setJobPosition(jobPosition);
         switchToPanel("EditJobPositionPanel");
     }
 
-    // Passes jobID to edit panel so the panel knows which job to update in the database.
-    public void switchToEditJobPanel(int jobID, Job job, Employee employee)
-    {
-        //editJobPanel.resetFields();
+    public void switchToEditJobPanel(int jobID, Job job, Employee employee) {
         editJobPanel.setInformation(jobID, job, employee);
-
         switchToPanel("EditJobPanel");
     }
-    
-    public void switchToJobHistoryPanel()
-    {
+
+    public void switchToJobHistoryPanel() {
         employeeDetailPanel.refreshJobHistory();
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //This method is used to switch to AddSprintEvaluationPanel
-    public void switchToAddSprintEvaluationPanel(Employee employee)
-    {
-
-        //Set employee on the add panel to then get employee's id
+    public void switchToAddSprintEvaluationPanel(Employee employee) {
         addSprintEvaluationPanel.setEmployee(employee);
-
-        switchToPanel("AddSprintEvaluationPanel"); 
-
-        //Reset all the text fields
+        switchToPanel("AddSprintEvaluationPanel");
         addSprintEvaluationPanel.resetFields();
     }
 
-    public void switchToPanel(String panelName) 
-    {
+    /**
+     * Switches to a specified panel by its name.
+     *
+     * @param panelName The name of the panel to switch to.
+     */
+    public void switchToPanel(String panelName) {
         cardLayout.show(mainPanel, panelName);
     }
 
-    //Getter for HomePanel
-    public HomePanel getHomePanel() 
-    {
+    // Getters and setters for HomePanel and current user
+    public HomePanel getHomePanel() {
         return homePanel;
     }
 
-    public void setCurrentUser(Employee user)
-    {
+    public void setCurrentUser(Employee user) {
         currentUser = user;
     }
 
-    public Employee getCurrentUser()
-    {
+    public Employee getCurrentUser() {
         return currentUser;
     }
 
-    public int getCurrentUserID()
-    {
+    public int getCurrentUserID() {
         return currentUser.getEmployeeID();
     }
 
-    public static void main(String[] args) 
-    {
-        SwingUtilities.invokeLater(() -> 
-        {
+    /**
+     * The main method to start the application.
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
             MainApplication app = new MainApplication();
             app.setVisible(true);
         });
     }
 }
- 

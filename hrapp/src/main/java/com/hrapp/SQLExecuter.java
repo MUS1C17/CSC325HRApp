@@ -6,6 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+ * The SQLExecuter class simplifies SQLite database operations:
+ * - Connects to the database. — Constructor
+ * - Executes SELECT queries. — getDataFromDatabase
+ * - Executes UPDATE/DELETE/INSERT queries. — setDataInDatabase
+ * - Dynamically sets query parameters. — setParameters
+ * - Safely closes the database connection. — closeConnection
+ * - Provides access to the connection object. — getConnection
+ */
+
+
 public class SQLExecuter {
     
     //path to database and Connection object
