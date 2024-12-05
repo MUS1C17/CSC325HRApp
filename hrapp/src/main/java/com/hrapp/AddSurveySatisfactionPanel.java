@@ -20,6 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 
+/*
+ * This is the panel where you can make a new survey:
+ * -includes response methods such as sliders and text boxes
+ */
 public class AddSurveySatisfactionPanel extends JPanel
 {
     //Properties 
@@ -152,7 +156,8 @@ public class AddSurveySatisfactionPanel extends JPanel
                 }
             }
         });
-
+        
+        //add new buttons
         buttonPanel.add(backButton);
         buttonPanel.add(saveButton);
 

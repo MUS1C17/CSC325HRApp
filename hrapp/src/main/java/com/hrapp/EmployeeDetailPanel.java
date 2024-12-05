@@ -19,6 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+/*
+ * This is the panel where employee details will be displayed
+ */
+
 public class EmployeeDetailPanel extends JPanel 
 {
 

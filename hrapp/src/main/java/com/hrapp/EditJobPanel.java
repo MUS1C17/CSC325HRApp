@@ -27,6 +27,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.StackPane;
 
+/*
+ * This panel is where you will edit job information
+ */
 public class EditJobPanel extends JPanel
 {
     //Properties

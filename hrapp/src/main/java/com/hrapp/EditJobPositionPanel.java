@@ -16,6 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/*
+ * This panel is where you will edit the positions of jobs
+ */
+
 public class EditJobPositionPanel extends JPanel
 {
     //Properties

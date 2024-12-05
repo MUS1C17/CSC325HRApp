@@ -7,6 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+/*
+ * The JobDAO class handles database operations for job history records. It includes methods to:
+ * - Retrieve jobs for an employee,
+ * - Add, update, and delete job records,
+ * - Handle job data with appropriate date formatting.
+ */
+
 public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
 {
     private SQLExecuter executor;

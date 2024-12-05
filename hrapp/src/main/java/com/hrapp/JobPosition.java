@@ -11,6 +11,13 @@ public class JobPosition
     private String softSkill2;
     private int isDeleted;
 
+    /*
+    * The JobPosition class represents a job position within the system, including the job title,
+    * required hard and soft skills, and its deletion status.
+    * It contains methods to get and set the job position details, including skill requirements and deletion status.
+    */
+
+
     //Constructor
     public JobPosition(String jobPostionName, String hardSkill1, String hardSkill2,
                         String softSkill1, String softSkill2)

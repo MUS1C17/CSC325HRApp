@@ -32,6 +32,13 @@ public class HomePanel extends JPanel
     private JButton jobSatisfactionButton;
     private JButton editProfileButton;
 
+    /*
+    * HomePanel is a JPanel that serves as the main dashboard for the HR application.
+    * It displays an employee table, a search bar, and buttons for adding employees and job positions (visible for Managers/CEOs).
+    * The panel includes user information such as name, email, phone, and job title, and allows the user to edit their profile or provide job satisfaction feedback.
+    * It features action listeners for searching, viewing details, and navigating between panels for adding or editing employee and job information.
+    */
+
     public HomePanel(boolean isManagerOrCEO, MainApplication mainApp, Employee currentUser)
     {
         this.mainApp = mainApp;

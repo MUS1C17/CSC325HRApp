@@ -26,7 +26,7 @@ public class DetailsPanel extends JPanel
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
-
+    //Labels for email and phone number with special functions
     private Label emailLabel;
     private Label phoneNumberLabel;
 
@@ -47,7 +47,10 @@ public class DetailsPanel extends JPanel
             e.getMessage();
         }
     }
-
+    /*
+     * Sets the employee to display in the panel.
+     * Updates the UI to show the employee's details
+     */
     public void setEmployee(Employee employee) 
     {
         this.employee = employee;
@@ -132,7 +135,7 @@ public class DetailsPanel extends JPanel
         });
 
         panel.add(emailLabel);
-
+        //Phone number field with clickable functionality
         panel.add(new Label("Phone Number:"));
         phoneNumberLabel = new Label("<a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
             employee.getPhoneNumber().substring(0, 3),
@@ -200,7 +203,7 @@ public class DetailsPanel extends JPanel
                 }       
         });
         panel.add(phoneNumberLabel);
-
+        //Add remaining skills from this point on
         panel.add(new Label("Hourly Rate:"));
         panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
 

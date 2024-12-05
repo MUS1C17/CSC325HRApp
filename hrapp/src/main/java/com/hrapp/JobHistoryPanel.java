@@ -24,6 +24,16 @@ import javax.swing.JScrollPane;
 
 //import javafx.scene.shape.Box;
 
+/*
+ * The JobHistoryPanel class displays an employee's job history, including details for each job.
+ * It allows users to:
+ * - View job information (job title, company, dates, etc.),
+ * - Edit or delete job records,
+ * - Add a new job to the employee's history.
+ * The UI is created dynamically based on the jobs retrieved from the database.
+ */
+
+
 public class JobHistoryPanel extends JPanel 
 {
     private MainApplication mainApp;

@@ -22,6 +22,14 @@ import javax.swing.table.TableRowSorter;
 
 import com.hrapp.EmployeeTablePanel.EmployeeSelectionListener;
 
+/*
+ * EmployeeTablePanel is a JPanel that displays two tables: one for employees and one for job positions.
+ * It allows the user to interact with the tables by selecting rows, filtering data, and performing actions like viewing details, editing, or deleting records.
+ * The panel uses two DAOs (EmployeeDAO, JobPositionDAO) to load data from a database and supports sorting, filtering, and mouse events for table interaction.
+ * It also includes listener interfaces for handling employee and job position selection.
+ */
+
+
 public class EmployeeTablePanel extends JPanel
 {
     // Properties for Employee Table
