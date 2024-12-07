@@ -204,10 +204,6 @@ public class AddEmployeePanel extends JPanel
         notes.setDocument(new EmployeeFormValidator.LimitedPlainDocument(350));
         panel.add(notes);
 
-        /*
-         * TODO: MAKE COMBOBOXES FOR SKILLS WITH DATA FROM DATABASE
-         */
-
         //Hard Skill 1
         panel.add(new Label("Main Hard Skill:"));
         hardSkillOne = new JComboBox(hardSkills);
@@ -333,6 +329,8 @@ public class AddEmployeePanel extends JPanel
         updateButtonState();
 
     }  
+
+    //Method to update Add Button depending if validations are correct
     private void updateButtonState() 
     {
         EmployeeFormValidator.updateButtonState(addButton, requiredFields, datePicker);
@@ -399,6 +397,8 @@ public class AddEmployeePanel extends JPanel
         });
     }
 
+    //Method to validate calendar when focus lost. If validations are not correct
+    //then calendar will highligh in red, otherwise it will have default color
     private void validateDatePickerOnFocusLost() 
     {
         Platform.runLater(() -> 

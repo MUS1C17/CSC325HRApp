@@ -22,6 +22,7 @@ public class Job
     private int employeeID;
     private int jobID;
 
+    //Constructor with no employeeID for when creating a new Job
     public Job(String jobTitle, String companyName, LocalDate startDate, LocalDate endDate, String city, String jobDescription, String quitReason, int isDeleted)
     {
         this.jobTitle = jobTitle;

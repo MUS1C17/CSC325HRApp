@@ -78,7 +78,6 @@ public class AddSurveySatisfactionPanel extends JPanel
         //Favorite Aspect
         panel.add(new Label("What do you like most about working here?"));
         favoriteAspect = new JTextArea();
-        //favoriteAspect.setDocument(new LimitedPlainDocument(250)); - THis is to limit the input. Uncomment in future
         panel.add(favoriteAspect);
 
         //Growth Opportunities
@@ -107,7 +106,6 @@ public class AddSurveySatisfactionPanel extends JPanel
         //Additional Commments 
         panel.add(new Label("Any additional comments or suggestions?"));
         additionalComments = new JTextArea();
-        //additionalComments.setDocument(new LimitedPlainDocument(250)); - THis is to limit the input. Uncomment in future
         panel.add(additionalComments);
         
         //Add panel to the AddSurveySatisfactionPanel

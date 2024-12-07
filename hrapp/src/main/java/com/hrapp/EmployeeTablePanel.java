@@ -29,7 +29,6 @@ import com.hrapp.EmployeeTablePanel.EmployeeSelectionListener;
  * It also includes listener interfaces for handling employee and job position selection.
  */
 
-
 public class EmployeeTablePanel extends JPanel
 {
     // Properties for Employee Table
@@ -70,7 +69,8 @@ public class EmployeeTablePanel extends JPanel
         this.jobPositionSelectionListener = listener;
     }
 
-    
+
+    //Constructor
     public EmployeeTablePanel()
     {
         setLayout(new BorderLayout());
@@ -114,6 +114,7 @@ public class EmployeeTablePanel extends JPanel
         add(scrollPane, BorderLayout.CENTER);
     }
     
+    //Method to create Employee Table when it gets updated
     private JPanel createEmployeeTablePanel()
     {
         JPanel panel = new JPanel(new BorderLayout());
@@ -512,6 +513,11 @@ public class EmployeeTablePanel extends JPanel
         return null;
     }
 
+    /**
+     * Retrieves the currently selected JobPosition data.
+     * 
+     * @return A JobPosition object representing the selected employee, or null if no selection.
+     */
     public JobPosition getSelectedJobPostion() throws SQLException
     {
         int selectedRow = jobPositionTable.getSelectedRow();
@@ -565,12 +571,15 @@ public class EmployeeTablePanel extends JPanel
         }
     }
 
-    // Getter methods if needed
-    public JTable getEmployeeTable() {
+    // Getter method to get employeeTable
+    public JTable getEmployeeTable() 
+    {
         return employeeTable;
     }
 
-    public JTable getJobPositionTable() {
+    //Getter method to get JobPositionTable
+    public JTable getJobPositionTable() 
+    {
         return jobPositionTable;
     }
 

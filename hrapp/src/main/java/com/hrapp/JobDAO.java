@@ -18,11 +18,13 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
 {
     private SQLExecuter executor;
 
+    //Constructor
     public JobDAO() throws SQLException
     {
         executor = new SQLExecuter();
     }
 
+    //Method to get all jobs for the specific employee.
     public ArrayList<Job> getJobs(int employeeID) throws SQLException
     {
     ArrayList<Job> jobs = new ArrayList<>();
@@ -74,6 +76,7 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
     return jobs;
     }
 
+    //Method to add new job to the database
     public void addJob(Job job) throws SQLException
     {
         String query = "INSERT INTO JobHistory (employeeID, jobTitle, companyName, startDate, "+
@@ -88,15 +91,13 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
         job.getJobDescription(),
         job.getQuitReason()
         );
-
-        //executor.closeConnection();
     }
 
+    //Method to delete the job from the database
     public void deleteJob(int jobID) throws SQLException
     {
         String query = "UPDATE JobHistory SET isDeleted = 1 WHERE JobHistoryID = ?";
         executor.setDataInDatabase(query, jobID);
-        //executor.closeConnection();
     }
 
     // Updates job in database with specified information.
@@ -115,6 +116,7 @@ public class JobDAO // Like the EmployeeDAO (Data access object), but for jobs.
         jobID);
     }
 
+    //Method to close connection to the database
     public void close()
     {
         if (executor != null)

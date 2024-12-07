@@ -46,7 +46,7 @@ public class AddJobPanel extends JPanel
     private int employeeID;
     private Employee employee;
 
-    //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
+    //Instance variables for input fields
     private JTextField jobTitle;
     private JTextField companyName;
     private JTextField city;
@@ -264,7 +264,8 @@ public class AddJobPanel extends JPanel
     // Method to initialize the JavaFX content
     public void initFX() 
     {
-        Platform.runLater(() -> {
+        Platform.runLater(() -> 
+        {
             // Initialize the root pane for the first panel
             StackPane rootForStartDate = new StackPane();
             startDatePicker = new DatePicker();

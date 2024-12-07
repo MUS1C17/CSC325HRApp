@@ -33,6 +33,7 @@ public class DetailsPanel extends JPanel
     // Get the desktop environment to perform desktop-related actions
     private Desktop desktop = Desktop.getDesktop();
 
+    //Constructor
     public DetailsPanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
@@ -60,7 +61,7 @@ public class DetailsPanel extends JPanel
         repaint();
     }
 
-
+    //Initialize all the gui elements on the panel
     public void initUI()
     {
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -270,7 +271,8 @@ public class DetailsPanel extends JPanel
         });
 
         JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
-        editEmployeeButton.addActionListener(new ActionListener() {
+        editEmployeeButton.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent event)
             {

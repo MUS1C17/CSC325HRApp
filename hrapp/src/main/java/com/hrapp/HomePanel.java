@@ -37,8 +37,10 @@ public class HomePanel extends JPanel
     * It displays an employee table, a search bar, and buttons for adding employees and job positions (visible for Managers/CEOs).
     * The panel includes user information such as name, email, phone, and job title, and allows the user to edit their profile or provide job satisfaction feedback.
     * It features action listeners for searching, viewing details, and navigating between panels for adding or editing employee and job information.
+    * It also includes the EmployeeTablePanel in it that shows two tables: Employee table and Job Postion table
     */
 
+    //Constructor
     public HomePanel(boolean isManagerOrCEO, MainApplication mainApp, Employee currentUser)
     {
         this.mainApp = mainApp;
@@ -143,6 +145,7 @@ public class HomePanel extends JPanel
         //repaint();
     }
     
+    //Set current user for the app
     public void setCurrentUser(Employee currentUser)
     {
         this.currentUser = currentUser;
@@ -205,11 +208,6 @@ public class HomePanel extends JPanel
         //Job Title
         JLabel jobTitle = new Label(currentUser.getJobTitle(), 12, Color.WHITE);
         panel.add(jobTitle);
-
-
-        /*
-         * TODO: Add the rest of needed elements here
-         */
 
         panel.add(Box.createVerticalStrut(50));
         // Edit Profile Button

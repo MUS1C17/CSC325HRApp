@@ -79,6 +79,8 @@ public class EditJobPanel extends JPanel
         repaint();
     }
 
+    
+    //Initializes all the gui elements on the panel
     public void initUI()
     {
         // Top Panel containing logo and page title

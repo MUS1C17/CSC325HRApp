@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 
 public class JobHistoryPanel extends JPanel 
 {
+    //Properties
     private MainApplication mainApp;
     private JobDAO jobDAO;
     private ArrayList<Job> jobs;
@@ -43,6 +44,7 @@ public class JobHistoryPanel extends JPanel
     private Job job;
     private Employee employee;
 
+    //Constructor
     public JobHistoryPanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
@@ -58,6 +60,7 @@ public class JobHistoryPanel extends JPanel
         }
     }
 
+    //Sets employee and employee id for the panel
     public void setEmployeeID(int employeeID, Employee employee)
     {
         this.employeeID = employeeID;
@@ -65,7 +68,8 @@ public class JobHistoryPanel extends JPanel
         showJobs(employeeID);
     }
 
-    public void getJobs() // This method should use the jobDAO object to populate the jobs parameter with an arraylist of all jobs related to the employeeID.
+    // This method should use the jobDAO object to populate the jobs parameter with an arraylist of all jobs related to the employeeID.
+    public void getJobs() 
     {
         try
         {
@@ -77,7 +81,8 @@ public class JobHistoryPanel extends JPanel
         }
     }
 
-    public void showJobs(int employeeID) // This is supposed to actually display the jobs and initialize the UI.
+    // This is supposed to actually display the jobs and initialize the UI.
+    public void showJobs(int employeeID) 
     {
         removeAll();
         getJobs();
@@ -170,6 +175,7 @@ public class JobHistoryPanel extends JPanel
         return jobBox;
      }
 
+    //Method to initialize all the gui components of the panel
     private void initUI()
     {
         JPanel panel = new JPanel();

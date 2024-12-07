@@ -90,6 +90,7 @@ public class EditEmployeePanel extends JPanel
         }
     }
 
+    //Initializes all the gui elements on the panel
     public void initUI()
     {
         // Top Panel containing logo and page title
@@ -270,7 +271,8 @@ public class EditEmployeePanel extends JPanel
 
         //Back button
         JButton backButton = new Button("resources\\BackButtons\\Back button (no hover).png", "resources\\BackButtons\\Back button (hover).png");
-        backButton.addActionListener(new ActionListener() {
+        backButton.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -305,7 +307,8 @@ public class EditEmployeePanel extends JPanel
         }
         updateButtonState();
 
-        updateButton.addActionListener(new ActionListener() {
+        updateButton.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -395,6 +398,9 @@ public class EditEmployeePanel extends JPanel
         });
     }
 
+    
+    //Method to validate calendar when focus lost. If validations are not correct
+    //then calendar will highligh in red, otherwise it will have default color
     private void validateDatePickerOnFocusLost() 
     {
         Platform.runLater(() -> 
