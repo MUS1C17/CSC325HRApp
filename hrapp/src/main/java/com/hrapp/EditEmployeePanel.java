@@ -157,13 +157,12 @@ public class EditEmployeePanel extends JPanel
          * -hardskills
          * -softskills
          */
-        String[] dep = new String[]{null,"SLS", "DEV", "MNG", "SPT"};
+        String[] dep = new String[]{null,"Sales", "Development", "Management", "Support"};
         String[] workLoc = new String[]{null,"MSU", "Office", "Remote"};
         String[] status = new String[]{null, "Intern", "Full-time", "Part-time", "Contractor"};
         String [] yesOrNo = new String[]{"No", "Yes"};
-        String[] hardSkills = new String[]{null, "Java", "Python", "C#"};
-        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Time Management"};
-
+        String[] hardSkills = new String[]{null, "Java", "Python", "C#", "C++", "JavaScript", "OOP", "TypeScript", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "Machine Learning", "GIT"};
+        String[] softSkills = new String[]{null, "Leadership", "Teamwork", "Emotional Intelligence", "Organization", "Flexibility", "Communication", "Self-motivation", "Problem-solving", "Openness to learning", "Integrity", "Self-confidence", "Public speaking", "Open-mindedness", "Professionalism", "Positive attitude"};
 
         //Department
         panel.add(new Label("Department:"));
@@ -305,7 +304,7 @@ public class EditEmployeePanel extends JPanel
         //Can only be edited by Manager/CEO
         panel.add(new Label("Manager:"));
         isManager = new JComboBox(yesOrNo);
-        isManager.setSelectedItem(employee.getIsManager());
+        isManager.setSelectedIndex(employee.getIsManager());
         isManager.setEnabled(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager());
         panel.add(isManager);
 
@@ -313,7 +312,7 @@ public class EditEmployeePanel extends JPanel
         //Can only be edited by the CEO
         panel.add(new Label("CEO:"));
         isCEO = new JComboBox(yesOrNo);
-        isCEO.setSelectedItem(employee.getIsCEO());
+        isCEO.setSelectedIndex(employee.getIsCEO());
         isCEO.setEnabled(mainApp.isCurrentUserCEO());
         panel.add(isCEO);
 

@@ -246,7 +246,7 @@ public class HomePanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                mainApp.switchToPanel("UserSelectionPanel");
+                mainApp.switchToUserSelectionPanel();
             }
         });
 
