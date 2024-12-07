@@ -29,6 +29,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.StackPane;
 
+/*
+ * This is the panel where you can add new jobs:
+ * -Can input job details such as title, description, reason for termination, and more
+ * -Includes input validation for required fields
+ * -features submit button to save the job information
+ */
+
 public class AddJobPanel extends JPanel
 {
     //Properties
@@ -46,7 +53,7 @@ public class AddJobPanel extends JPanel
      private LocalDate startDateValue = null;
      private LocalDate endDateValue = null;
 
-    //Instance variables for input fields (this is to fix bug with Calendar dissapearing)
+    //Instance variables for input fields
     private JTextField jobTitle;
     private JTextField companyName;
     private JTextField city;
@@ -79,6 +86,7 @@ public class AddJobPanel extends JPanel
         this.employee = employee;
     }
 
+    //Initializes the user interface elements and adds them to the panel
     public void initUI()
     {
         // Top Panel containing logo and page title
@@ -89,12 +97,12 @@ public class AddJobPanel extends JPanel
         // Add logo and page title
         JLabel logo = new JLabel(new ImageIcon("resources\\FRONTLINE_HR_Color_Version__1_-removebg-preview.png"));
         topPanel.add(logo);
-        topPanel.add(Box.createHorizontalStrut(50));
+        topPanel.add(Box.createHorizontalStrut(50)); //Add spacing between logo and title
 
-        topPanel.add(new Label("Add Job", 32, Color.WHITE));
+        topPanel.add(new Label("Add Job", 32, Color.WHITE)); //Add top panel to north region of layout
 
         add(topPanel, BorderLayout.NORTH);
-
+        //Center panel for form inputs
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -308,7 +316,8 @@ public class AddJobPanel extends JPanel
     // Method to initialize the JavaFX content
     public void initFX() 
     {
-        Platform.runLater(() -> {
+        Platform.runLater(() -> 
+        {
             // Initialize the root pane for the first panel
             StackPane rootForStartDate = new StackPane();
             startDatePicker = new DatePicker();

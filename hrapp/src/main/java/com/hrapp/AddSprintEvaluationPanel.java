@@ -18,7 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
+/*
+ * This panel allows you to create new sprint evaluations:
+ * -allows user to create a new sprint evaluation and submit it
+ */
 public class AddSprintEvaluationPanel extends JPanel {
 
     //Properties

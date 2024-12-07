@@ -18,6 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/*
+ * This is the panel where you add job positions:
+ * -name of position and soft/hard skills required for position
+ * -button to reset fields if desired
+ */
 public class AddJobPositionPanel extends JPanel
 {
     //Properties

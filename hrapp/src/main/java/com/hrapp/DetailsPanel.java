@@ -26,13 +26,14 @@ public class DetailsPanel extends JPanel
     private MainApplication mainApp;
     private Employee employee;
     private EmployeeDAO employeeDAO;
-
+    //Labels for email and phone number with special functions
     private Label emailLabel;
     private Label phoneNumberLabel;
 
     // Get the desktop environment to perform desktop-related actions
     private Desktop desktop = Desktop.getDesktop();
 
+    //Constructor
     public DetailsPanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
@@ -47,7 +48,10 @@ public class DetailsPanel extends JPanel
             e.getMessage();
         }
     }
-
+    /*
+     * Sets the employee to display in the panel.
+     * Updates the UI to show the employee's details
+     */
     public void setEmployee(Employee employee) 
     {
         this.employee = employee;
@@ -57,7 +61,7 @@ public class DetailsPanel extends JPanel
         repaint();
     }
 
-
+    //Initialize all the gui elements on the panel
     public void initUI()
     {
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -132,7 +136,7 @@ public class DetailsPanel extends JPanel
         });
 
         panel.add(emailLabel);
-
+        //Phone number field with clickable functionality
         panel.add(new Label("Phone Number:"));
         phoneNumberLabel = new Label("<a href =''>" + (employee.getPhoneNumber() != null && employee.getPhoneNumber().length() == 10 ? String.format("(%s)-%s-%s",
             employee.getPhoneNumber().substring(0, 3),
@@ -200,6 +204,9 @@ public class DetailsPanel extends JPanel
                 }       
         });
         panel.add(phoneNumberLabel);
+        //Add remaining skills from this point on
+        panel.add(new Label("Hourly Rate:"));
+        panel.add(new Label(employee.getHourlyrate() != null ? employee.getHourlyrate().toString() : "N/A"));
 
         //If manager/ceo/same employee show hourly rate and notes
         if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() ||mainApp.isCurrentUserAndSelectedEmployeeSame(employee))
@@ -309,8 +316,10 @@ public class DetailsPanel extends JPanel
         });
 
         JButton editEmployeeButton = new Button("resources\\EditButtons\\Edit Profile button (no hover).png", "resources\\EditButtons\\Edit Profile button (hover).png");
+
         editEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
-        editEmployeeButton.addActionListener(new ActionListener() {
+        editEmployeeButton.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent event)
             {

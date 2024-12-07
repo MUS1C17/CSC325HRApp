@@ -19,6 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+/*
+ * This is the panel where employee details will be displayed
+ * This panel has a card layout and it has 3 cards: DetailsPanel, JobHistoryPanel and SprintEvaluationPanel
+ */
+
 public class EmployeeDetailPanel extends JPanel 
 {
 
@@ -43,6 +48,7 @@ public class EmployeeDetailPanel extends JPanel
     private JButton sprintEvaluationButton;
     private JButton backButton;
 
+    //Constructor
     public EmployeeDetailPanel(MainApplication mainApp) 
     {
         this.mainApp = mainApp;
@@ -60,13 +66,12 @@ public class EmployeeDetailPanel extends JPanel
         initUI();
     }
 
+    //Set employee for this panel and all panels in the card view
     public void setEmployee(Employee employee) 
     {
         this.employee = employee;
         detailsPanel.setEmployee(employee);
-        // If JobHistoryPanel and SprintEvaluationPanel need employee data, pass it to them here
         jobHistoryPanel.setEmployeeID(employee.getEmployeeID(), employee);
-        //jobHistoryPanel.showJobs(employee.getEmployeeID());
         sprintEvaluationPanel.setEmployee(employee);
 
         //Show sprint evaluation button only to Manager/CEO/employee themself
@@ -159,7 +164,8 @@ public class EmployeeDetailPanel extends JPanel
             //Switch to Deatils Panel
             //Enable Job History and Sprint Evaluation button
             //Disable Details button
-        detailsButton.addActionListener(new ActionListener(){
+        detailsButton.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -174,7 +180,8 @@ public class EmployeeDetailPanel extends JPanel
             //Switch to Job History Panel
             //Enable Details and Sprint Evaluation button
             //Disable Job History button
-        jobHistoryButton.addActionListener(new ActionListener(){
+        jobHistoryButton.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -189,7 +196,8 @@ public class EmployeeDetailPanel extends JPanel
             //Switch to Sprint Evaluation Panel
             //Enable Details and Job History button
             //Disable Sprint Evaluation button
-        sprintEvaluationButton.addActionListener(new ActionListener(){
+        sprintEvaluationButton.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -208,7 +216,8 @@ public class EmployeeDetailPanel extends JPanel
             //If yes, then create a new HomePanel to update currentUser infomation on the left side panel
             //(this is done in case information got changed).
             //Switch back to HomePanel
-        backButton.addActionListener(new ActionListener(){
+        backButton.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {

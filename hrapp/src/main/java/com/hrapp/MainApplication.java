@@ -8,8 +8,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * MainApplication class serves as the entry point and main frame for the HR application.
+ * It manages different panels and uses a CardLayout for seamless navigation between them.
+ */
 public class MainApplication extends JFrame {
-    //Properties
+    // Properties to hold various application panels
     private HomePanel homePanel;
     private AddEmployeePanel addEmployeePanel;
     private AddJobPanel addJobPanel;
@@ -26,23 +30,21 @@ public class MainApplication extends JFrame {
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
     //private EmployeeTablePanel employeeTablePanel;
 
-    private Employee currentUser;
+    private Employee currentUser; // Current user of the application
 
-
-
-    public MainApplication() 
-    {
+    /**
+     * Constructor to initialize the main application window.
+     */
+    public MainApplication() {
+        // Set application title and icon
         setTitle("FRONTLINE HR App");
         setIconImage(new ImageIcon("resources\\FRONTLINE HR App Badge (Large).png").getImage());
 
-        //Set up the CardLayout
+        // Initialize CardLayout and main panel
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        //boolean isManagerOrCEO = checkUserRole();
-
-        //Create an instance of HomePanel
-        //homePanel = new HomePanel(isManagerOrCEO, this);
+        // Initialize various panels
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
         addJobPanel = new AddJobPanel(this);
@@ -54,10 +56,8 @@ public class MainApplication extends JFrame {
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
         //employeeTablePanel = new EmployeeTablePanel(this);
 
-
-        // Add the HomePanel to the Frame
+        // Add panels to the CardLayout
         mainPanel.add(userSelectionPanel, "UserSelectionPanel");
-        //mainPanel.add(homePanel, "HomePanel");
         mainPanel.add(employeeDetailPanel, "EmployeeDetailPanel");
         mainPanel.add(addEmployeePanel, "AddEmployeePanel");
         mainPanel.add(addJobPanel, "AddJobPanel");
@@ -66,19 +66,17 @@ public class MainApplication extends JFrame {
         mainPanel.add(addJobPositionPanel, "AddJobPositionPanel");
         mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
-        
 
         //Add the mainPanel to the JFrame
         add(mainPanel);
 
-        // Frame settings 
+        // Frame settings
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1250, 800);
-        setLocationRelativeTo(null); //Center the window
+        setLocationRelativeTo(null); // Center the window
     }
 
-    /**
-     * Closes resources when the application is closing.
+     /* Closes resources when the application is closing.
      */
     @Override
     public void dispose() 
@@ -87,6 +85,12 @@ public class MainApplication extends JFrame {
         super.dispose();
     }
 
+
+    /**
+     * Creates the HomePanel dynamically.
+     *
+     * @param isManagerOrCEO Indicates if the current user is a manager or CEO.
+     */
     public void createHomePanel()
     {
         homePanel = new HomePanel(this, this.getCurrentUser());
@@ -94,21 +98,29 @@ public class MainApplication extends JFrame {
 
     }
 
-    //This method is used to switch to Edit Employee Panel to edit employee
-    public void switchToEditEmployeePanel(Employee employee)
+    /**
+     * Switch to EditEmployeePanel with a specific employee to edit.
+     *
+     * @param employee The employee to edit.
+     */
+    public void switchToEditEmployeePanel(Employee employee) 
     {
         editEmployeePanel = new EditEmployeePanel(this, employee);
         mainPanel.add(editEmployeePanel, "EditEmployeePanel");
         switchToPanel("EditEmployeePanel");
     }
 
-    public void showHomePanel()
+    /**
+     * Shows the HomePanel.
+     */
+    public void showHomePanel() 
     {
         homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
         switchToPanel("HomePanel");
     }
 
+    //Method to swith to user selection panel
     public void switchToUserSelectionPanel()
     {
         try
@@ -130,119 +142,119 @@ public class MainApplication extends JFrame {
     //using the name of the panel
     public void switchToAddEmployeePanel(String panelName)
     {
-        //Clears all the previous content and opens the panel
         addEmployeePanel.resetFields();
-        switchToPanel("AddEmployeePanel"); 
+        switchToPanel("AddEmployeePanel");
     }
 
-    //Passes the selected Employee to the detail panel and then switches to it
+    /**
+     * Displays the details of a specific employee in EmployeeDetailPanel.
+     *
+     * @param employee The employee to display.
+     */
     public void showEmployeeDetails(Employee employee) 
     {
         employeeDetailPanel.setEmployee(employee);
-        employeeDetailPanel.setDetailsButtonStatus(false); //Disable Details button
+        employeeDetailPanel.setDetailsButtonStatus(false); // Disable Details button
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //This method can only be used when pressing back button on the EditJobPanel & AddJobPanel.
-    //It will disable JobHistory button
-    public void showJobHistoryDetails(Employee employee)
+    // More methods to switch between panels and update specific panels
+    public void showJobHistoryDetails(Employee employee) 
     {
         employeeDetailPanel.setEmployee(employee);
-        employeeDetailPanel.setJobHistoryButtonStatus(false); //Disable Job History button
+        employeeDetailPanel.setJobHistoryButtonStatus(false);
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //
-    public void showSprintEvaluationDetails(Employee employee)
+    //Method to show sprint evaluation details for a specific employee
+    public void showSprintEvaluationDetails(Employee employee) 
     {
         employeeDetailPanel.setEmployee(employee);
         employeeDetailPanel.setSprintEvaluationButton(false);
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //
-    public void refreshSprintEvaluations(Employee employee)
+    //Method to refresh Sprint Evaluation Panel
+    public void refreshSprintEvaluations(Employee employee) 
     {
         employeeDetailPanel.setEmployee(employee);
     }
 
-
-
-    // Passes employeeID to the job panel to display matching jobs.
-    public void switchToAddJobPanel(Employee employee)
+    //Method to switch to add job panel:
+        //It resets all the fields and sets employee that was passed
+    public void switchToAddJobPanel(Employee employee) 
     {
         addJobPanel.resetFields();
         addJobPanel.setEmployee(employee);
         switchToPanel("AddJobPanel");
     }
 
-    //Method to switch to AddJobPositionPanel
-    public void switchToAddJobPositionPanel()
+    //Method to swithc to add position panel
+    public void switchToAddJobPositionPanel() 
     {
-        //Reset fields on the panel
         addJobPositionPanel.resetFields();
-
-        //Show the panel
         switchToPanel("AddJobPositionPanel");
     }
 
-    //Method to switch to EditJobPostionPanel
-    public void switchToEditJobPostionPanel(JobPosition jobPosition)
+    //Method to switch to edit job position panel
+    public void switchToEditJobPostionPanel(JobPosition jobPosition) 
     {
         editJobPositionPanel.setJobPosition(jobPosition);
         switchToPanel("EditJobPositionPanel");
     }
 
-    // Passes jobID to edit panel so the panel knows which job to update in the database.
-    public void switchToEditJobPanel(int jobID, Job job, Employee employee)
+    //Method to switch to Edit Job panel 
+    public void switchToEditJobPanel(int jobID, Job job, Employee employee) 
     {
-        //editJobPanel.resetFields();
         editJobPanel.setInformation(jobID, job, employee);
-
         switchToPanel("EditJobPanel");
     }
-    
-    public void switchToJobHistoryPanel()
+
+    //Method to swithc to job history panel
+    public void switchToJobHistoryPanel() 
     {
         employeeDetailPanel.refreshJobHistory();
         switchToPanel("EmployeeDetailPanel");
     }
 
-    //This method is used to switch to AddSprintEvaluationPanel
-    public void switchToAddSprintEvaluationPanel(Employee employee)
+    //Method to switch to add sprint evaluation panel
+    public void switchToAddSprintEvaluationPanel(Employee employee) 
     {
-
-        //Set employee on the add panel to then get employee's id
         addSprintEvaluationPanel.setEmployee(employee);
-
-        switchToPanel("AddSprintEvaluationPanel"); 
-
-        //Reset all the text fields
+        switchToPanel("AddSprintEvaluationPanel");
         addSprintEvaluationPanel.resetFields();
     }
 
+    /**
+     * Switches to a specified panel by its name.
+     *
+     * @param panelName The name of the panel to switch to.
+     */
     public void switchToPanel(String panelName) 
     {
         cardLayout.show(mainPanel, panelName);
     }
 
-    //Getter for HomePanel
+    // Getters and setters for HomePanel and current user
     public HomePanel getHomePanel() 
     {
         return homePanel;
     }
 
-    public void setCurrentUser(Employee user)
+    //Setter method to set current user of the app
+    public void setCurrentUser(Employee user) 
     {
         this.currentUser = user;
     }
 
-    public Employee getCurrentUser()
+    //Getter method to get current user of the app
+    public Employee getCurrentUser() 
     {
         return currentUser;
     }
 
-    public int getCurrentUserID()
+    //Method to get current's user id
+    public int getCurrentUserID() 
     {
         return currentUser.getEmployeeID();
     }
@@ -295,4 +307,3 @@ public class MainApplication extends JFrame {
         });
     }
 }
- 

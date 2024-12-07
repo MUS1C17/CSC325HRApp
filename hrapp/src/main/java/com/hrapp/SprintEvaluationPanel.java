@@ -20,6 +20,21 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/*
+ * Sprint evaluation panel collects responses to key retrospective questions:
+ * 
+ * What went well during this sprint? — successes
+ * 
+ * What challenges or blockers did you encounter? — challenges
+ * 
+ * Are there any areas where the team could improve? — improvements
+ * 
+ * What tasks or accomplishments are you most proud of? — highlights
+ * 
+ * Notes on overall team performance, collaboration, and morale — notes
+ */
+
+
 public class SprintEvaluationPanel extends JPanel {
 
     //Properties

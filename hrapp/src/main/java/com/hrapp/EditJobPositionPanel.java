@@ -20,6 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/*
+ * This panel is where employee edit job positions
+ */
+
 public class EditJobPositionPanel extends JPanel
 {
     //Properties
@@ -50,6 +54,7 @@ public class EditJobPositionPanel extends JPanel
         }
     }
 
+    //Set job posistion and open initialize the EditJobPositionPanel
     public void setJobPosition(JobPosition jobPosition)
     {
         this.jobPosition = jobPosition;
@@ -59,6 +64,8 @@ public class EditJobPositionPanel extends JPanel
         repaint();
     }
 
+    
+    //Initializes all the gui elements on the panel
     public void initUI()
     {
         // Top Panel containing logo and page title
@@ -182,7 +189,8 @@ public class EditJobPositionPanel extends JPanel
             }
         });
 
-        updateButton.addActionListener(new ActionListener() {
+        updateButton.addActionListener(new ActionListener() 
+        {
             @Override
             public void actionPerformed(ActionEvent event)
             {

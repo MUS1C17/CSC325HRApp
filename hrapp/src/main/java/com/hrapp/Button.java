@@ -6,7 +6,9 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class Button extends JButton {
+//This is a custome Button class that handles hover over behaivor as well as font of the button
+public class Button extends JButton 
+{
     private String normalIconName;
     private String hoverIconName;
 
@@ -18,7 +20,8 @@ public class Button extends JButton {
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
 
-        this.addMouseListener(new MouseListener () {
+        this.addMouseListener(new MouseListener () 
+        {
             @Override
             public void mousePressed(MouseEvent e) {}
             @Override
@@ -26,21 +29,25 @@ public class Button extends JButton {
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(MouseEvent e) 
+            {
                 setIcon(new ImageIcon(hoverIconName));
             }
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(MouseEvent e) 
+            {
                 setIcon(new ImageIcon(normalIconName));
             }
         });
     }
 
-    public String getNormalIconName() {
+    public String getNormalIconName() 
+    {
         return normalIconName;
     }
 
-    public String getHoverIconName() {
+    public String getHoverIconName() 
+    {
         return hoverIconName;
     }
 }

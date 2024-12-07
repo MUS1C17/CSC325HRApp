@@ -16,6 +16,32 @@ import javax.swing.text.PlainDocument;
 
 import javafx.scene.control.DatePicker;
 
+/**
+ * EmployeeFormValidator
+ * 
+ * This utility class provides methods and classes to validate form inputs and manage form interactions 
+ * for employee-related forms in the HR application.
+ * 
+ * Features:
+ * 1. **Focus-based Validation**:
+ *    - Adds listeners to `JTextField` components to validate input when focus is lost.
+ *    - Highlights fields with errors using a red border.
+ * 
+ * 2. **Button State Management**:
+ *    - Dynamically enables or disables a `JButton` based on the validation of required fields.
+ *    - Ensures that all required fields, including `DatePicker`, are correctly filled before enabling actions.
+ * 
+ * 3. **Validation Helpers**:
+ *    - Checks if a field contains an integer or specific text format (e.g., phone numbers).
+ *    - Verifies phone number length and format as an additional validation layer.
+ * 
+ * 4. **Character Limits**:
+ *    - Provides a `LimitedPlainDocument` class to enforce maximum character limits in `JTextField` components.
+ * 
+ * 5. **Numeric Input Enforcement**:
+ *    - Provides a `NumberDocumentFilter` class to enforce numeric-only input with optional decimals in `JTextField` components.
+ */
+
 public class EmployeeFormValidator 
 {
     //Borders for validation feedback

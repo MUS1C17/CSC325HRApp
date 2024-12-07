@@ -2,6 +2,12 @@ package com.hrapp;
 
 import java.time.LocalDate;
 
+/*
+ * The Job class represents an employee's job history, including details such as job title, company, dates, city, job description, quit reason, and deletion status.
+ * It provides constructors for initialization and getter/setter methods for all fields, as well as formatted date methods for start and end dates.
+ */
+
+
 public class Job 
 {
     // Properties
@@ -16,6 +22,7 @@ public class Job
     private int employeeID;
     private int jobID;
 
+    //Constructor with no employeeID for when creating a new Job
     public Job(String jobTitle, String companyName, LocalDate startDate, LocalDate endDate, String city, String jobDescription, String quitReason, int isDeleted)
     {
         this.jobTitle = jobTitle;

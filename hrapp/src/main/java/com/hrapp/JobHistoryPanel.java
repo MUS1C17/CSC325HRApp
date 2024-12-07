@@ -23,8 +23,19 @@ import javax.swing.SwingConstants;
 
 //import javafx.scene.shape.Box;
 
+/*
+ * The JobHistoryPanel class displays an employee's job history, including details for each job.
+ * It allows users to:
+ * - View job information (job title, company, dates, etc.),
+ * - Edit or delete job records,
+ * - Add a new job to the employee's history.
+ * The UI is created dynamically based on the jobs retrieved from the database.
+ */
+
+
 public class JobHistoryPanel extends JPanel 
 {
+    //Properties
     private MainApplication mainApp;
     private JobDAO jobDAO;
     private ArrayList<Job> jobs;
@@ -33,6 +44,7 @@ public class JobHistoryPanel extends JPanel
     private Employee employee;
     private String endDate;
 
+    //Constructor
     public JobHistoryPanel(MainApplication mainApp)
     {
         this.mainApp = mainApp;
@@ -48,6 +60,7 @@ public class JobHistoryPanel extends JPanel
         }
     }
 
+    //Sets employee and employee id for the panel
     public void setEmployeeID(int employeeID, Employee employee)
     {
         this.employeeID = employeeID;
@@ -55,7 +68,8 @@ public class JobHistoryPanel extends JPanel
         showJobs(employeeID);
     }
 
-    public void getJobs() // This method should use the jobDAO object to populate the jobs parameter with an arraylist of all jobs related to the employeeID.
+    // This method should use the jobDAO object to populate the jobs parameter with an arraylist of all jobs related to the employeeID.
+    public void getJobs() 
     {
         try
         {
@@ -67,7 +81,8 @@ public class JobHistoryPanel extends JPanel
         }
     }
 
-    public void showJobs(int employeeID) // This is supposed to actually display the jobs and initialize the UI.
+    // This is supposed to actually display the jobs and initialize the UI.
+    public void showJobs(int employeeID) 
     {
         removeAll();
         getJobs();
@@ -172,6 +187,7 @@ public class JobHistoryPanel extends JPanel
         return jobBox;
      }
 
+    //Method to initialize all the gui components of the panel
     private void initUI()
     {
         JPanel panel = new JPanel();
