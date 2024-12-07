@@ -3,8 +3,13 @@ package com.hrapp;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -44,6 +49,7 @@ public class EmployeeTablePanel extends JPanel
     private DefaultTableModel jobPositionTableModel;
     private TableRowSorter<DefaultTableModel> jobPositionSorter;
     private JobPositionDAO jobPositionDAO;
+    private MainApplication mainApp;
 
 
     //Interface for the EmployeeSelectionListener
@@ -69,10 +75,10 @@ public class EmployeeTablePanel extends JPanel
         this.jobPositionSelectionListener = listener;
     }
 
-
     //Constructor
-    public EmployeeTablePanel()
+    public EmployeeTablePanel(MainApplication mainApp)
     {
+        this.mainApp = mainApp;
         setLayout(new BorderLayout());
 
         // Initialize DAOs
@@ -149,6 +155,20 @@ public class EmployeeTablePanel extends JPanel
 
         //Create the Jtable with the model
         employeeTable = new JTable(employeeTableModel);
+        employeeTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Set font of items in JTable
+        try 
+        {
+            Font montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("resources\\fonts\\Montserrat\\static\\Montserrat-Bold.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(montserrat);
+            employeeTable.setFont(montserrat.deriveFont(Font.PLAIN, 14));
+        } 
+        catch(IOException | FontFormatException e) 
+        {
+            e.printStackTrace();
+        }
 
         // Set Selection Mode to Single Selection
         employeeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -241,7 +261,7 @@ public class EmployeeTablePanel extends JPanel
                         try
                         {
                             int modelRow = employeeTable.convertRowIndexToModel(row);
-                            int employeeID = (Integer) employeeTable.getValueAt(modelRow, 0);
+                            int employeeID = (Integer) employeeTableModel.getValueAt(modelRow, 0);
 
                             Employee emp = employeeDAO.getEmployeeDetails(employeeID);
 
@@ -291,6 +311,20 @@ public class EmployeeTablePanel extends JPanel
 
         // Create the JTable
         jobPositionTable = new JTable(jobPositionTableModel);
+        jobPositionTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Set font of items in JTable
+        try 
+        {
+            Font montserrat = Font.createFont(Font.TRUETYPE_FONT, new File("resources\\fonts\\Montserrat\\static\\Montserrat-Bold.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(montserrat);
+            jobPositionTable.setFont(montserrat.deriveFont(Font.PLAIN, 14));
+        } 
+        catch(IOException | FontFormatException e) 
+        {
+            e.printStackTrace();
+        }
 
         // Enable sorting
         jobPositionSorter = new TableRowSorter<>(jobPositionTableModel);
@@ -350,7 +384,7 @@ public class EmployeeTablePanel extends JPanel
                         try
                         {
                             int modelRow = jobPositionTable.convertRowIndexToModel(row);
-                            int jobPositionID = (Integer) jobPositionTable.getValueAt(modelRow, 5);
+                            int jobPositionID = (Integer) jobPositionTableModel.getValueAt(modelRow, 5);
   
                             String[] contactOptions = {"Delete", "Edit", "Cancel"};
 
@@ -366,17 +400,34 @@ public class EmployeeTablePanel extends JPanel
                             //If choice is Delete, then delete job position
                             if(choice == 0)
                             {
-                                jobPositionDAO.deleteJobPosition(jobPositionID);
-                                loadJobPositionData();
+
+                                //Only let managers/CEO delete Job Postion
+                                if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager())
+                                {
+                                    jobPositionDAO.deleteJobPosition(jobPositionID);
+                                    loadJobPositionData();
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(EmployeeTablePanel.this, "You don't have rights to delete a job Position", "Permission Issue", JOptionPane.WARNING_MESSAGE);
+                                }
                             }
                             //If choice is Edit, then open Edit Job Position Panel
                             else if(choice == 1)
                             {
-                                JobPosition position = jobPositionDAO.getJobPositionDetails(jobPositionID);
-    
-                                if (jobPositionSelectionListener != null)
+                                //Only let managers/CEO edit jbo postion
+                                if(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager())
                                 {
-                                    jobPositionSelectionListener.jobPositionSelected(position);
+                                    JobPosition position = jobPositionDAO.getJobPositionDetails(jobPositionID);
+        
+                                    if (jobPositionSelectionListener != null)
+                                    {
+                                        jobPositionSelectionListener.jobPositionSelected(position);
+                                    }
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(EmployeeTablePanel.this, "You don't have rights to edit a job Position", "Permission Issue", JOptionPane.WARNING_MESSAGE);
                                 }
                             }
 

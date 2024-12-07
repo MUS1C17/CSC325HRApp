@@ -15,12 +15,11 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-
-import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 //import javafx.scene.shape.Box;
 
@@ -43,6 +42,7 @@ public class JobHistoryPanel extends JPanel
     private int employeeID;
     private Job job;
     private Employee employee;
+    private String endDate;
 
     //Constructor
     public JobHistoryPanel(MainApplication mainApp)
@@ -105,7 +105,15 @@ public class JobHistoryPanel extends JPanel
         jobTitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         jobBox.add(jobTitleLabel);
 
-        JLabel jobCityAndTimeLabel = new Label(job.getCity() + " | " + job.getStartDateStringFormat() + " to " + job.getEndDateStringFormat(), 14, Color.WHITE);
+        if (job.getEndDateStringFormat().equals("01/01/0001")) // If end date is 1/1/0001, set the end date to present.
+        {
+            endDate = "present";
+        }
+        else
+        {
+            endDate = job.getEndDateStringFormat();
+        }
+        JLabel jobCityAndTimeLabel = new Label(job.getCity() + " | " + job.getStartDateStringFormat() + " to " + endDate, 14, Color.WHITE);
         jobCityAndTimeLabel.setOpaque(true);
         jobCityAndTimeLabel.setBackground(new Color(45, 137, 216));
         jobCityAndTimeLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -117,20 +125,24 @@ public class JobHistoryPanel extends JPanel
         jobDescriptionLabel.setAlignmentX(CENTER_ALIGNMENT);
         jobBox.add(jobDescriptionLabel);
 
+        //Termination part of the box should be only visible to Managers/CEO
         JLabel terminationHeader = new Label("REASON FOR TERMINATION: " + job.getQuitReason(), 12, Color.BLACK);
         terminationHeader.setOpaque(true);
         terminationHeader.setBackground(Color.WHITE);
         terminationHeader.setAlignmentX(CENTER_ALIGNMENT);
+        terminationHeader.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
         jobBox.add(terminationHeader);
 
-        // create edit button
+        // create edit button and make it visible only ofr Manager/CEO
         JButton editButton = new Button("resources\\EditButtons\\Edit button (no hover).png", "resources\\EditButtons\\Edit button (hover).png");
         editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         editButton.addActionListener(e -> mainApp.switchToEditJobPanel(job.getJobID(),job, employee));
+        editButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
 
-        // create delete button
+        // create delete button and make it visible only for Manager/CEO
         JButton deleteJobButton = new Button("resources\\DeleteButtons\\Delete button (no hover).png", "resources\\DeleteButtons\\Delete button (hover).png");
         deleteJobButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        deleteJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
         deleteJobButton.addActionListener(new ActionListener() 
         {
             @Override
@@ -212,9 +224,10 @@ public class JobHistoryPanel extends JPanel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(17, 59, 95));
 
-        // Add job button
+        // Add job button and make it visible only for CEO/Manager
         JButton addJobButton = new Button("resources\\AddButtons\\Add New Job button (no hover).png", "resources\\AddButtons\\Add New Job button (hover).png");
         addJobButton.addActionListener(e -> mainApp.switchToAddJobPanel(employee));
+        addJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager() || mainApp.isCurrentUserAndSelectedEmployeeSame(employee));
 
         // Adds buttons to button panel.
         buttonPanel.add(addJobButton);

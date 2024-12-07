@@ -117,7 +117,15 @@ public class AddSurveySatisfactionPanel extends JPanel
 
         //Back button
         JButton backButton = new Button("resources\\BackButtons\\Back button (no hover).png", "resources\\BackButtons\\Back button (hover).png");
-        backButton.addActionListener(e -> mainApp.switchToPanel("HomePanel"));
+        backButton.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                mainApp.switchToPanel("HomePanel");
+                resetFields();
+            }
+        });
 
         //Add Button
         saveButton = new Button("resources\\SaveButtons\\Save button (no hover).png", "resources\\SaveButtons\\Save button (hover).png");
@@ -160,5 +168,15 @@ public class AddSurveySatisfactionPanel extends JPanel
         buttonPanel.add(saveButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    //Method to reset all teh input fields to default valeus
+    public void resetFields()
+    {
+        favoriteAspect.setText("");
+        additionalComments.setText("");
+        growthOpportunites.setSelectedIndex(0);
+        communicationRating.setValue(0);
+        satisfactionLevel.setValue(0);
     }
 }

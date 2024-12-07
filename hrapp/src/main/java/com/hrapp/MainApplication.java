@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -27,6 +28,7 @@ public class MainApplication extends JFrame {
     private EditJobPanel editJobPanel;
     private EditJobPositionPanel editJobPositionPanel;
     private AddSprintEvaluationPanel addSprintEvaluationPanel;
+    //private EmployeeTablePanel employeeTablePanel;
 
     private Employee currentUser; // Current user of the application
 
@@ -42,9 +44,6 @@ public class MainApplication extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        // Dummy user role check
-        boolean isManagerOrCEO = checkUserRole();
-
         // Initialize various panels
         employeeDetailPanel = new EmployeeDetailPanel(this);
         addEmployeePanel = new AddEmployeePanel(this);
@@ -55,6 +54,7 @@ public class MainApplication extends JFrame {
         addJobPositionPanel = new AddJobPositionPanel(this);
         editJobPositionPanel = new EditJobPositionPanel(this);
         addSprintEvaluationPanel = new AddSprintEvaluationPanel(this);
+        //employeeTablePanel = new EmployeeTablePanel(this);
 
         // Add panels to the CardLayout
         mainPanel.add(userSelectionPanel, "UserSelectionPanel");
@@ -67,7 +67,7 @@ public class MainApplication extends JFrame {
         mainPanel.add(editJobPositionPanel, "EditJobPositionPanel");
         mainPanel.add(addSprintEvaluationPanel, "AddSprintEvaluationPanel");
 
-        // Add the main panel to the frame
+        //Add the mainPanel to the JFrame
         add(mainPanel);
 
         // Frame settings
@@ -76,17 +76,7 @@ public class MainApplication extends JFrame {
         setLocationRelativeTo(null); // Center the window
     }
 
-    /**
-     * Dummy method to simulate user role checking. Replace with actual authentication logic.
-     *
-     * @return true if the user is a manager or CEO, false otherwise.
-     */
-    public boolean checkUserRole() {
-        return true; // For demonstration purposes, always return true
-    }
-
-    /**
-     * Override dispose to close resources when the application is shutting down.
+     /* Closes resources when the application is closing.
      */
     @Override
     public void dispose() 
@@ -95,15 +85,17 @@ public class MainApplication extends JFrame {
         super.dispose();
     }
 
+
     /**
      * Creates the HomePanel dynamically.
      *
      * @param isManagerOrCEO Indicates if the current user is a manager or CEO.
      */
-    public void createHomePanel(boolean isManagerOrCEO) 
+    public void createHomePanel()
     {
-        homePanel = new HomePanel(isManagerOrCEO, this, this.getCurrentUser());
+        homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
+
     }
 
     /**
@@ -123,15 +115,32 @@ public class MainApplication extends JFrame {
      */
     public void showHomePanel() 
     {
-        homePanel = new HomePanel(true, this, this.getCurrentUser());
+        homePanel = new HomePanel(this, this.getCurrentUser());
         mainPanel.add(homePanel, "HomePanel");
         switchToPanel("HomePanel");
     }
 
-    /**
-     * Switch to AddEmployeePanel and reset its fields.
-     */
-    public void switchToAddEmployeePanel(String panelName) 
+    //Method to swith to user selection panel
+    public void switchToUserSelectionPanel()
+    {
+        try
+        {
+            userSelectionPanel.removeAll();
+            userSelectionPanel.initUI();
+            userSelectionPanel.repaint();
+            userSelectionPanel.revalidate();
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, "Error Occured: " + 
+             e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+        switchToPanel("UserSelectionPanel");
+    }
+
+    //This method is used to switch to the specified panel in the CardLayout 
+    //using the name of the panel
+    public void switchToAddEmployeePanel(String panelName)
     {
         addEmployeePanel.resetFields();
         switchToPanel("AddEmployeePanel");
@@ -235,7 +244,7 @@ public class MainApplication extends JFrame {
     //Setter method to set current user of the app
     public void setCurrentUser(Employee user) 
     {
-        currentUser = user;
+        this.currentUser = user;
     }
 
     //Getter method to get current user of the app
@@ -250,11 +259,49 @@ public class MainApplication extends JFrame {
         return currentUser.getEmployeeID();
     }
 
-    /**
-     * The main method to start the application.
+    /*
+     * Check if the current user that is logged in is a manager
+     * If yes, return true, otherwise return false
      */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+    public boolean isCurrentUserManager() 
+    {
+        //Check for null at first to prevent NullPointerException
+        if(currentUser != null && currentUser.getIsManager() == 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * Check if the current user that is logged in is CEO
+     * If yes, return true, otherwise return false
+     */
+    public boolean isCurrentUserCEO()
+    {
+        //Check for null at first to prevent NullPointerException
+        if(currentUser != null && currentUser.getIsCEO() == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isCurrentUserAndSelectedEmployeeSame(Employee selectedEmployee)
+    {
+        if(currentUser != null && currentUser.getEmployeeID() == selectedEmployee.getEmployeeID())
+        {
+            return true;
+        }
+        //If no return false
+        return false;
+    }
+
+    public static void main(String[] args) 
+    {
+        SwingUtilities.invokeLater(() -> 
+        {
             MainApplication app = new MainApplication();
             app.setVisible(true);
         });

@@ -31,6 +31,7 @@ public class HomePanel extends JPanel
     private Employee currentUser;
     private JButton jobSatisfactionButton;
     private JButton editProfileButton;
+    private JButton signOutButton;
 
     /*
     * HomePanel is a JPanel that serves as the main dashboard for the HR application.
@@ -41,7 +42,7 @@ public class HomePanel extends JPanel
     */
 
     //Constructor
-    public HomePanel(boolean isManagerOrCEO, MainApplication mainApp, Employee currentUser)
+    public HomePanel(MainApplication mainApp, Employee currentUser)
     {
         this.mainApp = mainApp;
         this.currentUser = currentUser;
@@ -68,13 +69,13 @@ public class HomePanel extends JPanel
         //Add Employee button
         addEmployeeButton = new Button("resources\\AddButtons\\Add Employee button (no hover).png", "resources\\AddButtons\\Add Employee button (hover).png");
         addEmployeeButton.setMaximumSize(new Dimension(232, 45));
-        addEmployeeButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
+        addEmployeeButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager()); //Only visible for Managers/CEO
         topPanel.add(addEmployeeButton);
 
         //Add Job Type button
         addJobButton = new Button("resources\\AddButtons\\Add Job Type button (no hover).png", "resources\\AddButtons\\Add Job Type button (hover).png");
         addJobButton.setMaximumSize(new Dimension(232, 45));
-        addJobButton.setVisible(isManagerOrCEO); //Only visible for Managers/CEO
+        addJobButton.setVisible(mainApp.isCurrentUserCEO() || mainApp.isCurrentUserManager()); //Only visible for Managers/CEO
         topPanel.add(addJobButton);
 
         add(topPanel, BorderLayout.NORTH);
@@ -90,7 +91,7 @@ public class HomePanel extends JPanel
         add(buttonPanel, BorderLayout.SOUTH);
 
         //Employee Table Panel
-        employeeTablePanel = new EmployeeTablePanel();
+        employeeTablePanel = new EmployeeTablePanel(mainApp);
         add(employeeTablePanel, BorderLayout.CENTER);
         
         //Add Action Listener for search functionality
@@ -191,6 +192,16 @@ public class HomePanel extends JPanel
         JLabel welcomeLabel = new Label("Welcome, " + currentUser.getFirstName() + "!", 20, Color.WHITE);
         welcomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(welcomeLabel);
+
+        //Position tags
+        JLabel managerLabel = new JLabel(new ImageIcon("resources\\Tags\\Manager tag.png"));
+        managerLabel.setVisible(mainApp.isCurrentUserManager() && !(mainApp.isCurrentUserCEO()));
+        panel.add(managerLabel);
+
+        JLabel ceoLabel = new JLabel(new ImageIcon("resources\\Tags\\CEO tag.png"));
+        ceoLabel.setVisible(mainApp.isCurrentUserCEO());
+        panel.add(ceoLabel);
+
         panel.add(Box.createVerticalStrut(20)); //Spacer
         
         //First and Last name
@@ -220,9 +231,11 @@ public class HomePanel extends JPanel
         panel.add(Box.createVerticalStrut(20));
         //Job Satisfaction Button
         jobSatisfactionButton = new Button("resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (no hover).png", "resources\\JobSatisfactionButtons\\Job Satisfaction Reflection button (hover).png");
+        signOutButton = new Button("resources\\SignOutButtons\\Sign Out button (no hover).png", "resources\\SignOutButtons\\Sign Out button (hover).png");
 
         panel.add(Box.createVerticalStrut(100));
         panel.add(jobSatisfactionButton);
+        panel.add(signOutButton);
 
         jobSatisfactionButton.addActionListener(new ActionListener()
         {
@@ -230,6 +243,15 @@ public class HomePanel extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 mainApp.switchToPanel("AddSurveySatisfactionPanel");
+            }
+        });
+
+        signOutButton.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                mainApp.switchToUserSelectionPanel();
             }
         });
 
